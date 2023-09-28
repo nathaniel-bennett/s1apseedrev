@@ -23,7 +23,10 @@ fn main() {
         let bytes = std::fs::read(&path).unwrap();
 
         let mut aper_packet = asn1_codecs::PerCodecData::from_slice_aper(bytes.as_slice());
-        let pdu = s1ap::S1AP_PDU::aper_decode(&mut aper_packet).unwrap();
+        let Ok(pdu) = s1ap::S1AP_PDU::aper_decode(&mut aper_packet) else {
+            println!("file {} failed to decode. Continuing...", path.to_str().unwrap());
+            continue
+        };
 
         let mut entropy = pdu.entropy::<DefaultEntropyScheme>();
 
