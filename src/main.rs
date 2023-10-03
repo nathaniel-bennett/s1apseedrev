@@ -31,6 +31,16 @@ fn main() {
         let mut entropy = pdu.entropy::<DefaultEntropyScheme>();
 
         std::fs::write(format!("{}.structured", path.to_str().unwrap()), entropy.as_slice()).unwrap();
+
+        let chk_pkt = s1ap::S1AP_PDU::from_entropy(&mut entropy.as_source());
+        let mut chk_data = asn1_codecs::PerCodecData::new_aper();
+        chk_pkt.aper_encode(&mut chk_data).unwrap();
+
+        if (bytes.as_slice() != chk_data.into_bytes().as_slice()) {
+            println!("WARNING: decode to reencode failed for {}", path.to_str().unwrap());
+//            println!("{:?}", pdu);
+//            println!("{:?}", chk_pkt);
+        }
     }
 
     /*

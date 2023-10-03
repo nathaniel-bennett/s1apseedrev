@@ -3,7 +3,6 @@
 use asn1_codecs::Asn1Choice;
 use bitvec::prelude::*;
 use entropic::prelude::*;
-use asn1_codecs::aper::AperCodec;
 
 pub const ID_ADDITIONAL_GUTI: u16 = 224;
 
@@ -859,7 +858,7 @@ pub const MAXNOOFFREQUENCIES: i64 = 64;
 
 pub const MAXNOOFTIMEPERIODS: i64 = 2;
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -871,7 +870,7 @@ impl entropic::Entropic for ActivatedCellsList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -884,7 +883,7 @@ impl entropic::Entropic for ActivatedCellsList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -893,7 +892,7 @@ impl entropic::Entropic for ActivatedCellsList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct ActivatedCellsList_Item {
     pub cell_id: ActivatedCellsList_ItemCell_ID,
@@ -915,7 +914,7 @@ impl entropic::Entropic for ActivatedCellsList_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct Additional_GUTI {
     pub gummei: GUMMEI,
@@ -947,7 +946,7 @@ impl entropic::Entropic for Additional_GUTI {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct AdditionalCSFallbackIndicator(pub u8);
 impl AdditionalCSFallbackIndicator {
@@ -970,7 +969,7 @@ impl entropic::Entropic for AdditionalCSFallbackIndicator {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "32", sz_ub = "32")]
 pub struct AdditionalRRMPriorityIndex(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for AdditionalRRMPriorityIndex {
@@ -1011,7 +1010,7 @@ impl entropic::Entropic for AdditionalRRMPriorityIndex {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct AerialUEsubscriptionInformation(pub u8);
 impl AerialUEsubscriptionInformation {
@@ -1034,7 +1033,7 @@ impl entropic::Entropic for AerialUEsubscriptionInformation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct AllocationAndRetentionPriority {
     pub priority_level: PriorityLevel,
@@ -1078,7 +1077,7 @@ impl entropic::Entropic for AllocationAndRetentionPriority {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "2", extensible = true)]
 pub enum AreaScopeOfMDT {
     #[asn(key = 0, extended = false)]
@@ -1104,7 +1103,7 @@ impl asn1_codecs::Asn1Choice for AreaScopeOfMDT {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "3", extensible = true)]
 pub enum AreaScopeOfQMC {
     #[asn(key = 0, extended = false)]
@@ -1130,7 +1129,7 @@ impl asn1_codecs::Asn1Choice for AreaScopeOfQMC {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct AssistanceDataForCECapableUEs {
     pub cell_identifier_and_ce_level_for_ce_capable_u_es: CellIdentifierAndCELevelForCECapableUEs,
@@ -1160,7 +1159,7 @@ impl entropic::Entropic for AssistanceDataForCECapableUEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 4)]
 pub struct AssistanceDataForPaging {
     #[asn(optional_idx = 0)]
@@ -1208,7 +1207,7 @@ impl entropic::Entropic for AssistanceDataForPaging {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct AssistanceDataForRecommendedCells {
     pub recommended_cells_for_paging: RecommendedCellsForPaging,
@@ -1239,14 +1238,14 @@ impl entropic::Entropic for AssistanceDataForRecommendedCells {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "6")]
 pub struct BPLMNs(pub Vec<PLMNidentity>);
 impl entropic::Entropic for BPLMNs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(6, 16383);
+        let capped_max = std::cmp::min(6, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -1259,7 +1258,7 @@ impl entropic::Entropic for BPLMNs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(6, 16383);
+        let capped_max = std::cmp::min(6, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -1268,7 +1267,7 @@ impl entropic::Entropic for BPLMNs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct BearerType(pub u8);
 impl BearerType {
@@ -1288,7 +1287,7 @@ impl entropic::Entropic for BearerType {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct Bearers_SubjectToEarlyStatusTransfer_Item {
     pub e_rab_id: E_RAB_ID,
@@ -1323,7 +1322,7 @@ impl entropic::Entropic for Bearers_SubjectToEarlyStatusTransfer_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -1337,7 +1336,7 @@ impl entropic::Entropic for Bearers_SubjectToEarlyStatusTransferList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -1350,7 +1349,7 @@ impl entropic::Entropic for Bearers_SubjectToEarlyStatusTransferList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -1359,7 +1358,7 @@ impl entropic::Entropic for Bearers_SubjectToEarlyStatusTransferList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 2)]
 pub struct Bearers_SubjectToStatusTransfer_Item {
     pub e_rab_id: E_RAB_ID,
@@ -1407,7 +1406,7 @@ impl entropic::Entropic for Bearers_SubjectToStatusTransfer_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -1419,7 +1418,7 @@ impl entropic::Entropic for Bearers_SubjectToStatusTransferList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -1432,7 +1431,7 @@ impl entropic::Entropic for Bearers_SubjectToStatusTransferList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -1441,7 +1440,7 @@ impl entropic::Entropic for Bearers_SubjectToStatusTransferList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "10000000000")]
 pub struct BitRate(pub u64);
 impl entropic::Entropic for BitRate {
@@ -1458,7 +1457,7 @@ impl entropic::Entropic for BitRate {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct BluetoothMeasConfig(pub u8);
 impl BluetoothMeasConfig {
@@ -1478,14 +1477,14 @@ impl entropic::Entropic for BluetoothMeasConfig {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "4")]
 pub struct BluetoothMeasConfigNameList(pub Vec<BluetoothName>);
 impl entropic::Entropic for BluetoothMeasConfigNameList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(4, 16383);
+        let capped_max = std::cmp::min(4, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -1498,7 +1497,7 @@ impl entropic::Entropic for BluetoothMeasConfigNameList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(4, 16383);
+        let capped_max = std::cmp::min(4, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -1507,7 +1506,7 @@ impl entropic::Entropic for BluetoothMeasConfigNameList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 3)]
 pub struct BluetoothMeasurementConfiguration {
     pub bluetooth_meas_config: BluetoothMeasConfig,
@@ -1551,7 +1550,7 @@ impl entropic::Entropic for BluetoothMeasurementConfiguration {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "OCTET-STRING",
     sz_extensible = false,
@@ -1583,7 +1582,7 @@ impl entropic::Entropic for BluetoothName {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "2", extensible = true)]
 pub enum BroadcastCancelledAreaList {
     #[asn(key = 0, extended = false)]
@@ -1606,7 +1605,7 @@ impl asn1_codecs::Asn1Choice for BroadcastCancelledAreaList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "2", extensible = true)]
 pub enum BroadcastCompletedAreaList {
     #[asn(key = 0, extended = false)]
@@ -1629,7 +1628,7 @@ impl asn1_codecs::Asn1Choice for BroadcastCompletedAreaList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct CE_ModeBRestricted(pub u8);
 impl CE_ModeBRestricted {
@@ -1650,7 +1649,7 @@ impl entropic::Entropic for CE_ModeBRestricted {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct CE_mode_B_SupportIndicator(pub u8);
 impl CE_mode_B_SupportIndicator {
@@ -1670,36 +1669,11 @@ impl entropic::Entropic for CE_mode_B_SupportIndicator {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct CELevel(pub Vec<u8>);
 
-impl entropic::Entropic for CELevel {
-    fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
-        source: &mut entropic::FiniteEntropySource<'a, S, I>,
-    ) -> Result<Self, entropic::Error> {
-        let paging_info: crate::celevel::UEPagingCoverageInformation = source.entropic()?;
-        let mut encoded = asn1_codecs::PerCodecData::new_aper();
-        paging_info.aper_encode(&mut encoded).unwrap();
-        Ok(CELevel(encoded.into_bytes()))
-    }
-    fn to_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a mut u8>>(
-        &self,
-        sink: &mut FiniteEntropySink<'a, S, I>,
-    ) -> Result<usize, Error> {
-        let mut decode_bytes = asn1_codecs::PerCodecData::from_slice_aper(self.0.as_slice());
-        let paging_info = crate::celevel::UEPagingCoverageInformation::aper_decode(&mut decode_bytes).unwrap();
-        Ok(sink.put_entropic(&paging_info)?)
-    }
-}
-
-
-
-
-
-
-
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 2)]
 pub struct CGI {
     pub plm_nidentity: PLMNidentity,
@@ -1742,7 +1716,7 @@ impl entropic::Entropic for CGI {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "OCTET-STRING", sz_extensible = false, sz_lb = "2", sz_ub = "2")]
 pub struct CI(pub Vec<u8>);
 impl entropic::Entropic for CI {
@@ -1769,7 +1743,7 @@ impl entropic::Entropic for CI {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", lb = "0", ub = "1")]
 pub struct CNDomain(pub u8);
 impl CNDomain {
@@ -1790,7 +1764,7 @@ impl entropic::Entropic for CNDomain {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct CNType(pub u8);
 impl CNType {
@@ -1810,14 +1784,14 @@ impl entropic::Entropic for CNType {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "16")]
 pub struct CNTypeRestrictions(pub Vec<CNTypeRestrictions_Item>);
 impl entropic::Entropic for CNTypeRestrictions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -1830,7 +1804,7 @@ impl entropic::Entropic for CNTypeRestrictions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -1839,7 +1813,7 @@ impl entropic::Entropic for CNTypeRestrictions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct CNTypeRestrictions_Item {
     pub plmn_identity: PLMNidentity,
@@ -1873,7 +1847,7 @@ impl entropic::Entropic for CNTypeRestrictions_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct COUNTValueExtended {
     pub pdcp_sn_extended: PDCP_SNExtended,
@@ -1909,7 +1883,7 @@ impl entropic::Entropic for COUNTValueExtended {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct COUNTvalue {
     pub pdcp_sn: PDCP_SN,
@@ -1941,7 +1915,7 @@ impl entropic::Entropic for COUNTvalue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct COUNTvaluePDCP_SNlength18 {
     pub pdcp_s_nlength18: PDCP_SNlength18,
@@ -1978,7 +1952,7 @@ impl entropic::Entropic for COUNTvaluePDCP_SNlength18 {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct CSFallbackIndicator(pub u8);
 impl CSFallbackIndicator {
@@ -1998,7 +1972,7 @@ impl entropic::Entropic for CSFallbackIndicator {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "27", sz_ub = "27")]
 pub struct CSG_Id(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for CSG_Id {
@@ -2039,7 +2013,7 @@ impl entropic::Entropic for CSG_Id {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -2051,7 +2025,7 @@ impl entropic::Entropic for CSG_IdList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -2064,7 +2038,7 @@ impl entropic::Entropic for CSG_IdList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -2073,7 +2047,7 @@ impl entropic::Entropic for CSG_IdList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct CSG_IdList_Item {
     pub csg_id: CSG_Id,
@@ -2101,7 +2075,7 @@ impl entropic::Entropic for CSG_IdList_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 3)]
 pub struct CSGMembershipInfo {
     pub csg_membership_status: CSGMembershipStatus,
@@ -2149,7 +2123,7 @@ impl entropic::Entropic for CSGMembershipInfo {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", lb = "0", ub = "1")]
 pub struct CSGMembershipStatus(pub u8);
 impl CSGMembershipStatus {
@@ -2170,7 +2144,7 @@ impl entropic::Entropic for CSGMembershipStatus {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -2182,7 +2156,7 @@ impl entropic::Entropic for CancelledCellinEAI {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -2195,7 +2169,7 @@ impl entropic::Entropic for CancelledCellinEAI {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -2204,7 +2178,7 @@ impl entropic::Entropic for CancelledCellinEAI {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct CancelledCellinEAI_Item {
     pub ecgi: EUTRAN_CGI,
@@ -2238,7 +2212,7 @@ impl entropic::Entropic for CancelledCellinEAI_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -2250,7 +2224,7 @@ impl entropic::Entropic for CancelledCellinTAI {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -2263,7 +2237,7 @@ impl entropic::Entropic for CancelledCellinTAI {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -2272,7 +2246,7 @@ impl entropic::Entropic for CancelledCellinTAI {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct CancelledCellinTAI_Item {
     pub ecgi: EUTRAN_CGI,
@@ -2306,14 +2280,14 @@ impl entropic::Entropic for CancelledCellinTAI_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "16")]
 pub struct CandidateCellList(pub Vec<IRAT_Cell_ID>);
 impl entropic::Entropic for CandidateCellList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -2326,7 +2300,7 @@ impl entropic::Entropic for CandidateCellList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -2335,7 +2309,7 @@ impl entropic::Entropic for CandidateCellList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct CandidatePCI {
     pub pci: CandidatePCIPCI,
@@ -2360,14 +2334,14 @@ impl entropic::Entropic for CandidatePCI {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "16")]
 pub struct CandidatePCIList(pub Vec<CandidatePCI>);
 impl entropic::Entropic for CandidatePCIList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -2380,7 +2354,7 @@ impl entropic::Entropic for CandidatePCIList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -2389,7 +2363,7 @@ impl entropic::Entropic for CandidatePCIList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "4", extensible = true)]
 pub enum Cause {
     #[asn(key = 0, extended = false)]
@@ -2418,7 +2392,7 @@ impl asn1_codecs::Asn1Choice for Cause {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "5")]
 pub struct CauseMisc(pub u8);
 impl CauseMisc {
@@ -2443,7 +2417,7 @@ impl entropic::Entropic for CauseMisc {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "3")]
 pub struct CauseNas(pub u8);
 impl CauseNas {
@@ -2466,7 +2440,7 @@ impl entropic::Entropic for CauseNas {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "6")]
 pub struct CauseProtocol(pub u8);
 impl CauseProtocol {
@@ -2492,7 +2466,7 @@ impl entropic::Entropic for CauseProtocol {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "35")]
 pub struct CauseRadioNetwork(pub u8);
 impl CauseRadioNetwork {
@@ -2547,7 +2521,7 @@ impl entropic::Entropic for CauseRadioNetwork {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct CauseTransport(pub u8);
 impl CauseTransport {
@@ -2568,7 +2542,7 @@ impl entropic::Entropic for CauseTransport {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct Cdma2000HORequiredIndication(pub u8);
 impl Cdma2000HORequiredIndication {
@@ -2590,7 +2564,7 @@ impl entropic::Entropic for Cdma2000HORequiredIndication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct Cdma2000HOStatus(pub u8);
 impl Cdma2000HOStatus {
@@ -2611,23 +2585,23 @@ impl entropic::Entropic for Cdma2000HOStatus {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct Cdma2000OneXMEID(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct Cdma2000OneXMSI(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct Cdma2000OneXPilot(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct Cdma2000OneXRAND(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct Cdma2000OneXSRVCCInfo {
     pub cdma2000_one_xmeid: Cdma2000OneXMEID,
@@ -2669,11 +2643,11 @@ impl entropic::Entropic for Cdma2000OneXSRVCCInfo {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct Cdma2000PDU(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct Cdma2000RATType(pub u8);
 impl Cdma2000RATType {
@@ -2694,11 +2668,11 @@ impl entropic::Entropic for Cdma2000RATType {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct Cdma2000SectorID(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "3")]
 pub struct Cell_Size(pub u8);
 impl Cell_Size {
@@ -2721,7 +2695,7 @@ impl entropic::Entropic for Cell_Size {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct CellAccessMode(pub u8);
 impl CellAccessMode {
@@ -2741,7 +2715,7 @@ impl entropic::Entropic for CellAccessMode {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "2")]
 pub struct CellActivationCause(pub u8);
 impl CellActivationCause {
@@ -2763,7 +2737,7 @@ impl entropic::Entropic for CellActivationCause {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct CellActivationRequest {
     pub cells_to_activate_list: CellsToActivateList,
@@ -2797,7 +2771,7 @@ impl entropic::Entropic for CellActivationRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct CellActivationResponse {
     pub activated_cells_list: ActivatedCellsList,
@@ -2823,7 +2797,7 @@ impl entropic::Entropic for CellActivationResponse {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct CellBasedMDT {
     pub cell_id_listfor_mdt: CellIdListforMDT,
@@ -2853,7 +2827,7 @@ impl entropic::Entropic for CellBasedMDT {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct CellBasedQMC {
     pub cell_id_listfor_qmc: CellIdListforQMC,
@@ -2883,7 +2857,7 @@ impl entropic::Entropic for CellBasedQMC {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -2895,7 +2869,7 @@ impl entropic::Entropic for CellID_Broadcast {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -2908,7 +2882,7 @@ impl entropic::Entropic for CellID_Broadcast {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -2917,7 +2891,7 @@ impl entropic::Entropic for CellID_Broadcast {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct CellID_Broadcast_Item {
     pub ecgi: EUTRAN_CGI,
@@ -2945,7 +2919,7 @@ impl entropic::Entropic for CellID_Broadcast_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -2957,7 +2931,7 @@ impl entropic::Entropic for CellID_Cancelled {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -2970,7 +2944,7 @@ impl entropic::Entropic for CellID_Cancelled {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -2979,7 +2953,7 @@ impl entropic::Entropic for CellID_Cancelled {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct CellID_Cancelled_Item {
     pub ecgi: EUTRAN_CGI,
@@ -3013,14 +2987,14 @@ impl entropic::Entropic for CellID_Cancelled_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "32")]
 pub struct CellIdListforMDT(pub Vec<EUTRAN_CGI>);
 impl entropic::Entropic for CellIdListforMDT {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(32, 16383);
+        let capped_max = std::cmp::min(32, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -3033,7 +3007,7 @@ impl entropic::Entropic for CellIdListforMDT {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(32, 16383);
+        let capped_max = std::cmp::min(32, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -3042,14 +3016,14 @@ impl entropic::Entropic for CellIdListforMDT {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "32")]
 pub struct CellIdListforQMC(pub Vec<EUTRAN_CGI>);
 impl entropic::Entropic for CellIdListforQMC {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(32, 16383);
+        let capped_max = std::cmp::min(32, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -3062,7 +3036,7 @@ impl entropic::Entropic for CellIdListforQMC {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(32, 16383);
+        let capped_max = std::cmp::min(32, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -3071,7 +3045,7 @@ impl entropic::Entropic for CellIdListforQMC {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct CellIdentifierAndCELevelForCECapableUEs {
     pub global_cell_id: EUTRAN_CGI,
@@ -3105,7 +3079,7 @@ impl entropic::Entropic for CellIdentifierAndCELevelForCECapableUEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "28", sz_ub = "28")]
 pub struct CellIdentity(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for CellIdentity {
@@ -3146,7 +3120,7 @@ impl entropic::Entropic for CellIdentity {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "2")]
 pub struct CellLoadReportingCause(pub u8);
 impl CellLoadReportingCause {
@@ -3168,7 +3142,7 @@ impl entropic::Entropic for CellLoadReportingCause {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "2", extensible = true)]
 pub enum CellLoadReportingResponse {
     #[asn(key = 0, extended = false)]
@@ -3194,7 +3168,7 @@ impl asn1_codecs::Asn1Choice for CellLoadReportingResponse {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct CellStateIndication {
     pub notification_cell_list: NotificationCellList,
@@ -3220,7 +3194,7 @@ impl entropic::Entropic for CellStateIndication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "2")]
 pub struct CellStateIndicationCause(pub u8);
 impl CellStateIndicationCause {
@@ -3242,7 +3216,7 @@ impl entropic::Entropic for CellStateIndicationCause {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct CellTrafficTrace {
     pub protocol_i_es: CellTrafficTraceProtocolIEs,
@@ -3266,7 +3240,7 @@ impl entropic::Entropic for CellTrafficTrace {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct CellType {
     pub cell_size: Cell_Size,
@@ -3294,7 +3268,7 @@ impl entropic::Entropic for CellType {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -3306,7 +3280,7 @@ impl entropic::Entropic for CellsToActivateList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -3319,7 +3293,7 @@ impl entropic::Entropic for CellsToActivateList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -3328,7 +3302,7 @@ impl entropic::Entropic for CellsToActivateList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct CellsToActivateList_Item {
     pub cell_id: CellsToActivateList_ItemCell_ID,
@@ -3350,7 +3324,7 @@ impl entropic::Entropic for CellsToActivateList_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -3362,7 +3336,7 @@ impl entropic::Entropic for CompletedCellinEAI {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -3375,7 +3349,7 @@ impl entropic::Entropic for CompletedCellinEAI {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -3384,7 +3358,7 @@ impl entropic::Entropic for CompletedCellinEAI {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct CompletedCellinEAI_Item {
     pub ecgi: EUTRAN_CGI,
@@ -3412,7 +3386,7 @@ impl entropic::Entropic for CompletedCellinEAI_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -3424,7 +3398,7 @@ impl entropic::Entropic for CompletedCellinTAI {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -3437,7 +3411,7 @@ impl entropic::Entropic for CompletedCellinTAI {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -3446,7 +3420,7 @@ impl entropic::Entropic for CompletedCellinTAI {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct CompletedCellinTAI_Item {
     pub ecgi: EUTRAN_CGI,
@@ -3474,11 +3448,11 @@ impl entropic::Entropic for CompletedCellinTAI_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct CompositeAvailableCapacityGroup(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", lb = "0", ub = "0")]
 pub struct ConcurrentWarningMessageIndicator(pub u8);
 impl ConcurrentWarningMessageIndicator {
@@ -3500,7 +3474,7 @@ impl entropic::Entropic for ConcurrentWarningMessageIndicator {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct ConnectedengNBItem {
     pub en_g_nb_id: En_gNB_ID,
@@ -3536,7 +3510,7 @@ impl entropic::Entropic for ConnectedengNBItem {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -3548,7 +3522,7 @@ impl entropic::Entropic for ConnectedengNBList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -3561,7 +3535,7 @@ impl entropic::Entropic for ConnectedengNBList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -3570,7 +3544,7 @@ impl entropic::Entropic for ConnectedengNBList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct ConnectionEstablishmentIndication {
     pub protocol_i_es: ConnectionEstablishmentIndicationProtocolIEs,
@@ -3595,7 +3569,7 @@ impl entropic::Entropic for ConnectionEstablishmentIndication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct ContextatSource {
     pub source_ng_ran_node_id: Global_RAN_NODE_ID,
@@ -3631,7 +3605,7 @@ impl entropic::Entropic for ContextatSource {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "OCTET-STRING", sz_extensible = false, sz_lb = "4", sz_ub = "4")]
 pub struct Correlation_ID(pub Vec<u8>);
 impl entropic::Entropic for Correlation_ID {
@@ -3658,7 +3632,7 @@ impl entropic::Entropic for Correlation_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct Coverage_Level(pub u8);
 impl Coverage_Level {
@@ -3678,7 +3652,7 @@ impl entropic::Entropic for Coverage_Level {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", lb = "0", ub = "2")]
 pub struct Criticality(pub u8);
 impl Criticality {
@@ -3700,7 +3674,7 @@ impl entropic::Entropic for Criticality {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 5)]
 pub struct CriticalityDiagnostics {
     #[asn(optional_idx = 0)]
@@ -3754,7 +3728,7 @@ impl entropic::Entropic for CriticalityDiagnostics {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct CriticalityDiagnostics_IE_Item {
     pub ie_criticality: Criticality,
@@ -3794,7 +3768,7 @@ impl entropic::Entropic for CriticalityDiagnostics_IE_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -3806,7 +3780,7 @@ impl entropic::Entropic for CriticalityDiagnostics_IE_List {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -3819,7 +3793,7 @@ impl entropic::Entropic for CriticalityDiagnostics_IE_List {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -3828,7 +3802,7 @@ impl entropic::Entropic for CriticalityDiagnostics_IE_List {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct DAPSRequestInfo {
     pub daps_indicator: DAPSRequestInfoDAPSIndicator,
@@ -3858,7 +3832,7 @@ impl entropic::Entropic for DAPSRequestInfo {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct DAPSResponseInfo {
     pub dapsresponseindicator: DAPSResponseInfoDapsresponseindicator,
@@ -3889,7 +3863,7 @@ impl entropic::Entropic for DAPSResponseInfo {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct DAPSResponseInfoItem {
     pub e_rab_id: E_RAB_ID,
@@ -3923,7 +3897,7 @@ impl entropic::Entropic for DAPSResponseInfoItem {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -3935,7 +3909,7 @@ impl entropic::Entropic for DAPSResponseInfoList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -3948,7 +3922,7 @@ impl entropic::Entropic for DAPSResponseInfoList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -3957,7 +3931,7 @@ impl entropic::Entropic for DAPSResponseInfoList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "65535")]
 pub struct DCN_ID(pub u16);
 impl entropic::Entropic for DCN_ID {
@@ -3974,7 +3948,7 @@ impl entropic::Entropic for DCN_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct DL_CP_SecurityInformation {
     pub dl_nas_mac: DL_NAS_MAC,
@@ -4004,7 +3978,7 @@ impl entropic::Entropic for DL_CP_SecurityInformation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct DL_Forwarding(pub u8);
 impl DL_Forwarding {
@@ -4024,7 +3998,7 @@ impl entropic::Entropic for DL_Forwarding {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "16", sz_ub = "16")]
 pub struct DL_NAS_MAC(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for DL_NAS_MAC {
@@ -4065,7 +4039,7 @@ impl entropic::Entropic for DL_NAS_MAC {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "2", extensible = true)]
 pub enum DLCOUNT_PDCP_SNlength {
     #[asn(key = 0, extended = false)]
@@ -4088,7 +4062,7 @@ impl asn1_codecs::Asn1Choice for DLCOUNT_PDCP_SNlength {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct DLNASPDUDeliveryAckRequest(pub u8);
 impl DLNASPDUDeliveryAckRequest {
@@ -4108,7 +4082,7 @@ impl entropic::Entropic for DLNASPDUDeliveryAckRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct Data_Forwarding_Not_Possible(pub u8);
 impl Data_Forwarding_Not_Possible {
@@ -4130,7 +4104,7 @@ impl entropic::Entropic for Data_Forwarding_Not_Possible {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "8", sz_ub = "8")]
 pub struct DataCodingScheme(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for DataCodingScheme {
@@ -4171,7 +4145,7 @@ impl entropic::Entropic for DataCodingScheme {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "1", ub = "4095", extensible = true)]
 pub struct DataSize(pub u16);
 impl entropic::Entropic for DataSize {
@@ -4188,7 +4162,7 @@ impl entropic::Entropic for DataSize {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct DeactivateTrace {
     pub protocol_i_es: DeactivateTraceProtocolIEs,
@@ -4212,7 +4186,7 @@ impl entropic::Entropic for DeactivateTrace {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct Direct_Forwarding_Path_Availability(pub u8);
 impl Direct_Forwarding_Path_Availability {
@@ -4234,7 +4208,7 @@ impl entropic::Entropic for Direct_Forwarding_Path_Availability {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct DownlinkNASTransport {
     pub protocol_i_es: DownlinkNASTransportProtocolIEs,
@@ -4259,7 +4233,7 @@ impl entropic::Entropic for DownlinkNASTransport {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct DownlinkNonUEAssociatedLPPaTransport {
     pub protocol_i_es: DownlinkNonUEAssociatedLPPaTransportProtocolIEs,
@@ -4284,7 +4258,7 @@ impl entropic::Entropic for DownlinkNonUEAssociatedLPPaTransport {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct DownlinkS1cdma2000tunnelling {
     pub protocol_i_es: DownlinkS1cdma2000tunnellingProtocolIEs,
@@ -4309,7 +4283,7 @@ impl entropic::Entropic for DownlinkS1cdma2000tunnelling {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct DownlinkUEAssociatedLPPaTransport {
     pub protocol_i_es: DownlinkUEAssociatedLPPaTransportProtocolIEs,
@@ -4334,7 +4308,7 @@ impl entropic::Entropic for DownlinkUEAssociatedLPPaTransport {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "15", extensible = true)]
 pub struct E_RAB_ID(pub u8);
 impl entropic::Entropic for E_RAB_ID {
@@ -4351,7 +4325,7 @@ impl entropic::Entropic for E_RAB_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 5)]
 pub struct E_RABAdmittedItem {
     pub e_rab_id: E_RAB_ID,
@@ -4420,7 +4394,7 @@ impl entropic::Entropic for E_RABAdmittedItem {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -4432,7 +4406,7 @@ impl entropic::Entropic for E_RABAdmittedList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -4445,7 +4419,7 @@ impl entropic::Entropic for E_RABAdmittedList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -4454,7 +4428,7 @@ impl entropic::Entropic for E_RABAdmittedList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 5)]
 pub struct E_RABDataForwardingItem {
     pub e_rab_id: E_RAB_ID,
@@ -4512,7 +4486,7 @@ impl entropic::Entropic for E_RABDataForwardingItem {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct E_RABFailedToResumeItemResumeReq {
     pub e_rab_id: E_RAB_ID,
@@ -4544,7 +4518,7 @@ impl entropic::Entropic for E_RABFailedToResumeItemResumeReq {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct E_RABFailedToResumeItemResumeRes {
     pub e_rab_id: E_RAB_ID,
@@ -4576,7 +4550,7 @@ impl entropic::Entropic for E_RABFailedToResumeItemResumeRes {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -4588,7 +4562,7 @@ impl entropic::Entropic for E_RABFailedToResumeListResumeReq {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -4603,7 +4577,7 @@ impl entropic::Entropic for E_RABFailedToResumeListResumeReq {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -4612,7 +4586,7 @@ impl entropic::Entropic for E_RABFailedToResumeListResumeReq {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -4624,7 +4598,7 @@ impl entropic::Entropic for E_RABFailedToResumeListResumeRes {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -4639,7 +4613,7 @@ impl entropic::Entropic for E_RABFailedToResumeListResumeRes {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -4648,7 +4622,7 @@ impl entropic::Entropic for E_RABFailedToResumeListResumeRes {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct E_RABFailedToSetupItemHOReqAck {
     pub e_rab_id: E_RAB_ID,
@@ -4680,7 +4654,7 @@ impl entropic::Entropic for E_RABFailedToSetupItemHOReqAck {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -4692,7 +4666,7 @@ impl entropic::Entropic for E_RABFailedtoSetupListHOReqAck {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -4707,7 +4681,7 @@ impl entropic::Entropic for E_RABFailedtoSetupListHOReqAck {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -4716,7 +4690,7 @@ impl entropic::Entropic for E_RABFailedtoSetupListHOReqAck {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -4728,7 +4702,7 @@ impl entropic::Entropic for E_RABInformationList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -4741,7 +4715,7 @@ impl entropic::Entropic for E_RABInformationList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -4750,7 +4724,7 @@ impl entropic::Entropic for E_RABInformationList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 2)]
 pub struct E_RABInformationListItem {
     pub e_rab_id: E_RAB_ID,
@@ -4785,7 +4759,7 @@ impl entropic::Entropic for E_RABInformationListItem {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct E_RABItem {
     pub e_rab_id: E_RAB_ID,
@@ -4817,7 +4791,7 @@ impl entropic::Entropic for E_RABItem {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 2)]
 pub struct E_RABLevelQoSParameters {
     pub qci: QCI,
@@ -4860,7 +4834,7 @@ impl entropic::Entropic for E_RABLevelQoSParameters {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -4872,7 +4846,7 @@ impl entropic::Entropic for E_RABList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -4885,7 +4859,7 @@ impl entropic::Entropic for E_RABList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -4894,7 +4868,7 @@ impl entropic::Entropic for E_RABList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct E_RABModificationConfirm {
     pub protocol_i_es: E_RABModificationConfirmProtocolIEs,
@@ -4919,7 +4893,7 @@ impl entropic::Entropic for E_RABModificationConfirm {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct E_RABModificationIndication {
     pub protocol_i_es: E_RABModificationIndicationProtocolIEs,
@@ -4944,7 +4918,7 @@ impl entropic::Entropic for E_RABModificationIndication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct E_RABModifyItemBearerModConf {
     pub e_rab_id: E_RAB_ID,
@@ -4972,7 +4946,7 @@ impl entropic::Entropic for E_RABModifyItemBearerModConf {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct E_RABModifyItemBearerModRes {
     pub e_rab_id: E_RAB_ID,
@@ -5000,7 +4974,7 @@ impl entropic::Entropic for E_RABModifyItemBearerModRes {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -5012,7 +4986,7 @@ impl entropic::Entropic for E_RABModifyListBearerModConf {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -5027,7 +5001,7 @@ impl entropic::Entropic for E_RABModifyListBearerModConf {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -5036,7 +5010,7 @@ impl entropic::Entropic for E_RABModifyListBearerModConf {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -5048,7 +5022,7 @@ impl entropic::Entropic for E_RABModifyListBearerModRes {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -5063,7 +5037,7 @@ impl entropic::Entropic for E_RABModifyListBearerModRes {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -5072,7 +5046,7 @@ impl entropic::Entropic for E_RABModifyListBearerModRes {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct E_RABModifyRequest {
     pub protocol_i_es: E_RABModifyRequestProtocolIEs,
@@ -5096,7 +5070,7 @@ impl entropic::Entropic for E_RABModifyRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct E_RABModifyResponse {
     pub protocol_i_es: E_RABModifyResponseProtocolIEs,
@@ -5121,7 +5095,7 @@ impl entropic::Entropic for E_RABModifyResponse {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct E_RABNotToBeModifiedItemBearerModInd {
     pub e_rab_id: E_RAB_ID,
@@ -5162,7 +5136,7 @@ impl entropic::Entropic for E_RABNotToBeModifiedItemBearerModInd {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -5176,7 +5150,7 @@ impl entropic::Entropic for E_RABNotToBeModifiedListBearerModInd {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -5189,7 +5163,7 @@ impl entropic::Entropic for E_RABNotToBeModifiedListBearerModInd {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -5198,7 +5172,7 @@ impl entropic::Entropic for E_RABNotToBeModifiedListBearerModInd {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct E_RABReleaseCommand {
     pub protocol_i_es: E_RABReleaseCommandProtocolIEs,
@@ -5223,7 +5197,7 @@ impl entropic::Entropic for E_RABReleaseCommand {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct E_RABReleaseIndication {
     pub protocol_i_es: E_RABReleaseIndicationProtocolIEs,
@@ -5248,7 +5222,7 @@ impl entropic::Entropic for E_RABReleaseIndication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct E_RABReleaseItemBearerRelComp {
     pub e_rab_id: E_RAB_ID,
@@ -5276,7 +5250,7 @@ impl entropic::Entropic for E_RABReleaseItemBearerRelComp {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -5288,7 +5262,7 @@ impl entropic::Entropic for E_RABReleaseListBearerRelComp {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -5303,7 +5277,7 @@ impl entropic::Entropic for E_RABReleaseListBearerRelComp {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -5312,7 +5286,7 @@ impl entropic::Entropic for E_RABReleaseListBearerRelComp {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct E_RABReleaseResponse {
     pub protocol_i_es: E_RABReleaseResponseProtocolIEs,
@@ -5337,7 +5311,7 @@ impl entropic::Entropic for E_RABReleaseResponse {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct E_RABSetupItemBearerSURes {
     pub e_rab_id: E_RAB_ID,
@@ -5376,7 +5350,7 @@ impl entropic::Entropic for E_RABSetupItemBearerSURes {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct E_RABSetupItemCtxtSURes {
     pub e_rab_id: E_RAB_ID,
@@ -5415,7 +5389,7 @@ impl entropic::Entropic for E_RABSetupItemCtxtSURes {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -5427,7 +5401,7 @@ impl entropic::Entropic for E_RABSetupListBearerSURes {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -5442,7 +5416,7 @@ impl entropic::Entropic for E_RABSetupListBearerSURes {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -5451,7 +5425,7 @@ impl entropic::Entropic for E_RABSetupListBearerSURes {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -5463,7 +5437,7 @@ impl entropic::Entropic for E_RABSetupListCtxtSURes {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -5476,7 +5450,7 @@ impl entropic::Entropic for E_RABSetupListCtxtSURes {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -5485,7 +5459,7 @@ impl entropic::Entropic for E_RABSetupListCtxtSURes {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct E_RABSetupRequest {
     pub protocol_i_es: E_RABSetupRequestProtocolIEs,
@@ -5509,7 +5483,7 @@ impl entropic::Entropic for E_RABSetupRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct E_RABSetupResponse {
     pub protocol_i_es: E_RABSetupResponseProtocolIEs,
@@ -5533,7 +5507,7 @@ impl entropic::Entropic for E_RABSetupResponse {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -5545,7 +5519,7 @@ impl entropic::Entropic for E_RABSubjecttoDataForwardingList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -5560,7 +5534,7 @@ impl entropic::Entropic for E_RABSubjecttoDataForwardingList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -5569,7 +5543,7 @@ impl entropic::Entropic for E_RABSubjecttoDataForwardingList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct E_RABToBeModifiedItemBearerModInd {
     pub e_rab_id: E_RAB_ID,
@@ -5610,7 +5584,7 @@ impl entropic::Entropic for E_RABToBeModifiedItemBearerModInd {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct E_RABToBeModifiedItemBearerModReq {
     pub e_rab_id: E_RAB_ID,
@@ -5649,7 +5623,7 @@ impl entropic::Entropic for E_RABToBeModifiedItemBearerModReq {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -5661,7 +5635,7 @@ impl entropic::Entropic for E_RABToBeModifiedListBearerModInd {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -5674,7 +5648,7 @@ impl entropic::Entropic for E_RABToBeModifiedListBearerModInd {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -5683,7 +5657,7 @@ impl entropic::Entropic for E_RABToBeModifiedListBearerModInd {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -5695,7 +5669,7 @@ impl entropic::Entropic for E_RABToBeModifiedListBearerModReq {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -5708,7 +5682,7 @@ impl entropic::Entropic for E_RABToBeModifiedListBearerModReq {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -5717,7 +5691,7 @@ impl entropic::Entropic for E_RABToBeModifiedListBearerModReq {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct E_RABToBeSetupItemBearerSUReq {
     pub e_rab_id: E_RAB_ID,
@@ -5767,7 +5741,7 @@ impl entropic::Entropic for E_RABToBeSetupItemBearerSUReq {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 2)]
 pub struct E_RABToBeSetupItemCtxtSUReq {
     pub e_rab_id: E_RAB_ID,
@@ -5818,7 +5792,7 @@ impl entropic::Entropic for E_RABToBeSetupItemCtxtSUReq {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct E_RABToBeSetupItemHOReq {
     pub e_rab_id: E_RAB_ID,
@@ -5864,7 +5838,7 @@ impl entropic::Entropic for E_RABToBeSetupItemHOReq {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -5876,7 +5850,7 @@ impl entropic::Entropic for E_RABToBeSetupListBearerSUReq {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -5891,7 +5865,7 @@ impl entropic::Entropic for E_RABToBeSetupListBearerSUReq {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -5900,7 +5874,7 @@ impl entropic::Entropic for E_RABToBeSetupListBearerSUReq {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -5912,7 +5886,7 @@ impl entropic::Entropic for E_RABToBeSetupListCtxtSUReq {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -5927,7 +5901,7 @@ impl entropic::Entropic for E_RABToBeSetupListCtxtSUReq {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -5936,7 +5910,7 @@ impl entropic::Entropic for E_RABToBeSetupListCtxtSUReq {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -5948,7 +5922,7 @@ impl entropic::Entropic for E_RABToBeSetupListHOReq {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -5961,7 +5935,7 @@ impl entropic::Entropic for E_RABToBeSetupListHOReq {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -5970,7 +5944,7 @@ impl entropic::Entropic for E_RABToBeSetupListHOReq {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct E_RABToBeSwitchedDLItem {
     pub e_rab_id: E_RAB_ID,
@@ -6009,7 +5983,7 @@ impl entropic::Entropic for E_RABToBeSwitchedDLItem {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -6021,7 +5995,7 @@ impl entropic::Entropic for E_RABToBeSwitchedDLList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -6034,7 +6008,7 @@ impl entropic::Entropic for E_RABToBeSwitchedDLList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -6043,7 +6017,7 @@ impl entropic::Entropic for E_RABToBeSwitchedDLList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct E_RABToBeSwitchedULItem {
     pub e_rab_id: E_RAB_ID,
@@ -6082,7 +6056,7 @@ impl entropic::Entropic for E_RABToBeSwitchedULItem {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -6094,7 +6068,7 @@ impl entropic::Entropic for E_RABToBeSwitchedULList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -6107,7 +6081,7 @@ impl entropic::Entropic for E_RABToBeSwitchedULList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -6116,7 +6090,7 @@ impl entropic::Entropic for E_RABToBeSwitchedULList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct E_RABUsageReportItem {
     pub start_timestamp: E_RABUsageReportItemStartTimestamp,
@@ -6168,14 +6142,14 @@ impl entropic::Entropic for E_RABUsageReportItem {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "2")]
 pub struct E_RABUsageReportList(pub Vec<E_RABUsageReportList_Entry>);
 impl entropic::Entropic for E_RABUsageReportList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(2, 16383);
+        let capped_max = std::cmp::min(2, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -6188,7 +6162,7 @@ impl entropic::Entropic for E_RABUsageReportList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(2, 16383);
+        let capped_max = std::cmp::min(2, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -6197,7 +6171,7 @@ impl entropic::Entropic for E_RABUsageReportList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "OCTET-STRING", sz_extensible = false, sz_lb = "8", sz_ub = "8")]
 pub struct E_UTRAN_Trace_ID(pub Vec<u8>);
 impl entropic::Entropic for E_UTRAN_Trace_ID {
@@ -6224,7 +6198,7 @@ impl entropic::Entropic for E_UTRAN_Trace_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "262143", extensible = true)]
 pub struct EARFCN(pub u32);
 impl entropic::Entropic for EARFCN {
@@ -6241,7 +6215,7 @@ impl entropic::Entropic for EARFCN {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -6253,7 +6227,7 @@ impl entropic::Entropic for ECGI_List {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -6266,7 +6240,7 @@ impl entropic::Entropic for ECGI_List {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -6275,7 +6249,7 @@ impl entropic::Entropic for ECGI_List {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -6287,7 +6261,7 @@ impl entropic::Entropic for ECGIList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -6300,7 +6274,7 @@ impl entropic::Entropic for ECGIList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -6309,7 +6283,7 @@ impl entropic::Entropic for ECGIList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -6321,7 +6295,7 @@ impl entropic::Entropic for ECGIListForRestart {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -6334,7 +6308,7 @@ impl entropic::Entropic for ECGIListForRestart {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -6343,7 +6317,7 @@ impl entropic::Entropic for ECGIListForRestart {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct EDT_Session(pub u8);
 impl EDT_Session {
@@ -6363,7 +6337,7 @@ impl entropic::Entropic for EDT_Session {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "OCTET-STRING",
     sz_extensible = false,
@@ -6395,7 +6369,7 @@ impl entropic::Entropic for EHRPD_Sector_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "100")]
 pub struct EHRPDCapacityValue(pub u8);
 impl entropic::Entropic for EHRPDCapacityValue {
@@ -6412,7 +6386,7 @@ impl entropic::Entropic for EHRPDCapacityValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct EHRPDCompositeAvailableCapacity {
     pub ehrpd_sector_capacity_class_value: EHRPDSectorCapacityClassValue,
@@ -6445,7 +6419,7 @@ impl entropic::Entropic for EHRPDCompositeAvailableCapacity {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct EHRPDMultiSectorLoadReportingResponseItem {
     pub ehrpd_sector_id: EHRPD_Sector_ID,
@@ -6478,7 +6452,7 @@ impl entropic::Entropic for EHRPDMultiSectorLoadReportingResponseItem {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "1", ub = "100", extensible = true)]
 pub struct EHRPDSectorCapacityClassValue(pub u8);
 impl entropic::Entropic for EHRPDSectorCapacityClassValue {
@@ -6497,7 +6471,7 @@ impl entropic::Entropic for EHRPDSectorCapacityClassValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct EHRPDSectorLoadReportingResponse {
     pub dl_ehrpd_composite_available_capacity: EHRPDCompositeAvailableCapacity,
@@ -6531,7 +6505,7 @@ impl entropic::Entropic for EHRPDSectorLoadReportingResponse {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 2)]
 pub struct EN_DCSONConfigurationTransfer {
     pub transfertype: EN_DCSONTransferType,
@@ -6575,7 +6549,7 @@ impl entropic::Entropic for EN_DCSONConfigurationTransfer {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "1", extensible = true)]
 pub enum EN_DCSONTransferType {
     #[asn(key = 0, extended = false)]
@@ -6595,7 +6569,7 @@ impl asn1_codecs::Asn1Choice for EN_DCSONTransferType {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct EN_DCSONeNBIdentification {
     pub globale_nbid: Global_ENB_ID,
@@ -6631,7 +6605,7 @@ impl entropic::Entropic for EN_DCSONeNBIdentification {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct EN_DCSONengNBIdentification {
     pub globaleng_nbid: Global_en_gNB_ID,
@@ -6667,7 +6641,7 @@ impl entropic::Entropic for EN_DCSONengNBIdentification {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct EN_DCTransferTypeReply {
     pub sourceeng_nb: EN_DCSONengNBIdentification,
@@ -6703,7 +6677,7 @@ impl entropic::Entropic for EN_DCTransferTypeReply {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 4)]
 pub struct EN_DCTransferTypeRequest {
     pub sourcee_nb: EN_DCSONeNBIdentification,
@@ -6761,7 +6735,7 @@ impl entropic::Entropic for EN_DCTransferTypeRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct ENB_EarlyStatusTransfer_TransparentContainer {
     pub bearers_subject_to_early_status_transfer_list: Bearers_SubjectToEarlyStatusTransferList,
@@ -6791,7 +6765,7 @@ impl entropic::Entropic for ENB_EarlyStatusTransfer_TransparentContainer {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "1", extensible = true)]
 pub enum ENB_ID {
     #[asn(key = 0, extended = false)]
@@ -6817,7 +6791,7 @@ impl asn1_codecs::Asn1Choice for ENB_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct ENB_StatusTransfer_TransparentContainer {
     pub bearers_subject_to_status_transfer_list: Bearers_SubjectToStatusTransferList,
@@ -6848,7 +6822,7 @@ impl entropic::Entropic for ENB_StatusTransfer_TransparentContainer {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "16777215")]
 pub struct ENB_UE_S1AP_ID(pub u32);
 impl entropic::Entropic for ENB_UE_S1AP_ID {
@@ -6865,7 +6839,7 @@ impl entropic::Entropic for ENB_UE_S1AP_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct ENBCPRelocationIndication {
     pub protocol_i_es: ENBCPRelocationIndicationProtocolIEs,
@@ -6890,7 +6864,7 @@ impl entropic::Entropic for ENBCPRelocationIndication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct ENBConfigurationTransfer {
     pub protocol_i_es: ENBConfigurationTransferProtocolIEs,
@@ -6915,7 +6889,7 @@ impl entropic::Entropic for ENBConfigurationTransfer {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct ENBConfigurationUpdate {
     pub protocol_i_es: ENBConfigurationUpdateProtocolIEs,
@@ -6940,7 +6914,7 @@ impl entropic::Entropic for ENBConfigurationUpdate {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct ENBConfigurationUpdateAcknowledge {
     pub protocol_i_es: ENBConfigurationUpdateAcknowledgeProtocolIEs,
@@ -6965,7 +6939,7 @@ impl entropic::Entropic for ENBConfigurationUpdateAcknowledge {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct ENBConfigurationUpdateFailure {
     pub protocol_i_es: ENBConfigurationUpdateFailureProtocolIEs,
@@ -6990,7 +6964,7 @@ impl entropic::Entropic for ENBConfigurationUpdateFailure {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct ENBDirectInformationTransfer {
     pub protocol_i_es: ENBDirectInformationTransferProtocolIEs,
@@ -7015,7 +6989,7 @@ impl entropic::Entropic for ENBDirectInformationTransfer {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct ENBEarlyStatusTransfer {
     pub protocol_i_es: ENBEarlyStatusTransferProtocolIEs,
@@ -7040,14 +7014,14 @@ impl entropic::Entropic for ENBEarlyStatusTransfer {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "2")]
 pub struct ENBIndirectX2TransportLayerAddresses(pub Vec<TransportLayerAddress>);
 impl entropic::Entropic for ENBIndirectX2TransportLayerAddresses {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(2, 16383);
+        let capped_max = std::cmp::min(2, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -7060,7 +7034,7 @@ impl entropic::Entropic for ENBIndirectX2TransportLayerAddresses {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(2, 16383);
+        let capped_max = std::cmp::min(2, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -7069,7 +7043,7 @@ impl entropic::Entropic for ENBIndirectX2TransportLayerAddresses {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct ENBStatusTransfer {
     pub protocol_i_es: ENBStatusTransferProtocolIEs,
@@ -7093,7 +7067,7 @@ impl entropic::Entropic for ENBStatusTransfer {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 3)]
 pub struct ENBX2ExtTLA {
     #[asn(optional_idx = 0)]
@@ -7129,14 +7103,14 @@ impl entropic::Entropic for ENBX2ExtTLA {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "16")]
 pub struct ENBX2ExtTLAs(pub Vec<ENBX2ExtTLA>);
 impl entropic::Entropic for ENBX2ExtTLAs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -7149,7 +7123,7 @@ impl entropic::Entropic for ENBX2ExtTLAs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -7158,14 +7132,14 @@ impl entropic::Entropic for ENBX2ExtTLAs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "16")]
 pub struct ENBX2GTPTLAs(pub Vec<TransportLayerAddress>);
 impl entropic::Entropic for ENBX2GTPTLAs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -7178,7 +7152,7 @@ impl entropic::Entropic for ENBX2GTPTLAs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -7187,14 +7161,14 @@ impl entropic::Entropic for ENBX2GTPTLAs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "2")]
 pub struct ENBX2TLAs(pub Vec<TransportLayerAddress>);
 impl entropic::Entropic for ENBX2TLAs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(2, 16383);
+        let capped_max = std::cmp::min(2, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -7207,7 +7181,7 @@ impl entropic::Entropic for ENBX2TLAs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(2, 16383);
+        let capped_max = std::cmp::min(2, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -7216,7 +7190,7 @@ impl entropic::Entropic for ENBX2TLAs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "PrintableString",
     sz_extensible = true,
@@ -7251,14 +7225,14 @@ impl entropic::Entropic for ENBname {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "15")]
 pub struct EPLMNs(pub Vec<PLMNidentity>);
 impl entropic::Entropic for EPLMNs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(15, 16383);
+        let capped_max = std::cmp::min(15, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -7271,7 +7245,7 @@ impl entropic::Entropic for EPLMNs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(15, 16383);
+        let capped_max = std::cmp::min(15, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -7280,7 +7254,7 @@ impl entropic::Entropic for EPLMNs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct EUTRAN_CGI {
     pub plm_nidentity: PLMNidentity,
@@ -7314,7 +7288,7 @@ impl entropic::Entropic for EUTRAN_CGI {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct EUTRANResponse {
     pub cell_id: EUTRANResponseCell_ID,
@@ -7345,7 +7319,7 @@ impl entropic::Entropic for EUTRANResponse {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "2047")]
 pub struct EUTRANRoundTripDelayEstimationInfo(pub u16);
 impl entropic::Entropic for EUTRANRoundTripDelayEstimationInfo {
@@ -7364,7 +7338,7 @@ impl entropic::Entropic for EUTRANRoundTripDelayEstimationInfo {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct EUTRANcellLoadReportingResponse {
     pub composite_available_capacity_group: CompositeAvailableCapacityGroup,
@@ -7391,7 +7365,7 @@ impl entropic::Entropic for EUTRANcellLoadReportingResponse {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "OCTET-STRING", sz_extensible = false, sz_lb = "3", sz_ub = "3")]
 pub struct EmergencyAreaID(pub Vec<u8>);
 impl entropic::Entropic for EmergencyAreaID {
@@ -7418,7 +7392,7 @@ impl entropic::Entropic for EmergencyAreaID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -7430,7 +7404,7 @@ impl entropic::Entropic for EmergencyAreaID_Broadcast {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -7443,7 +7417,7 @@ impl entropic::Entropic for EmergencyAreaID_Broadcast {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -7452,7 +7426,7 @@ impl entropic::Entropic for EmergencyAreaID_Broadcast {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct EmergencyAreaID_Broadcast_Item {
     pub emergency_area_id: EmergencyAreaID,
@@ -7488,7 +7462,7 @@ impl entropic::Entropic for EmergencyAreaID_Broadcast_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -7500,7 +7474,7 @@ impl entropic::Entropic for EmergencyAreaID_Cancelled {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -7513,7 +7487,7 @@ impl entropic::Entropic for EmergencyAreaID_Cancelled {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -7522,7 +7496,7 @@ impl entropic::Entropic for EmergencyAreaID_Cancelled {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct EmergencyAreaID_Cancelled_Item {
     pub emergency_area_id: EmergencyAreaID,
@@ -7558,7 +7532,7 @@ impl entropic::Entropic for EmergencyAreaID_Cancelled_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -7570,7 +7544,7 @@ impl entropic::Entropic for EmergencyAreaIDList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -7583,7 +7557,7 @@ impl entropic::Entropic for EmergencyAreaIDList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -7592,7 +7566,7 @@ impl entropic::Entropic for EmergencyAreaIDList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -7604,7 +7578,7 @@ impl entropic::Entropic for EmergencyAreaIDListForRestart {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -7617,7 +7591,7 @@ impl entropic::Entropic for EmergencyAreaIDListForRestart {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -7626,7 +7600,7 @@ impl entropic::Entropic for EmergencyAreaIDListForRestart {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct EmergencyIndicator(pub u8);
 impl EmergencyIndicator {
@@ -7646,7 +7620,7 @@ impl entropic::Entropic for EmergencyIndicator {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = true, sz_lb = "22", sz_ub = "32")]
 pub struct En_gNB_ID(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for En_gNB_ID {
@@ -7687,7 +7661,7 @@ impl entropic::Entropic for En_gNB_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = true, sz_lb = "16", sz_ub = "16")]
 pub struct EncryptionAlgorithms(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for EncryptionAlgorithms {
@@ -7728,7 +7702,7 @@ impl entropic::Entropic for EncryptionAlgorithms {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct EndIndication(pub u8);
 impl EndIndication {
@@ -7749,7 +7723,7 @@ impl entropic::Entropic for EndIndication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct EnhancedCoverageRestricted(pub u8);
 impl EnhancedCoverageRestricted {
@@ -7769,7 +7743,7 @@ impl entropic::Entropic for EnhancedCoverageRestricted {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct ErrorIndication {
     pub protocol_i_es: ErrorIndicationProtocolIEs,
@@ -7793,7 +7767,7 @@ impl entropic::Entropic for ErrorIndication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct Ethernet_Type(pub u8);
 impl Ethernet_Type {
@@ -7813,7 +7787,7 @@ impl entropic::Entropic for Ethernet_Type {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct EventTriggeredCellLoadReportingRequest {
     pub number_of_measurement_reporting_levels: NumberOfMeasurementReportingLevels,
@@ -7840,7 +7814,7 @@ impl entropic::Entropic for EventTriggeredCellLoadReportingRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct EventTriggeredCellLoadReportingResponse {
     pub cell_load_reporting_response: CellLoadReportingResponse,
@@ -7874,7 +7848,7 @@ impl entropic::Entropic for EventTriggeredCellLoadReportingResponse {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "2")]
 pub struct EventType(pub u8);
 impl EventType {
@@ -7896,7 +7870,7 @@ impl entropic::Entropic for EventType {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "1", ub = "30", extensible = true)]
 pub struct ExpectedActivityPeriod(pub u8);
 impl entropic::Entropic for ExpectedActivityPeriod {
@@ -7913,7 +7887,7 @@ impl entropic::Entropic for ExpectedActivityPeriod {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "6")]
 pub struct ExpectedHOInterval(pub u8);
 impl ExpectedHOInterval {
@@ -7939,7 +7913,7 @@ impl entropic::Entropic for ExpectedHOInterval {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "1", ub = "30", extensible = true)]
 pub struct ExpectedIdlePeriod(pub u8);
 impl entropic::Entropic for ExpectedIdlePeriod {
@@ -7956,7 +7930,7 @@ impl entropic::Entropic for ExpectedIdlePeriod {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 4)]
 pub struct ExpectedUEActivityBehaviour {
     #[asn(optional_idx = 0)]
@@ -8005,7 +7979,7 @@ impl entropic::Entropic for ExpectedUEActivityBehaviour {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 3)]
 pub struct ExpectedUEBehaviour {
     #[asn(optional_idx = 0)]
@@ -8045,7 +8019,7 @@ impl entropic::Entropic for ExpectedUEBehaviour {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "14", sz_ub = "14")]
 pub struct Extended_UEIdentityIndexValue(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for Extended_UEIdentityIndexValue {
@@ -8086,7 +8060,7 @@ impl entropic::Entropic for Extended_UEIdentityIndexValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "INTEGER",
     lb = "10000000001",
@@ -8110,7 +8084,7 @@ impl entropic::Entropic for ExtendedBitRate {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "4096", ub = "65535")]
 pub struct ExtendedRNC_ID(pub u16);
 impl entropic::Entropic for ExtendedRNC_ID {
@@ -8127,7 +8101,7 @@ impl entropic::Entropic for ExtendedRNC_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "4096", ub = "131071")]
 pub struct ExtendedRepetitionPeriod(pub u32);
 impl entropic::Entropic for ExtendedRepetitionPeriod {
@@ -8146,7 +8120,7 @@ impl entropic::Entropic for ExtendedRepetitionPeriod {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "0", extensible = true)]
 pub enum FailureEventReport {
     #[asn(key = 0, extended = false)]
@@ -8163,7 +8137,7 @@ impl asn1_codecs::Asn1Choice for FailureEventReport {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "2")]
 pub struct FailureEventReportingCause(pub u8);
 impl FailureEventReportingCause {
@@ -8185,7 +8159,7 @@ impl entropic::Entropic for FailureEventReportingCause {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "OCTET-STRING", sz_extensible = false, sz_lb = "3", sz_ub = "3")]
 pub struct FiveGSTAC(pub Vec<u8>);
 impl entropic::Entropic for FiveGSTAC {
@@ -8212,7 +8186,7 @@ impl entropic::Entropic for FiveGSTAC {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct FiveGSTAI {
     pub plm_nidentity: PLMNidentity,
@@ -8248,7 +8222,7 @@ impl entropic::Entropic for FiveGSTAI {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "255", extensible = true)]
 pub struct FiveQI(pub u8);
 impl entropic::Entropic for FiveQI {
@@ -8265,7 +8239,7 @@ impl entropic::Entropic for FiveQI {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "3")]
 pub struct ForbiddenInterRATs(pub u8);
 impl ForbiddenInterRATs {
@@ -8288,7 +8262,7 @@ impl entropic::Entropic for ForbiddenInterRATs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -8300,7 +8274,7 @@ impl entropic::Entropic for ForbiddenLACs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(4096, 16383);
+        let capped_max = std::cmp::min(4096, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -8313,7 +8287,7 @@ impl entropic::Entropic for ForbiddenLACs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(4096, 16383);
+        let capped_max = std::cmp::min(4096, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -8322,14 +8296,14 @@ impl entropic::Entropic for ForbiddenLACs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "16")]
 pub struct ForbiddenLAs(pub Vec<ForbiddenLAs_Item>);
 impl entropic::Entropic for ForbiddenLAs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -8342,7 +8316,7 @@ impl entropic::Entropic for ForbiddenLAs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -8351,7 +8325,7 @@ impl entropic::Entropic for ForbiddenLAs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct ForbiddenLAs_Item {
     pub plmn_identity: PLMNidentity,
@@ -8387,7 +8361,7 @@ impl entropic::Entropic for ForbiddenLAs_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -8399,7 +8373,7 @@ impl entropic::Entropic for ForbiddenTACs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(4096, 16383);
+        let capped_max = std::cmp::min(4096, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -8412,7 +8386,7 @@ impl entropic::Entropic for ForbiddenTACs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(4096, 16383);
+        let capped_max = std::cmp::min(4096, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -8421,14 +8395,14 @@ impl entropic::Entropic for ForbiddenTACs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "16")]
 pub struct ForbiddenTAs(pub Vec<ForbiddenTAs_Item>);
 impl entropic::Entropic for ForbiddenTAs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -8441,7 +8415,7 @@ impl entropic::Entropic for ForbiddenTAs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -8450,7 +8424,7 @@ impl entropic::Entropic for ForbiddenTAs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct ForbiddenTAs_Item {
     pub plmn_identity: PLMNidentity,
@@ -8486,7 +8460,7 @@ impl entropic::Entropic for ForbiddenTAs_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct GBR_QosInformation {
     pub e_rab_maximum_bitrate_dl: BitRate,
@@ -8534,7 +8508,7 @@ impl entropic::Entropic for GBR_QosInformation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct GERAN_Cell_ID {
     pub lai: LAI,
@@ -8570,7 +8544,7 @@ impl entropic::Entropic for GERAN_Cell_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct GNB {
     pub global_g_nb_id: Global_GNB_ID,
@@ -8600,7 +8574,7 @@ impl entropic::Entropic for GNB {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "22", sz_ub = "32")]
 pub struct GNB_ID(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for GNB_ID {
@@ -8641,7 +8615,7 @@ impl entropic::Entropic for GNB_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "0", extensible = true)]
 pub enum GNB_Identity {
     #[asn(key = 0, extended = false)]
@@ -8658,7 +8632,7 @@ impl asn1_codecs::Asn1Choice for GNB_Identity {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "OCTET-STRING", sz_extensible = false, sz_lb = "4", sz_ub = "4")]
 pub struct GTP_TEID(pub Vec<u8>);
 impl entropic::Entropic for GTP_TEID {
@@ -8685,7 +8659,7 @@ impl entropic::Entropic for GTP_TEID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct GUMMEI {
     pub plmn_identity: PLMNidentity,
@@ -8725,7 +8699,7 @@ impl entropic::Entropic for GUMMEI {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -8737,7 +8711,7 @@ impl entropic::Entropic for GUMMEIList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -8750,7 +8724,7 @@ impl entropic::Entropic for GUMMEIList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -8759,7 +8733,7 @@ impl entropic::Entropic for GUMMEIList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct GUMMEIType(pub u8);
 impl GUMMEIType {
@@ -8780,7 +8754,7 @@ impl entropic::Entropic for GUMMEIType {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct GWContextReleaseIndication(pub u8);
 impl GWContextReleaseIndication {
@@ -8800,7 +8774,7 @@ impl entropic::Entropic for GWContextReleaseIndication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct Global_ENB_ID {
     pub plm_nidentity: PLMNidentity,
@@ -8834,7 +8808,7 @@ impl entropic::Entropic for Global_ENB_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct Global_GNB_ID {
     pub plmn_identity: PLMNidentity,
@@ -8868,7 +8842,7 @@ impl entropic::Entropic for Global_GNB_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "1", extensible = true)]
 pub enum Global_RAN_NODE_ID {
     #[asn(key = 0, extended = false)]
@@ -8888,7 +8862,7 @@ impl asn1_codecs::Asn1Choice for Global_RAN_NODE_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct Global_en_gNB_ID {
     pub plm_nidentity: PLMNidentity,
@@ -8924,7 +8898,7 @@ impl entropic::Entropic for Global_en_gNB_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "1048575")]
 pub struct HFN(pub u32);
 impl entropic::Entropic for HFN {
@@ -8941,7 +8915,7 @@ impl entropic::Entropic for HFN {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "131071")]
 pub struct HFNModified(pub u32);
 impl entropic::Entropic for HFNModified {
@@ -8958,7 +8932,7 @@ impl entropic::Entropic for HFNModified {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "16383")]
 pub struct HFNforPDCP_SNlength18(pub u16);
 impl entropic::Entropic for HFNforPDCP_SNlength18 {
@@ -8975,7 +8949,7 @@ impl entropic::Entropic for HFNforPDCP_SNlength18 {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct HOReport {
     pub ho_type: HoType,
@@ -9030,7 +9004,7 @@ impl entropic::Entropic for HOReport {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "2")]
 pub struct HOReportingCause(pub u8);
 impl HOReportingCause {
@@ -9052,7 +9026,7 @@ impl entropic::Entropic for HOReportingCause {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct HandoverCancel {
     pub protocol_i_es: HandoverCancelProtocolIEs,
@@ -9076,7 +9050,7 @@ impl entropic::Entropic for HandoverCancel {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct HandoverCancelAcknowledge {
     pub protocol_i_es: HandoverCancelAcknowledgeProtocolIEs,
@@ -9101,7 +9075,7 @@ impl entropic::Entropic for HandoverCancelAcknowledge {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct HandoverCommand {
     pub protocol_i_es: HandoverCommandProtocolIEs,
@@ -9125,7 +9099,7 @@ impl entropic::Entropic for HandoverCommand {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct HandoverFailure {
     pub protocol_i_es: HandoverFailureProtocolIEs,
@@ -9149,7 +9123,7 @@ impl entropic::Entropic for HandoverFailure {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct HandoverFlag(pub u8);
 impl HandoverFlag {
@@ -9169,7 +9143,7 @@ impl entropic::Entropic for HandoverFlag {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct HandoverNotify {
     pub protocol_i_es: HandoverNotifyProtocolIEs,
@@ -9193,7 +9167,7 @@ impl entropic::Entropic for HandoverNotify {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct HandoverPreparationFailure {
     pub protocol_i_es: HandoverPreparationFailureProtocolIEs,
@@ -9218,7 +9192,7 @@ impl entropic::Entropic for HandoverPreparationFailure {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct HandoverRequest {
     pub protocol_i_es: HandoverRequestProtocolIEs,
@@ -9242,7 +9216,7 @@ impl entropic::Entropic for HandoverRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct HandoverRequestAcknowledge {
     pub protocol_i_es: HandoverRequestAcknowledgeProtocolIEs,
@@ -9267,7 +9241,7 @@ impl entropic::Entropic for HandoverRequestAcknowledge {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct HandoverRequired {
     pub protocol_i_es: HandoverRequiredProtocolIEs,
@@ -9291,7 +9265,7 @@ impl entropic::Entropic for HandoverRequired {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 5)]
 pub struct HandoverRestrictionList {
     pub serving_plmn: PLMNidentity,
@@ -9350,7 +9324,7 @@ impl entropic::Entropic for HandoverRestrictionList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct HandoverSuccess {
     pub protocol_i_es: HandoverSuccessProtocolIEs,
@@ -9374,7 +9348,7 @@ impl entropic::Entropic for HandoverSuccess {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "4")]
 pub struct HandoverType(pub u8);
 impl HandoverType {
@@ -9398,7 +9372,7 @@ impl entropic::Entropic for HandoverType {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct HoReportType(pub u8);
 impl HoReportType {
@@ -9418,7 +9392,7 @@ impl entropic::Entropic for HoReportType {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct HoType(pub u8);
 impl HoType {
@@ -9439,7 +9413,7 @@ impl entropic::Entropic for HoType {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct IAB_Authorized(pub u8);
 impl IAB_Authorized {
@@ -9460,7 +9434,7 @@ impl entropic::Entropic for IAB_Authorized {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct IAB_Node_Indication(pub u8);
 impl IAB_Node_Indication {
@@ -9480,7 +9454,7 @@ impl entropic::Entropic for IAB_Node_Indication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct IAB_Supported(pub u8);
 impl IAB_Supported {
@@ -9500,7 +9474,7 @@ impl entropic::Entropic for IAB_Supported {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "OCTET-STRING", sz_extensible = false, sz_lb = "3", sz_ub = "8")]
 pub struct IMSI(pub Vec<u8>);
 impl entropic::Entropic for IMSI {
@@ -9527,7 +9501,7 @@ impl entropic::Entropic for IMSI {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct IMSvoiceEPSfallbackfrom5G(pub u8);
 impl IMSvoiceEPSfallbackfrom5G {
@@ -9547,7 +9521,7 @@ impl entropic::Entropic for IMSvoiceEPSfallbackfrom5G {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "2", extensible = true)]
 pub enum IRAT_Cell_ID {
     #[asn(key = 0, extended = false)]
@@ -9573,7 +9547,7 @@ impl asn1_codecs::Asn1Choice for IRAT_Cell_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 3)]
 pub struct ImmediateMDT {
     pub measurements_to_activate: MeasurementsToActivate,
@@ -9626,7 +9600,7 @@ impl entropic::Entropic for ImmediateMDT {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct InformationOnRecommendedCellsAndENBsForPaging {
     pub recommended_cells_for_paging: RecommendedCellsForPaging,
@@ -9665,7 +9639,7 @@ impl entropic::Entropic for InformationOnRecommendedCellsAndENBsForPaging {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct InitialContextSetupFailure {
     pub protocol_i_es: InitialContextSetupFailureProtocolIEs,
@@ -9690,7 +9664,7 @@ impl entropic::Entropic for InitialContextSetupFailure {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct InitialContextSetupRequest {
     pub protocol_i_es: InitialContextSetupRequestProtocolIEs,
@@ -9715,7 +9689,7 @@ impl entropic::Entropic for InitialContextSetupRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct InitialContextSetupResponse {
     pub protocol_i_es: InitialContextSetupResponseProtocolIEs,
@@ -9740,7 +9714,7 @@ impl entropic::Entropic for InitialContextSetupResponse {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct InitialUEMessage {
     pub protocol_i_es: InitialUEMessageProtocolIEs,
@@ -9764,7 +9738,7 @@ impl entropic::Entropic for InitialUEMessage {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct InitiatingMessage {
     #[asn(key_field = true)]
@@ -9798,7 +9772,7 @@ impl entropic::Entropic for InitiatingMessage {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = true, sz_lb = "16", sz_ub = "16")]
 pub struct IntegrityProtectionAlgorithms(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for IntegrityProtectionAlgorithms {
@@ -9839,7 +9813,7 @@ impl entropic::Entropic for IntegrityProtectionAlgorithms {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "1", ub = "16", extensible = true)]
 pub struct IntendedNumberOfPagingAttempts(pub u8);
 impl entropic::Entropic for IntendedNumberOfPagingAttempts {
@@ -9858,7 +9832,7 @@ impl entropic::Entropic for IntendedNumberOfPagingAttempts {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "0", extensible = true)]
 pub enum Inter_SystemInformationTransferType {
     #[asn(key = 0, extended = false)]
@@ -9875,7 +9849,7 @@ impl asn1_codecs::Asn1Choice for Inter_SystemInformationTransferType {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false, optional_fields = 8)]
 pub struct InterSystemMeasurementItem {
     pub freq_band_indicator_nr: InterSystemMeasurementItemFreqBandIndicatorNR,
@@ -9973,14 +9947,14 @@ impl entropic::Entropic for InterSystemMeasurementItem {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "64")]
 pub struct InterSystemMeasurementList(pub Vec<InterSystemMeasurementItem>);
 impl entropic::Entropic for InterSystemMeasurementList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(64, 16383);
+        let capped_max = std::cmp::min(64, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -9993,7 +9967,7 @@ impl entropic::Entropic for InterSystemMeasurementList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(64, 16383);
+        let capped_max = std::cmp::min(64, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -10002,7 +9976,7 @@ impl entropic::Entropic for InterSystemMeasurementList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 2)]
 pub struct InterSystemMeasurementParameters {
     pub measurement_duration: InterSystemMeasurementParametersMeasurementDuration,
@@ -10041,7 +10015,7 @@ impl entropic::Entropic for InterSystemMeasurementParameters {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "8", sz_ub = "8")]
 pub struct InterfacesToTrace(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for InterfacesToTrace {
@@ -10082,7 +10056,7 @@ impl entropic::Entropic for InterfacesToTrace {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 4)]
 pub struct IntersystemMeasurementConfiguration {
     #[asn(optional_idx = 0)]
@@ -10131,11 +10105,11 @@ impl entropic::Entropic for IntersystemMeasurementConfiguration {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct IntersystemSONConfigurationTransfer(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", lb = "0", ub = "0")]
 pub struct KillAllWarningMessages(pub u8);
 impl KillAllWarningMessages {
@@ -10155,7 +10129,7 @@ impl entropic::Entropic for KillAllWarningMessages {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct KillRequest {
     pub protocol_i_es: KillRequestProtocolIEs,
@@ -10179,7 +10153,7 @@ impl entropic::Entropic for KillRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct KillResponse {
     pub protocol_i_es: KillResponseProtocolIEs,
@@ -10203,11 +10177,11 @@ impl entropic::Entropic for KillResponse {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct L3_Information(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "OCTET-STRING", sz_extensible = false, sz_lb = "2", sz_ub = "2")]
 pub struct LAC(pub Vec<u8>);
 impl entropic::Entropic for LAC {
@@ -10234,7 +10208,7 @@ impl entropic::Entropic for LAC {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct LAI {
     pub plm_nidentity: PLMNidentity,
@@ -10268,7 +10242,7 @@ impl entropic::Entropic for LAI {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "OCTET-STRING",
     sz_extensible = false,
@@ -10300,11 +10274,11 @@ impl entropic::Entropic for LHN_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct LPPa_PDU(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct LTE_M_Indication(pub u8);
 impl LTE_M_Indication {
@@ -10324,7 +10298,7 @@ impl entropic::Entropic for LTE_M_Indication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "2", extensible = true)]
 pub enum LastVisitedCell_Item {
     #[asn(key = 0, extended = false)]
@@ -10350,7 +10324,7 @@ impl asn1_codecs::Asn1Choice for LastVisitedCell_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct LastVisitedEUTRANCellInformation {
     pub global_cell_id: EUTRAN_CGI,
@@ -10390,7 +10364,7 @@ impl entropic::Entropic for LastVisitedEUTRANCellInformation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "0", extensible = true)]
 pub enum LastVisitedGERANCellInformation {
     #[asn(key = 0, extended = false)]
@@ -10407,15 +10381,15 @@ impl asn1_codecs::Asn1Choice for LastVisitedGERANCellInformation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct LastVisitedNGRANCellInformation(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct LastVisitedUTRANCellInformation(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "2")]
 pub struct Links_to_log(pub u8);
 impl Links_to_log {
@@ -10437,7 +10411,7 @@ impl entropic::Entropic for Links_to_log {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct ListeningSubframePattern {
     pub pattern_period: ListeningSubframePatternPattern_period,
@@ -10475,7 +10449,7 @@ impl entropic::Entropic for ListeningSubframePattern {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct LocationReport {
     pub protocol_i_es: LocationReportProtocolIEs,
@@ -10499,7 +10473,7 @@ impl entropic::Entropic for LocationReport {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct LocationReportingControl {
     pub protocol_i_es: LocationReportingControlProtocolIEs,
@@ -10524,7 +10498,7 @@ impl entropic::Entropic for LocationReportingControl {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct LocationReportingFailureIndication {
     pub protocol_i_es: LocationReportingFailureIndicationProtocolIEs,
@@ -10549,7 +10523,7 @@ impl entropic::Entropic for LocationReportingFailureIndication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 2)]
 pub struct LoggedMBSFNMDT {
     pub logging_interval: LoggingInterval,
@@ -10593,7 +10567,7 @@ impl entropic::Entropic for LoggedMBSFNMDT {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct LoggedMDT {
     pub logging_interval: LoggingInterval,
@@ -10629,7 +10603,7 @@ impl entropic::Entropic for LoggedMDT {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", lb = "0", ub = "5")]
 pub struct LoggingDuration(pub u8);
 impl LoggingDuration {
@@ -10654,7 +10628,7 @@ impl entropic::Entropic for LoggingDuration {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", lb = "0", ub = "7")]
 pub struct LoggingInterval(pub u8);
 impl LoggingInterval {
@@ -10681,7 +10655,7 @@ impl entropic::Entropic for LoggingInterval {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "OCTET-STRING", sz_extensible = false, sz_lb = "4", sz_ub = "4")]
 pub struct M_TMSI(pub Vec<u8>);
 impl entropic::Entropic for M_TMSI {
@@ -10708,7 +10682,7 @@ impl entropic::Entropic for M_TMSI {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct M1PeriodicReporting {
     pub report_interval: ReportIntervalMDT,
@@ -10744,7 +10718,7 @@ impl entropic::Entropic for M1PeriodicReporting {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct M1ReportingTrigger(pub u8);
 impl M1ReportingTrigger {
@@ -10765,7 +10739,7 @@ impl entropic::Entropic for M1ReportingTrigger {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct M1ThresholdEventA2 {
     pub measurement_threshold: MeasurementThresholdA2,
@@ -10796,7 +10770,7 @@ impl entropic::Entropic for M1ThresholdEventA2 {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct M3Configuration {
     pub m3period: M3period,
@@ -10824,7 +10798,7 @@ impl entropic::Entropic for M3Configuration {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "2")]
 pub struct M3period(pub u8);
 impl M3period {
@@ -10846,7 +10820,7 @@ impl entropic::Entropic for M3period {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct M4Configuration {
     pub m4period: M4period,
@@ -10880,7 +10854,7 @@ impl entropic::Entropic for M4Configuration {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "4")]
 pub struct M4period(pub u8);
 impl M4period {
@@ -10904,7 +10878,7 @@ impl entropic::Entropic for M4period {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct M5Configuration {
     pub m5period: M5period,
@@ -10938,7 +10912,7 @@ impl entropic::Entropic for M5Configuration {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "4")]
 pub struct M5period(pub u8);
 impl M5period {
@@ -10962,7 +10936,7 @@ impl entropic::Entropic for M5period {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 2)]
 pub struct M6Configuration {
     pub m6report_interval: M6report_Interval,
@@ -11005,7 +10979,7 @@ impl entropic::Entropic for M6Configuration {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "11")]
 pub struct M6delay_threshold(pub u8);
 impl M6delay_threshold {
@@ -11036,7 +11010,7 @@ impl entropic::Entropic for M6delay_threshold {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "3")]
 pub struct M6report_Interval(pub u8);
 impl M6report_Interval {
@@ -11059,7 +11033,7 @@ impl entropic::Entropic for M6report_Interval {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct M7Configuration {
     pub m7period: M7period,
@@ -11093,7 +11067,7 @@ impl entropic::Entropic for M7Configuration {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "1", ub = "60", extensible = true)]
 pub struct M7period(pub u8);
 impl entropic::Entropic for M7period {
@@ -11110,14 +11084,14 @@ impl entropic::Entropic for M7period {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "8")]
 pub struct MBSFN_ResultToLog(pub Vec<MBSFN_ResultToLogInfo>);
 impl entropic::Entropic for MBSFN_ResultToLog {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(8, 16383);
+        let capped_max = std::cmp::min(8, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -11130,7 +11104,7 @@ impl entropic::Entropic for MBSFN_ResultToLog {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(8, 16383);
+        let capped_max = std::cmp::min(8, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -11139,7 +11113,7 @@ impl entropic::Entropic for MBSFN_ResultToLog {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 2)]
 pub struct MBSFN_ResultToLogInfo {
     #[asn(optional_idx = 0)]
@@ -11177,7 +11151,7 @@ impl entropic::Entropic for MBSFN_ResultToLogInfo {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "2")]
 pub struct MDT_Activation(pub u8);
 impl MDT_Activation {
@@ -11199,7 +11173,7 @@ impl entropic::Entropic for MDT_Activation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct MDT_Configuration {
     pub mdt_activation: MDT_Activation,
@@ -11239,11 +11213,11 @@ impl entropic::Entropic for MDT_Configuration {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct MDT_ConfigurationNR(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "8", sz_ub = "8")]
 pub struct MDT_Location_Info(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for MDT_Location_Info {
@@ -11284,7 +11258,7 @@ impl entropic::Entropic for MDT_Location_Info {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "1", extensible = true)]
 pub enum MDTMode {
     #[asn(key = 0, extended = false)]
@@ -11307,7 +11281,7 @@ impl asn1_codecs::Asn1Choice for MDTMode {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct MDTMode_Extension {
     #[asn(key_field = true)]
@@ -11341,14 +11315,14 @@ impl entropic::Entropic for MDTMode_Extension {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "16")]
 pub struct MDTPLMNList(pub Vec<PLMNidentity>);
 impl entropic::Entropic for MDTPLMNList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -11361,7 +11335,7 @@ impl entropic::Entropic for MDTPLMNList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -11370,7 +11344,7 @@ impl entropic::Entropic for MDTPLMNList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "OCTET-STRING", sz_extensible = false, sz_lb = "1", sz_ub = "1")]
 pub struct MME_Code(pub Vec<u8>);
 impl entropic::Entropic for MME_Code {
@@ -11397,7 +11371,7 @@ impl entropic::Entropic for MME_Code {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "OCTET-STRING", sz_extensible = false, sz_lb = "2", sz_ub = "2")]
 pub struct MME_Group_ID(pub Vec<u8>);
 impl entropic::Entropic for MME_Group_ID {
@@ -11424,7 +11398,7 @@ impl entropic::Entropic for MME_Group_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "4294967295")]
 pub struct MME_UE_S1AP_ID(pub u32);
 impl entropic::Entropic for MME_UE_S1AP_ID {
@@ -11441,7 +11415,7 @@ impl entropic::Entropic for MME_UE_S1AP_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct MMECPRelocationIndication {
     pub protocol_i_es: MMECPRelocationIndicationProtocolIEs,
@@ -11466,7 +11440,7 @@ impl entropic::Entropic for MMECPRelocationIndication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct MMEConfigurationTransfer {
     pub protocol_i_es: MMEConfigurationTransferProtocolIEs,
@@ -11491,7 +11465,7 @@ impl entropic::Entropic for MMEConfigurationTransfer {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct MMEConfigurationUpdate {
     pub protocol_i_es: MMEConfigurationUpdateProtocolIEs,
@@ -11516,7 +11490,7 @@ impl entropic::Entropic for MMEConfigurationUpdate {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct MMEConfigurationUpdateAcknowledge {
     pub protocol_i_es: MMEConfigurationUpdateAcknowledgeProtocolIEs,
@@ -11541,7 +11515,7 @@ impl entropic::Entropic for MMEConfigurationUpdateAcknowledge {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct MMEConfigurationUpdateFailure {
     pub protocol_i_es: MMEConfigurationUpdateFailureProtocolIEs,
@@ -11566,7 +11540,7 @@ impl entropic::Entropic for MMEConfigurationUpdateFailure {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct MMEDirectInformationTransfer {
     pub protocol_i_es: MMEDirectInformationTransferProtocolIEs,
@@ -11591,7 +11565,7 @@ impl entropic::Entropic for MMEDirectInformationTransfer {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct MMEEarlyStatusTransfer {
     pub protocol_i_es: MMEEarlyStatusTransferProtocolIEs,
@@ -11616,7 +11590,7 @@ impl entropic::Entropic for MMEEarlyStatusTransfer {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "1", extensible = true)]
 pub enum MMEPagingTarget {
     #[asn(key = 0, extended = false)]
@@ -11636,7 +11610,7 @@ impl asn1_codecs::Asn1Choice for MMEPagingTarget {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct MMERelaySupportIndicator(pub u8);
 impl MMERelaySupportIndicator {
@@ -11656,7 +11630,7 @@ impl entropic::Entropic for MMERelaySupportIndicator {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct MMEStatusTransfer {
     pub protocol_i_es: MMEStatusTransferProtocolIEs,
@@ -11680,7 +11654,7 @@ impl entropic::Entropic for MMEStatusTransfer {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "PrintableString",
     sz_extensible = true,
@@ -11715,15 +11689,15 @@ impl entropic::Entropic for MMEname {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct MSClassmark2(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct MSClassmark3(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct ManagementBasedMDTAllowed(pub u8);
 impl ManagementBasedMDTAllowed {
@@ -11743,7 +11717,7 @@ impl entropic::Entropic for ManagementBasedMDTAllowed {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "64", sz_ub = "64")]
 pub struct Masked_IMEISV(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for Masked_IMEISV {
@@ -11784,7 +11758,7 @@ impl entropic::Entropic for Masked_IMEISV {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "1", extensible = true)]
 pub enum MeasurementThresholdA2 {
     #[asn(key = 0, extended = false)]
@@ -11804,7 +11778,7 @@ impl asn1_codecs::Asn1Choice for MeasurementThresholdA2 {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "8", sz_ub = "8")]
 pub struct MeasurementsToActivate(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for MeasurementsToActivate {
@@ -11845,7 +11819,7 @@ impl entropic::Entropic for MeasurementsToActivate {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "16", sz_ub = "16")]
 pub struct MessageIdentifier(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for MessageIdentifier {
@@ -11886,7 +11860,7 @@ impl entropic::Entropic for MessageIdentifier {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "32", sz_ub = "32")]
 pub struct MobilityInformation(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for MobilityInformation {
@@ -11927,7 +11901,7 @@ impl entropic::Entropic for MobilityInformation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct MultiCellLoadReportingRequest {
     pub requested_cell_list: RequestedCellList,
@@ -11953,7 +11927,7 @@ impl entropic::Entropic for MultiCellLoadReportingRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -11965,7 +11939,7 @@ impl entropic::Entropic for MultiCellLoadReportingResponse {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(128, 16383);
+        let capped_max = std::cmp::min(128, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -11980,7 +11954,7 @@ impl entropic::Entropic for MultiCellLoadReportingResponse {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(128, 16383);
+        let capped_max = std::cmp::min(128, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -11989,7 +11963,7 @@ impl entropic::Entropic for MultiCellLoadReportingResponse {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "2", extensible = true)]
 pub enum MultiCellLoadReportingResponse_Item {
     #[asn(key = 0, extended = false)]
@@ -12015,7 +11989,7 @@ impl asn1_codecs::Asn1Choice for MultiCellLoadReportingResponse_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct MutingAvailabilityIndication(pub u8);
 impl MutingAvailabilityIndication {
@@ -12038,7 +12012,7 @@ impl entropic::Entropic for MutingAvailabilityIndication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 2)]
 pub struct MutingPatternInformation {
     pub muting_pattern_period: MutingPatternInformationMuting_pattern_period,
@@ -12077,11 +12051,11 @@ impl entropic::Entropic for MutingPatternInformation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct NAS_PDU(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct NASDeliveryIndication {
     pub protocol_i_es: NASDeliveryIndicationProtocolIEs,
@@ -12106,7 +12080,7 @@ impl entropic::Entropic for NASDeliveryIndication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct NASNonDeliveryIndication {
     pub protocol_i_es: NASNonDeliveryIndicationProtocolIEs,
@@ -12131,15 +12105,15 @@ impl entropic::Entropic for NASNonDeliveryIndication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct NASSecurityParametersfromE_UTRAN(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct NASSecurityParameterstoE_UTRAN(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "3")]
 pub struct NB_IoT_DefaultPagingDRX(pub u8);
 impl NB_IoT_DefaultPagingDRX {
@@ -12162,7 +12136,7 @@ impl entropic::Entropic for NB_IoT_DefaultPagingDRX {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "13")]
 pub struct NB_IoT_Paging_eDRX_Cycle(pub u8);
 impl NB_IoT_Paging_eDRX_Cycle {
@@ -12195,7 +12169,7 @@ impl entropic::Entropic for NB_IoT_Paging_eDRX_Cycle {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 2)]
 pub struct NB_IoT_Paging_eDRXInformation {
     pub nb_io_t_paging_e_drx_cycle: NB_IoT_Paging_eDRX_Cycle,
@@ -12234,7 +12208,7 @@ impl entropic::Entropic for NB_IoT_Paging_eDRXInformation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "5")]
 pub struct NB_IoT_PagingDRX(pub u8);
 impl NB_IoT_PagingDRX {
@@ -12259,7 +12233,7 @@ impl entropic::Entropic for NB_IoT_PagingDRX {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "15")]
 pub struct NB_IoT_PagingTimeWindow(pub u8);
 impl NB_IoT_PagingTimeWindow {
@@ -12294,11 +12268,11 @@ impl entropic::Entropic for NB_IoT_PagingTimeWindow {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct NB_IoT_RLF_Report_Container(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "12", sz_ub = "12")]
 pub struct NB_IoT_UEIdentityIndexValue(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for NB_IoT_UEIdentityIndexValue {
@@ -12339,7 +12313,7 @@ impl entropic::Entropic for NB_IoT_UEIdentityIndexValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct NG_eNB {
     pub global_ng_e_nb_id: Global_ENB_ID,
@@ -12369,7 +12343,7 @@ impl entropic::Entropic for NG_eNB {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct NR_CGI {
     pub plmn_identity: PLMNidentity,
@@ -12405,7 +12379,7 @@ impl entropic::Entropic for NR_CGI {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "36", sz_ub = "36")]
 pub struct NRCellIdentity(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for NRCellIdentity {
@@ -12446,7 +12420,7 @@ impl entropic::Entropic for NRCellIdentity {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct NRUESecurityCapabilities {
     pub n_rencryption_algorithms: NRencryptionAlgorithms,
@@ -12484,7 +12458,7 @@ impl entropic::Entropic for NRUESecurityCapabilities {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct NRUESidelinkAggregateMaximumBitrate {
     pub u_eaggregate_maximum_bit_rate: BitRate,
@@ -12514,7 +12488,7 @@ impl entropic::Entropic for NRUESidelinkAggregateMaximumBitrate {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 3)]
 pub struct NRV2XServicesAuthorized {
     #[asn(optional_idx = 0)]
@@ -12552,7 +12526,7 @@ impl entropic::Entropic for NRV2XServicesAuthorized {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = true, sz_lb = "16", sz_ub = "16")]
 pub struct NRencryptionAlgorithms(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for NRencryptionAlgorithms {
@@ -12593,7 +12567,7 @@ impl entropic::Entropic for NRencryptionAlgorithms {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = true, sz_lb = "16", sz_ub = "16")]
 pub struct NRintegrityProtectionAlgorithms(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for NRintegrityProtectionAlgorithms {
@@ -12634,7 +12608,7 @@ impl entropic::Entropic for NRintegrityProtectionAlgorithms {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct NRrestrictionin5GS(pub u8);
 impl NRrestrictionin5GS {
@@ -12654,7 +12628,7 @@ impl entropic::Entropic for NRrestrictionin5GS {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct NRrestrictioninEPSasSecondaryRAT(pub u8);
 impl NRrestrictioninEPSasSecondaryRAT {
@@ -12676,7 +12650,7 @@ impl entropic::Entropic for NRrestrictioninEPSasSecondaryRAT {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct NextPagingAreaScope(pub u8);
 impl NextPagingAreaScope {
@@ -12697,7 +12671,7 @@ impl entropic::Entropic for NextPagingAreaScope {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -12709,7 +12683,7 @@ impl entropic::Entropic for NotificationCellList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -12722,7 +12696,7 @@ impl entropic::Entropic for NotificationCellList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -12731,7 +12705,7 @@ impl entropic::Entropic for NotificationCellList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct NotificationCellList_Item {
     pub cell_id: NotificationCellList_ItemCell_ID,
@@ -12761,7 +12735,7 @@ impl entropic::Entropic for NotificationCellList_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct NotifyFlag(pub u8);
 impl NotifyFlag {
@@ -12782,7 +12756,7 @@ impl entropic::Entropic for NotifyFlag {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct NotifySourceeNB(pub u8);
 impl NotifySourceeNB {
@@ -12802,7 +12776,7 @@ impl entropic::Entropic for NotifySourceeNB {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "65535")]
 pub struct NumberOfBroadcasts(pub u16);
 impl entropic::Entropic for NumberOfBroadcasts {
@@ -12819,7 +12793,7 @@ impl entropic::Entropic for NumberOfBroadcasts {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "4")]
 pub struct NumberOfMeasurementReportingLevels(pub u8);
 impl NumberOfMeasurementReportingLevels {
@@ -12845,7 +12819,7 @@ impl entropic::Entropic for NumberOfMeasurementReportingLevels {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "65535")]
 pub struct NumberofBroadcastRequest(pub u16);
 impl entropic::Entropic for NumberofBroadcastRequest {
@@ -12864,11 +12838,11 @@ impl entropic::Entropic for NumberofBroadcastRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct OldBSS_ToNewBSS_Information(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "2")]
 pub struct OverloadAction(pub u8);
 impl OverloadAction {
@@ -12890,7 +12864,7 @@ impl entropic::Entropic for OverloadAction {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct OverloadFlag(pub u8);
 impl OverloadFlag {
@@ -12910,7 +12884,7 @@ impl entropic::Entropic for OverloadFlag {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "0", extensible = true)]
 pub enum OverloadResponse {
     #[asn(key = 0, extended = false)]
@@ -12927,7 +12901,7 @@ impl asn1_codecs::Asn1Choice for OverloadResponse {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct OverloadStart {
     pub protocol_i_es: OverloadStartProtocolIEs,
@@ -12951,7 +12925,7 @@ impl entropic::Entropic for OverloadStart {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct OverloadStop {
     pub protocol_i_es: OverloadStopProtocolIEs,
@@ -12975,7 +12949,7 @@ impl entropic::Entropic for OverloadStop {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct PC5FlowBitRates {
     pub guaranteed_flow_bit_rate: BitRate,
@@ -13011,7 +12985,7 @@ impl entropic::Entropic for PC5FlowBitRates {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 3)]
 pub struct PC5QoSFlowItem {
     pub pqi: FiveQI,
@@ -13051,7 +13025,7 @@ impl entropic::Entropic for PC5QoSFlowItem {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -13063,7 +13037,7 @@ impl entropic::Entropic for PC5QoSFlowList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(2048, 16383);
+        let capped_max = std::cmp::min(2048, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -13076,7 +13050,7 @@ impl entropic::Entropic for PC5QoSFlowList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(2048, 16383);
+        let capped_max = std::cmp::min(2048, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -13085,7 +13059,7 @@ impl entropic::Entropic for PC5QoSFlowList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 2)]
 pub struct PC5QoSParameters {
     pub pc5_qo_s_flow_list: PC5QoSFlowList,
@@ -13123,7 +13097,7 @@ impl entropic::Entropic for PC5QoSParameters {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "4095")]
 pub struct PDCP_SN(pub u16);
 impl entropic::Entropic for PDCP_SN {
@@ -13140,7 +13114,7 @@ impl entropic::Entropic for PDCP_SN {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "32767")]
 pub struct PDCP_SNExtended(pub u16);
 impl entropic::Entropic for PDCP_SNExtended {
@@ -13157,7 +13131,7 @@ impl entropic::Entropic for PDCP_SNExtended {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "262143")]
 pub struct PDCP_SNlength18(pub u32);
 impl entropic::Entropic for PDCP_SNlength18 {
@@ -13174,7 +13148,7 @@ impl entropic::Entropic for PDCP_SNlength18 {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct PLMNAreaBasedQMC {
     pub plmn_listfor_qmc: PLMNListforQMC,
@@ -13204,14 +13178,14 @@ impl entropic::Entropic for PLMNAreaBasedQMC {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "16")]
 pub struct PLMNListforQMC(pub Vec<PLMNidentity>);
 impl entropic::Entropic for PLMNListforQMC {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -13224,7 +13198,7 @@ impl entropic::Entropic for PLMNListforQMC {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -13235,7 +13209,7 @@ impl entropic::Entropic for PLMNListforQMC {
 
 pub type PLMNidentity = TBCD_STRING;
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct PS_ServiceNotAvailable(pub u8);
 impl PS_ServiceNotAvailable {
@@ -13255,7 +13229,7 @@ impl entropic::Entropic for PS_ServiceNotAvailable {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct PSCellInformation {
     pub ncgi: NR_CGI,
@@ -13283,7 +13257,7 @@ impl entropic::Entropic for PSCellInformation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct PWSFailureIndication {
     pub protocol_i_es: PWSFailureIndicationProtocolIEs,
@@ -13308,7 +13282,7 @@ impl entropic::Entropic for PWSFailureIndication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct PWSRestartIndication {
     pub protocol_i_es: PWSRestartIndicationProtocolIEs,
@@ -13333,7 +13307,7 @@ impl entropic::Entropic for PWSRestartIndication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -13345,7 +13319,7 @@ impl entropic::Entropic for PWSfailedECGIList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -13358,7 +13332,7 @@ impl entropic::Entropic for PWSfailedECGIList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -13367,7 +13341,7 @@ impl entropic::Entropic for PWSfailedECGIList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "1000")]
 pub struct Packet_LossRate(pub u16);
 impl entropic::Entropic for Packet_LossRate {
@@ -13384,7 +13358,7 @@ impl entropic::Entropic for Packet_LossRate {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct Paging {
     pub protocol_i_es: PagingProtocolIEs,
@@ -13408,7 +13382,7 @@ impl entropic::Entropic for Paging {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "13")]
 pub struct Paging_eDRX_Cycle(pub u8);
 impl Paging_eDRX_Cycle {
@@ -13441,7 +13415,7 @@ impl entropic::Entropic for Paging_eDRX_Cycle {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 2)]
 pub struct Paging_eDRXInformation {
     pub paging_e_drx_cycle: Paging_eDRX_Cycle,
@@ -13478,7 +13452,7 @@ impl entropic::Entropic for Paging_eDRXInformation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "1", ub = "16", extensible = true)]
 pub struct PagingAttemptCount(pub u8);
 impl entropic::Entropic for PagingAttemptCount {
@@ -13495,7 +13469,7 @@ impl entropic::Entropic for PagingAttemptCount {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 2)]
 pub struct PagingAttemptInformation {
     pub paging_attempt_count: PagingAttemptCount,
@@ -13540,7 +13514,7 @@ impl entropic::Entropic for PagingAttemptInformation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "3")]
 pub struct PagingDRX(pub u8);
 impl PagingDRX {
@@ -13563,7 +13537,7 @@ impl entropic::Entropic for PagingDRX {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "7")]
 pub struct PagingPriority(pub u8);
 impl PagingPriority {
@@ -13590,7 +13564,7 @@ impl entropic::Entropic for PagingPriority {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "20")]
 pub struct PagingProbabilityInformation(pub u8);
 impl PagingProbabilityInformation {
@@ -13632,7 +13606,7 @@ impl entropic::Entropic for PagingProbabilityInformation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "15")]
 pub struct PagingTimeWindow(pub u8);
 impl PagingTimeWindow {
@@ -13667,7 +13641,7 @@ impl entropic::Entropic for PagingTimeWindow {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct PathSwitchRequest {
     pub protocol_i_es: PathSwitchRequestProtocolIEs,
@@ -13691,7 +13665,7 @@ impl entropic::Entropic for PathSwitchRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct PathSwitchRequestAcknowledge {
     pub protocol_i_es: PathSwitchRequestAcknowledgeProtocolIEs,
@@ -13716,7 +13690,7 @@ impl entropic::Entropic for PathSwitchRequestAcknowledge {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct PathSwitchRequestFailure {
     pub protocol_i_es: PathSwitchRequestFailureProtocolIEs,
@@ -13741,7 +13715,7 @@ impl entropic::Entropic for PathSwitchRequestFailure {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct PedestrianUE(pub u8);
 impl PedestrianUE {
@@ -13762,7 +13736,7 @@ impl entropic::Entropic for PedestrianUE {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct PendingDataIndication(pub u8);
 impl PendingDataIndication {
@@ -13782,7 +13756,7 @@ impl entropic::Entropic for PendingDataIndication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "OCTET-STRING", sz_extensible = false, sz_lb = "2", sz_ub = "2")]
 pub struct Port_Number(pub Vec<u8>);
 impl entropic::Entropic for Port_Number {
@@ -13809,7 +13783,7 @@ impl entropic::Entropic for Port_Number {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", lb = "0", ub = "1")]
 pub struct Pre_emptionCapability(pub u8);
 impl Pre_emptionCapability {
@@ -13830,7 +13804,7 @@ impl entropic::Entropic for Pre_emptionCapability {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", lb = "0", ub = "1")]
 pub struct Pre_emptionVulnerability(pub u8);
 impl Pre_emptionVulnerability {
@@ -13851,7 +13825,7 @@ impl entropic::Entropic for Pre_emptionVulnerability {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", lb = "0", ub = "2")]
 pub struct Presence(pub u8);
 impl Presence {
@@ -13873,7 +13847,7 @@ impl entropic::Entropic for Presence {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "15")]
 pub struct PriorityLevel(pub u8);
 impl entropic::Entropic for PriorityLevel {
@@ -13890,7 +13864,7 @@ impl entropic::Entropic for PriorityLevel {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct PrivacyIndicator(pub u8);
 impl PrivacyIndicator {
@@ -13911,7 +13885,7 @@ impl entropic::Entropic for PrivacyIndicator {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "1", extensible = false)]
 pub enum PrivateIE_ID {
     #[asn(key = 0, extended = false)]
@@ -13931,7 +13905,7 @@ impl asn1_codecs::Asn1Choice for PrivateIE_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct PrivateMessage {
     pub private_i_es: PrivateMessagePrivateIEs,
@@ -13955,7 +13929,7 @@ impl entropic::Entropic for PrivateMessage {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 3)]
 pub struct ProSeAuthorized {
     #[asn(optional_idx = 0)]
@@ -13995,7 +13969,7 @@ impl entropic::Entropic for ProSeAuthorized {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct ProSeDirectCommunication(pub u8);
 impl ProSeDirectCommunication {
@@ -14016,7 +13990,7 @@ impl entropic::Entropic for ProSeDirectCommunication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct ProSeDirectDiscovery(pub u8);
 impl ProSeDirectDiscovery {
@@ -14037,7 +14011,7 @@ impl entropic::Entropic for ProSeDirectDiscovery {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct ProSeUEtoNetworkRelaying(pub u8);
 impl ProSeUEtoNetworkRelaying {
@@ -14058,7 +14032,7 @@ impl entropic::Entropic for ProSeUEtoNetworkRelaying {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "255")]
 pub struct ProcedureCode(pub u8);
 impl entropic::Entropic for ProcedureCode {
@@ -14075,7 +14049,7 @@ impl entropic::Entropic for ProcedureCode {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "65535")]
 pub struct ProtocolExtensionID(pub u16);
 impl entropic::Entropic for ProtocolExtensionID {
@@ -14092,7 +14066,7 @@ impl entropic::Entropic for ProtocolExtensionID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "65535")]
 pub struct ProtocolIE_ID(pub u16);
 impl entropic::Entropic for ProtocolIE_ID {
@@ -14109,7 +14083,7 @@ impl entropic::Entropic for ProtocolIE_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "255")]
 pub struct QCI(pub u8);
 impl entropic::Entropic for QCI {
@@ -14126,7 +14100,7 @@ impl entropic::Entropic for QCI {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "OCTET-STRING", sz_extensible = false, sz_lb = "1", sz_ub = "1")]
 pub struct RAC(pub Vec<u8>);
 impl entropic::Entropic for RAC {
@@ -14153,7 +14127,7 @@ impl entropic::Entropic for RAC {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "4294967295")]
 pub struct RAN_UE_NGAP_ID(pub u32);
 impl entropic::Entropic for RAN_UE_NGAP_ID {
@@ -14170,7 +14144,7 @@ impl entropic::Entropic for RAN_UE_NGAP_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct RAT_Type(pub u8);
 impl RAT_Type {
@@ -14190,11 +14164,11 @@ impl entropic::Entropic for RAT_Type {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct RIMInformation(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "0", extensible = true)]
 pub enum RIMRoutingAddress {
     #[asn(key = 0, extended = false)]
@@ -14217,7 +14191,7 @@ impl asn1_codecs::Asn1Choice for RIMRoutingAddress {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 2)]
 pub struct RIMTransfer {
     pub rim_information: RIMInformation,
@@ -14255,7 +14229,7 @@ impl entropic::Entropic for RIMTransfer {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 2)]
 pub struct RLFReportInformation {
     pub ue_rlf_report_container: UE_RLF_Report_Container,
@@ -14296,7 +14270,7 @@ impl entropic::Entropic for RLFReportInformation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "4095")]
 pub struct RNC_ID(pub u16);
 impl entropic::Entropic for RNC_ID {
@@ -14313,11 +14287,11 @@ impl entropic::Entropic for RNC_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct RRC_Container(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "4")]
 pub struct RRC_Establishment_Cause(pub u8);
 impl RRC_Establishment_Cause {
@@ -14341,7 +14315,7 @@ impl entropic::Entropic for RRC_Establishment_Cause {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "8")]
 pub struct Range(pub u8);
 impl Range {
@@ -14369,7 +14343,7 @@ impl entropic::Entropic for Range {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "BITSTRING",
     sz_extensible = false,
@@ -14415,7 +14389,7 @@ impl entropic::Entropic for ReceiveStatusOfULPDCPSDUsExtended {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "BITSTRING",
     sz_extensible = false,
@@ -14463,7 +14437,7 @@ impl entropic::Entropic for ReceiveStatusOfULPDCPSDUsPDCP_SNlength18 {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "BITSTRING",
     sz_extensible = false,
@@ -14509,7 +14483,7 @@ impl entropic::Entropic for ReceiveStatusofULPDCPSDUs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 2)]
 pub struct RecommendedCellItem {
     pub eutran_cgi: EUTRAN_CGI,
@@ -14547,14 +14521,14 @@ impl entropic::Entropic for RecommendedCellItem {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "16")]
 pub struct RecommendedCellList(pub Vec<RecommendedCellList_Entry>);
 impl entropic::Entropic for RecommendedCellList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -14567,7 +14541,7 @@ impl entropic::Entropic for RecommendedCellList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -14576,7 +14550,7 @@ impl entropic::Entropic for RecommendedCellList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct RecommendedCellsForPaging {
     pub recommended_cell_list: RecommendedCellList,
@@ -14606,7 +14580,7 @@ impl entropic::Entropic for RecommendedCellsForPaging {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct RecommendedENBItem {
     pub mme_paging_target: MMEPagingTarget,
@@ -14636,14 +14610,14 @@ impl entropic::Entropic for RecommendedENBItem {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "16")]
 pub struct RecommendedENBList(pub Vec<RecommendedENBList_Entry>);
 impl entropic::Entropic for RecommendedENBList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -14656,7 +14630,7 @@ impl entropic::Entropic for RecommendedENBList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -14665,7 +14639,7 @@ impl entropic::Entropic for RecommendedENBList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct RecommendedENBsForPaging {
     pub recommended_enb_list: RecommendedENBList,
@@ -14695,7 +14669,7 @@ impl entropic::Entropic for RecommendedENBsForPaging {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "255")]
 pub struct RelativeMMECapacity(pub u8);
 impl entropic::Entropic for RelativeMMECapacity {
@@ -14712,7 +14686,7 @@ impl entropic::Entropic for RelativeMMECapacity {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct RelayNode_Indicator(pub u8);
 impl RelayNode_Indicator {
@@ -14732,7 +14706,7 @@ impl entropic::Entropic for RelayNode_Indicator {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "4095")]
 pub struct RepetitionPeriod(pub u16);
 impl entropic::Entropic for RepetitionPeriod {
@@ -14749,7 +14723,7 @@ impl entropic::Entropic for RepetitionPeriod {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", lb = "0", ub = "7")]
 pub struct ReportAmountMDT(pub u8);
 impl ReportAmountMDT {
@@ -14776,7 +14750,7 @@ impl entropic::Entropic for ReportAmountMDT {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct ReportArea(pub u8);
 impl ReportArea {
@@ -14796,7 +14770,7 @@ impl entropic::Entropic for ReportArea {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", lb = "0", ub = "12")]
 pub struct ReportIntervalMDT(pub u8);
 impl ReportIntervalMDT {
@@ -14828,7 +14802,7 @@ impl entropic::Entropic for ReportIntervalMDT {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -14840,7 +14814,7 @@ impl entropic::Entropic for ReportingCellList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(128, 16383);
+        let capped_max = std::cmp::min(128, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -14853,7 +14827,7 @@ impl entropic::Entropic for ReportingCellList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(128, 16383);
+        let capped_max = std::cmp::min(128, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -14862,7 +14836,7 @@ impl entropic::Entropic for ReportingCellList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct ReportingCellList_Item {
     pub cell_id: IRAT_Cell_ID,
@@ -14884,7 +14858,7 @@ impl entropic::Entropic for ReportingCellList_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct RequestType {
     pub event_type: EventType,
@@ -14920,7 +14894,7 @@ impl entropic::Entropic for RequestType {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct RequestTypeAdditionalInfo(pub u8);
 impl RequestTypeAdditionalInfo {
@@ -14940,7 +14914,7 @@ impl entropic::Entropic for RequestTypeAdditionalInfo {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -14952,7 +14926,7 @@ impl entropic::Entropic for RequestedCellList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(128, 16383);
+        let capped_max = std::cmp::min(128, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -14965,7 +14939,7 @@ impl entropic::Entropic for RequestedCellList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(128, 16383);
+        let capped_max = std::cmp::min(128, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -14974,7 +14948,7 @@ impl entropic::Entropic for RequestedCellList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct RerouteNASRequest {
     pub protocol_i_es: RerouteNASRequestProtocolIEs,
@@ -14998,7 +14972,7 @@ impl entropic::Entropic for RerouteNASRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct Reset {
     pub protocol_i_es: ResetProtocolIEs,
@@ -15022,7 +14996,7 @@ impl entropic::Entropic for Reset {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct ResetAcknowledge {
     pub protocol_i_es: ResetAcknowledgeProtocolIEs,
@@ -15046,7 +15020,7 @@ impl entropic::Entropic for ResetAcknowledge {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct ResetAll(pub u8);
 impl ResetAll {
@@ -15066,7 +15040,7 @@ impl entropic::Entropic for ResetAll {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "1", extensible = true)]
 pub enum ResetType {
     #[asn(key = 0, extended = false)]
@@ -15086,7 +15060,7 @@ impl asn1_codecs::Asn1Choice for ResetType {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct RetrieveUEInformation {
     pub protocol_i_es: RetrieveUEInformationProtocolIEs,
@@ -15111,7 +15085,7 @@ impl entropic::Entropic for RetrieveUEInformation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "255")]
 pub struct Routing_ID(pub u8);
 impl entropic::Entropic for Routing_ID {
@@ -15128,7 +15102,7 @@ impl entropic::Entropic for Routing_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct S_TMSI {
     pub mmec: MME_Code,
@@ -15160,7 +15134,7 @@ impl entropic::Entropic for S_TMSI {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "2", extensible = true)]
 pub enum S1AP_PDU {
     #[asn(key = 0, extended = false)]
@@ -15183,7 +15157,7 @@ impl asn1_codecs::Asn1Choice for S1AP_PDU {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct S1SetupFailure {
     pub protocol_i_es: S1SetupFailureProtocolIEs,
@@ -15207,7 +15181,7 @@ impl entropic::Entropic for S1SetupFailure {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct S1SetupRequest {
     pub protocol_i_es: S1SetupRequestProtocolIEs,
@@ -15231,7 +15205,7 @@ impl entropic::Entropic for S1SetupRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct S1SetupResponse {
     pub protocol_i_es: S1SetupResponseProtocolIEs,
@@ -15255,7 +15229,7 @@ impl entropic::Entropic for S1SetupResponse {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct SONConfigurationTransfer {
     pub targete_nb_id: TargeteNB_ID,
@@ -15297,7 +15271,7 @@ impl entropic::Entropic for SONConfigurationTransfer {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "1", extensible = true)]
 pub enum SONInformation {
     #[asn(key = 0, extended = false)]
@@ -15320,7 +15294,7 @@ impl asn1_codecs::Asn1Choice for SONInformation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct SONInformation_Extension {
     #[asn(key_field = true)]
@@ -15354,7 +15328,7 @@ impl entropic::Entropic for SONInformation_Extension {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 2)]
 pub struct SONInformationReply {
     #[asn(optional_idx = 0)]
@@ -15386,7 +15360,7 @@ impl entropic::Entropic for SONInformationReply {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "0", extensible = true)]
 pub enum SONInformationReport {
     #[asn(key = 0, extended = false)]
@@ -15403,7 +15377,7 @@ impl asn1_codecs::Asn1Choice for SONInformationReport {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct SONInformationRequest(pub u8);
 impl SONInformationRequest {
@@ -15423,7 +15397,7 @@ impl entropic::Entropic for SONInformationRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct SONtransferApplicationIdentity(pub u8);
 impl SONtransferApplicationIdentity {
@@ -15445,7 +15419,7 @@ impl entropic::Entropic for SONtransferApplicationIdentity {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "0", extensible = true)]
 pub enum SONtransferCause {
     #[asn(key = 0, extended = false)]
@@ -15480,7 +15454,7 @@ impl asn1_codecs::Asn1Choice for SONtransferCause {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "0", extensible = true)]
 pub enum SONtransferRequestContainer {
     #[asn(key = 0, extended = false)]
@@ -15517,7 +15491,7 @@ impl asn1_codecs::Asn1Choice for SONtransferRequestContainer {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "0", extensible = true)]
 pub enum SONtransferResponseContainer {
     #[asn(key = 0, extended = false)]
@@ -15554,7 +15528,7 @@ impl asn1_codecs::Asn1Choice for SONtransferResponseContainer {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct SRVCCHOIndication(pub u8);
 impl SRVCCHOIndication {
@@ -15575,7 +15549,7 @@ impl entropic::Entropic for SRVCCHOIndication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct SRVCCOperationNotPossible(pub u8);
 impl SRVCCOperationNotPossible {
@@ -15595,7 +15569,7 @@ impl entropic::Entropic for SRVCCOperationNotPossible {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct SRVCCOperationPossible(pub u8);
 impl SRVCCOperationPossible {
@@ -15615,7 +15589,7 @@ impl entropic::Entropic for SRVCCOperationPossible {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 4)]
 pub struct ScheduledCommunicationTime {
     #[asn(optional_idx = 0)]
@@ -15663,7 +15637,7 @@ impl entropic::Entropic for ScheduledCommunicationTime {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct SecondaryRATDataUsageReport {
     pub protocol_i_es: SecondaryRATDataUsageReportProtocolIEs,
@@ -15688,7 +15662,7 @@ impl entropic::Entropic for SecondaryRATDataUsageReport {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct SecondaryRATDataUsageReportItem {
     pub e_rab_id: E_RAB_ID,
@@ -15729,7 +15703,7 @@ impl entropic::Entropic for SecondaryRATDataUsageReportItem {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -15741,7 +15715,7 @@ impl entropic::Entropic for SecondaryRATDataUsageReportList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -15756,7 +15730,7 @@ impl entropic::Entropic for SecondaryRATDataUsageReportList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -15765,7 +15739,7 @@ impl entropic::Entropic for SecondaryRATDataUsageReportList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct SecondaryRATDataUsageRequest(pub u8);
 impl SecondaryRATDataUsageRequest {
@@ -15787,7 +15761,7 @@ impl entropic::Entropic for SecondaryRATDataUsageRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct SecondaryRATType(pub u8);
 impl SecondaryRATType {
@@ -15807,7 +15781,7 @@ impl entropic::Entropic for SecondaryRATType {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct SecurityContext {
     pub next_hop_chaining_count: SecurityContextNextHopChainingCount,
@@ -15844,7 +15818,7 @@ impl entropic::Entropic for SecurityContext {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "BITSTRING",
     sz_extensible = false,
@@ -15890,7 +15864,7 @@ impl entropic::Entropic for SecurityKey {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "16", sz_ub = "16")]
 pub struct SerialNumber(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for SerialNumber {
@@ -15931,14 +15905,14 @@ impl entropic::Entropic for SerialNumber {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "0", sz_ub = "32")]
 pub struct ServedDCNs(pub Vec<ServedDCNsItem>);
 impl entropic::Entropic for ServedDCNs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(32, 16383);
+        let capped_max = std::cmp::min(32, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -15951,7 +15925,7 @@ impl entropic::Entropic for ServedDCNs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(32, 16383);
+        let capped_max = std::cmp::min(32, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -15960,7 +15934,7 @@ impl entropic::Entropic for ServedDCNs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct ServedDCNsItem {
     pub dcn_id: DCN_ID,
@@ -15994,14 +15968,14 @@ impl entropic::Entropic for ServedDCNsItem {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "8")]
 pub struct ServedGUMMEIs(pub Vec<ServedGUMMEIsItem>);
 impl entropic::Entropic for ServedGUMMEIs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(8, 16383);
+        let capped_max = std::cmp::min(8, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -16014,7 +15988,7 @@ impl entropic::Entropic for ServedGUMMEIs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(8, 16383);
+        let capped_max = std::cmp::min(8, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -16023,7 +15997,7 @@ impl entropic::Entropic for ServedGUMMEIs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct ServedGUMMEIsItem {
     pub served_plm_ns: ServedPLMNs,
@@ -16065,7 +16039,7 @@ impl entropic::Entropic for ServedGUMMEIsItem {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -16077,7 +16051,7 @@ impl entropic::Entropic for ServedGroupIDs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -16090,7 +16064,7 @@ impl entropic::Entropic for ServedGroupIDs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -16099,7 +16073,7 @@ impl entropic::Entropic for ServedGroupIDs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -16111,7 +16085,7 @@ impl entropic::Entropic for ServedMMECs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -16124,7 +16098,7 @@ impl entropic::Entropic for ServedMMECs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -16133,14 +16107,14 @@ impl entropic::Entropic for ServedMMECs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "32")]
 pub struct ServedPLMNs(pub Vec<PLMNidentity>);
 impl entropic::Entropic for ServedPLMNs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(32, 16383);
+        let capped_max = std::cmp::min(32, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -16153,7 +16127,7 @@ impl entropic::Entropic for ServedPLMNs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(32, 16383);
+        let capped_max = std::cmp::min(32, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -16162,7 +16136,7 @@ impl entropic::Entropic for ServedPLMNs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct ServiceType(pub u8);
 impl ServiceType {
@@ -16183,15 +16157,15 @@ impl entropic::Entropic for ServiceType {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct Source_ToTarget_TransparentContainer(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct SourceBSS_ToTargetBSS_TransparentContainer(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct SourceNgRanNode_ID {
     pub global_ran_node_id: Global_RAN_NODE_ID,
@@ -16227,11 +16201,11 @@ impl entropic::Entropic for SourceNgRanNode_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct SourceNgRanNode_ToTargetNgRanNode_TransparentContainer(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "1", extensible = false)]
 pub enum SourceNodeID {
     #[asn(key = 0, extended = false)]
@@ -16251,7 +16225,7 @@ impl asn1_codecs::Asn1Choice for SourceNodeID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct SourceNodeID_Extension {}
 impl entropic::Entropic for SourceNodeID_Extension {
@@ -16269,7 +16243,7 @@ impl entropic::Entropic for SourceNodeID_Extension {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct SourceOfUEActivityBehaviourInformation(pub u8);
 impl SourceOfUEActivityBehaviourInformation {
@@ -16292,11 +16266,11 @@ impl entropic::Entropic for SourceOfUEActivityBehaviourInformation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct SourceRNC_ToTargetRNC_TransparentContainer(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false, optional_fields = 1)]
 pub struct SourceeNB_ID {
     pub global_enb_id: Global_ENB_ID,
@@ -16332,7 +16306,7 @@ impl entropic::Entropic for SourceeNB_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 3)]
 pub struct SourceeNB_ToTargeteNB_TransparentContainer {
     pub rrc_container: RRC_Container,
@@ -16391,7 +16365,7 @@ impl entropic::Entropic for SourceeNB_ToTargeteNB_TransparentContainer {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "3", extensible = true)]
 pub struct StratumLevel(pub u8);
 impl entropic::Entropic for StratumLevel {
@@ -16408,7 +16382,7 @@ impl entropic::Entropic for StratumLevel {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "1", ub = "256")]
 pub struct SubscriberProfileIDforRFP(pub u16);
 impl entropic::Entropic for SubscriberProfileIDforRFP {
@@ -16427,7 +16401,7 @@ impl entropic::Entropic for SubscriberProfileIDforRFP {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 7)]
 pub struct Subscription_Based_UE_DifferentiationInfo {
     #[asn(optional_idx = 0)]
@@ -16503,7 +16477,7 @@ impl entropic::Entropic for Subscription_Based_UE_DifferentiationInfo {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct SuccessfulOutcome {
     #[asn(key_field = true)]
@@ -16537,7 +16511,7 @@ impl entropic::Entropic for SuccessfulOutcome {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -16549,7 +16523,7 @@ impl entropic::Entropic for SupportedTAs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -16562,7 +16536,7 @@ impl entropic::Entropic for SupportedTAs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -16571,7 +16545,7 @@ impl entropic::Entropic for SupportedTAs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct SupportedTAs_Item {
     pub tac: TAC,
@@ -16605,7 +16579,7 @@ impl entropic::Entropic for SupportedTAs_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 4)]
 pub struct SynchronisationInformation {
     #[asn(optional_idx = 0)]
@@ -16651,7 +16625,7 @@ impl entropic::Entropic for SynchronisationInformation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct SynchronisationStatus(pub u8);
 impl SynchronisationStatus {
@@ -16672,7 +16646,7 @@ impl entropic::Entropic for SynchronisationStatus {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct TABasedMDT {
     pub ta_listfor_mdt: TAListforMDT,
@@ -16702,7 +16676,7 @@ impl entropic::Entropic for TABasedMDT {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct TABasedQMC {
     pub ta_listfor_qmc: TAListforQMC,
@@ -16732,7 +16706,7 @@ impl entropic::Entropic for TABasedQMC {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "OCTET-STRING", sz_extensible = false, sz_lb = "2", sz_ub = "2")]
 pub struct TAC(pub Vec<u8>);
 impl entropic::Entropic for TAC {
@@ -16759,7 +16733,7 @@ impl entropic::Entropic for TAC {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct TAI {
     pub plm_nidentity: PLMNidentity,
@@ -16793,7 +16767,7 @@ impl entropic::Entropic for TAI {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -16805,7 +16779,7 @@ impl entropic::Entropic for TAI_Broadcast {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -16818,7 +16792,7 @@ impl entropic::Entropic for TAI_Broadcast {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -16827,7 +16801,7 @@ impl entropic::Entropic for TAI_Broadcast {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct TAI_Broadcast_Item {
     pub tai: TAI,
@@ -16861,7 +16835,7 @@ impl entropic::Entropic for TAI_Broadcast_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -16873,7 +16847,7 @@ impl entropic::Entropic for TAI_Cancelled {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -16886,7 +16860,7 @@ impl entropic::Entropic for TAI_Cancelled {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -16895,7 +16869,7 @@ impl entropic::Entropic for TAI_Cancelled {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct TAI_Cancelled_Item {
     pub tai: TAI,
@@ -16929,7 +16903,7 @@ impl entropic::Entropic for TAI_Cancelled_Item {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct TAIBasedMDT {
     pub tai_listfor_mdt: TAIListforMDT,
@@ -16959,7 +16933,7 @@ impl entropic::Entropic for TAIBasedMDT {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct TAIBasedQMC {
     pub tai_listfor_qmc: TAIListforQMC,
@@ -16989,7 +16963,7 @@ impl entropic::Entropic for TAIBasedQMC {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct TAIItem {
     pub tai: TAI,
@@ -17014,7 +16988,7 @@ impl entropic::Entropic for TAIItem {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -17026,7 +17000,7 @@ impl entropic::Entropic for TAIList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -17039,7 +17013,7 @@ impl entropic::Entropic for TAIList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -17048,7 +17022,7 @@ impl entropic::Entropic for TAIList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -17060,7 +17034,7 @@ impl entropic::Entropic for TAIListForRestart {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(2048, 16383);
+        let capped_max = std::cmp::min(2048, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -17073,7 +17047,7 @@ impl entropic::Entropic for TAIListForRestart {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(2048, 16383);
+        let capped_max = std::cmp::min(2048, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -17082,14 +17056,14 @@ impl entropic::Entropic for TAIListForRestart {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "8")]
 pub struct TAIListforMDT(pub Vec<TAI>);
 impl entropic::Entropic for TAIListforMDT {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(8, 16383);
+        let capped_max = std::cmp::min(8, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -17102,7 +17076,7 @@ impl entropic::Entropic for TAIListforMDT {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(8, 16383);
+        let capped_max = std::cmp::min(8, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -17111,14 +17085,14 @@ impl entropic::Entropic for TAIListforMDT {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "8")]
 pub struct TAIListforQMC(pub Vec<TAI>);
 impl entropic::Entropic for TAIListforQMC {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(8, 16383);
+        let capped_max = std::cmp::min(8, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -17131,7 +17105,7 @@ impl entropic::Entropic for TAIListforQMC {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(8, 16383);
+        let capped_max = std::cmp::min(8, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -17140,7 +17114,7 @@ impl entropic::Entropic for TAIListforQMC {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -17152,7 +17126,7 @@ impl entropic::Entropic for TAIListforWarning {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -17165,7 +17139,7 @@ impl entropic::Entropic for TAIListforWarning {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -17174,14 +17148,14 @@ impl entropic::Entropic for TAIListforWarning {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "8")]
 pub struct TAListforMDT(pub Vec<TAC>);
 impl entropic::Entropic for TAListforMDT {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(8, 16383);
+        let capped_max = std::cmp::min(8, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -17194,7 +17168,7 @@ impl entropic::Entropic for TAListforMDT {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(8, 16383);
+        let capped_max = std::cmp::min(8, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -17203,14 +17177,14 @@ impl entropic::Entropic for TAListforMDT {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "8")]
 pub struct TAListforQMC(pub Vec<TAC>);
 impl entropic::Entropic for TAListforQMC {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(8, 16383);
+        let capped_max = std::cmp::min(8, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -17223,7 +17197,7 @@ impl entropic::Entropic for TAListforQMC {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(8, 16383);
+        let capped_max = std::cmp::min(8, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -17232,7 +17206,7 @@ impl entropic::Entropic for TAListforQMC {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "OCTET-STRING", sz_extensible = false, sz_lb = "3", sz_ub = "3")]
 pub struct TBCD_STRING(pub Vec<u8>);
 impl entropic::Entropic for TBCD_STRING {
@@ -17259,15 +17233,15 @@ impl entropic::Entropic for TBCD_STRING {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct Target_ToSource_TransparentContainer(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct TargetBSS_ToSourceBSS_TransparentContainer(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "2", extensible = true)]
 pub enum TargetID {
     #[asn(key = 0, extended = false)]
@@ -17293,7 +17267,7 @@ impl asn1_codecs::Asn1Choice for TargetID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct TargetNgRanNode_ID {
     pub global_ran_node_id: Global_RAN_NODE_ID,
@@ -17329,11 +17303,11 @@ impl entropic::Entropic for TargetNgRanNode_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct TargetNgRanNode_ToSourceNgRanNode_TransparentContainer(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 3)]
 pub struct TargetRNC_ID {
     pub lai: LAI,
@@ -17377,11 +17351,11 @@ impl entropic::Entropic for TargetRNC_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct TargetRNC_ToSourceRNC_TransparentContainer(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct TargeteNB_ID {
     pub global_enb_id: Global_ENB_ID,
@@ -17417,7 +17391,7 @@ impl entropic::Entropic for TargeteNB_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct TargeteNB_ToSourceeNB_TransparentContainer {
     pub rrc_container: RRC_Container,
@@ -17447,7 +17421,7 @@ impl entropic::Entropic for TargeteNB_ToSourceeNB_TransparentContainer {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "97")]
 pub struct Threshold_RSRP(pub u8);
 impl entropic::Entropic for Threshold_RSRP {
@@ -17464,7 +17438,7 @@ impl entropic::Entropic for Threshold_RSRP {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "34")]
 pub struct Threshold_RSRQ(pub u8);
 impl entropic::Entropic for Threshold_RSRQ {
@@ -17481,7 +17455,7 @@ impl entropic::Entropic for Threshold_RSRQ {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "4095")]
 pub struct Time_UE_StayedInCell(pub u16);
 impl entropic::Entropic for Time_UE_StayedInCell {
@@ -17498,7 +17472,7 @@ impl entropic::Entropic for Time_UE_StayedInCell {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "40950")]
 pub struct Time_UE_StayedInCell_EnhancedGranularity(pub u16);
 impl entropic::Entropic for Time_UE_StayedInCell_EnhancedGranularity {
@@ -17517,7 +17491,7 @@ impl entropic::Entropic for Time_UE_StayedInCell_EnhancedGranularity {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "OCTET-STRING", sz_extensible = false, sz_lb = "4", sz_ub = "4")]
 pub struct TimeSinceSecondaryNodeRelease(pub Vec<u8>);
 impl entropic::Entropic for TimeSinceSecondaryNodeRelease {
@@ -17544,7 +17518,7 @@ impl entropic::Entropic for TimeSinceSecondaryNodeRelease {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct TimeSynchronisationInfo {
     pub stratum_level: StratumLevel,
@@ -17581,7 +17555,7 @@ impl entropic::Entropic for TimeSynchronisationInfo {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "5")]
 pub struct TimeToWait(pub u8);
 impl TimeToWait {
@@ -17606,7 +17580,7 @@ impl entropic::Entropic for TimeToWait {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct TooEarlyInterRATHOReportReportFromEUTRAN {
     pub uerlf_report_container: TooEarlyInterRATHOReportReportFromEUTRANUERLFReportContainer,
@@ -17641,7 +17615,7 @@ impl entropic::Entropic for TooEarlyInterRATHOReportReportFromEUTRAN {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct TraceActivation {
     pub e_utran_trace_id: E_UTRAN_Trace_ID,
@@ -17690,7 +17664,7 @@ impl entropic::Entropic for TraceActivation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "5")]
 pub struct TraceDepth(pub u8);
 impl TraceDepth {
@@ -17715,7 +17689,7 @@ impl entropic::Entropic for TraceDepth {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct TraceFailureIndication {
     pub protocol_i_es: TraceFailureIndicationProtocolIEs,
@@ -17740,7 +17714,7 @@ impl entropic::Entropic for TraceFailureIndication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct TraceStart {
     pub protocol_i_es: TraceStartProtocolIEs,
@@ -17764,7 +17738,7 @@ impl entropic::Entropic for TraceStart {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "1", ub = "99")]
 pub struct TrafficLoadReductionIndication(pub u8);
 impl entropic::Entropic for TrafficLoadReductionIndication {
@@ -17783,7 +17757,7 @@ impl entropic::Entropic for TrafficLoadReductionIndication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct TransportInformation {
     pub transport_layer_address: TransportLayerAddress,
@@ -17816,7 +17790,7 @@ impl entropic::Entropic for TransportInformation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = true, sz_lb = "1", sz_ub = "160")]
 pub struct TransportLayerAddress(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for TransportLayerAddress {
@@ -17857,7 +17831,7 @@ impl entropic::Entropic for TransportLayerAddress {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", lb = "0", ub = "2")]
 pub struct TriggeringMessage(pub u8);
 impl TriggeringMessage {
@@ -17879,7 +17853,7 @@ impl entropic::Entropic for TriggeringMessage {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 2)]
 pub struct TunnelInformation {
     pub transport_layer_address: TransportLayerAddress,
@@ -17917,7 +17891,7 @@ impl entropic::Entropic for TunnelInformation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct TypeOfError(pub u8);
 impl TypeOfError {
@@ -17938,7 +17912,7 @@ impl entropic::Entropic for TypeOfError {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "8", sz_ub = "8")]
 pub struct UE_Application_Layer_Measurement_Capability(
     pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>,
@@ -17981,14 +17955,14 @@ impl entropic::Entropic for UE_Application_Layer_Measurement_Capability {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "16")]
 pub struct UE_HistoryInformation(pub Vec<LastVisitedCell_Item>);
 impl entropic::Entropic for UE_HistoryInformation {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -18001,7 +17975,7 @@ impl entropic::Entropic for UE_HistoryInformation {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(16, 16383);
+        let capped_max = std::cmp::min(16, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -18010,19 +17984,19 @@ impl entropic::Entropic for UE_HistoryInformation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct UE_HistoryInformationFromTheUE(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct UE_RLF_Report_Container(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct UE_RLF_Report_Container_for_extended_bands(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct UE_RetentionInformation(pub u8);
 impl UE_RetentionInformation {
@@ -18042,7 +18016,7 @@ impl entropic::Entropic for UE_RetentionInformation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct UE_S1AP_ID_pair {
     pub mme_ue_s1ap_id: MME_UE_S1AP_ID,
@@ -18078,7 +18052,7 @@ impl entropic::Entropic for UE_S1AP_ID_pair {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "1", extensible = true)]
 pub enum UE_S1AP_IDs {
     #[asn(key = 0, extended = false)]
@@ -18098,7 +18072,7 @@ impl asn1_codecs::Asn1Choice for UE_S1AP_IDs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "255")]
 pub struct UE_Usage_Type(pub u8);
 impl entropic::Entropic for UE_Usage_Type {
@@ -18115,7 +18089,7 @@ impl entropic::Entropic for UE_Usage_Type {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 3)]
 pub struct UE_associatedLogicalS1_ConnectionItem {
     #[asn(optional_idx = 0)]
@@ -18153,7 +18127,7 @@ impl entropic::Entropic for UE_associatedLogicalS1_ConnectionItem {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -18167,7 +18141,7 @@ impl entropic::Entropic for UE_associatedLogicalS1_ConnectionListRes {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -18180,7 +18154,7 @@ impl entropic::Entropic for UE_associatedLogicalS1_ConnectionListRes {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -18189,7 +18163,7 @@ impl entropic::Entropic for UE_associatedLogicalS1_ConnectionListRes {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -18203,7 +18177,7 @@ impl entropic::Entropic for UE_associatedLogicalS1_ConnectionListResAck {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -18216,7 +18190,7 @@ impl entropic::Entropic for UE_associatedLogicalS1_ConnectionListResAck {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(256, 16383);
+        let capped_max = std::cmp::min(256, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -18225,7 +18199,7 @@ impl entropic::Entropic for UE_associatedLogicalS1_ConnectionListResAck {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct UEAggregateMaximumBitrate {
     pub u_eaggregate_maximum_bit_rate_dl: BitRate,
@@ -18261,7 +18235,7 @@ impl entropic::Entropic for UEAggregateMaximumBitrate {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct UEAppLayerMeasConfig {
     pub container_for_app_layer_meas_config: UEAppLayerMeasConfigContainerForAppLayerMeasConfig,
@@ -18297,7 +18271,7 @@ impl entropic::Entropic for UEAppLayerMeasConfig {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct UECapabilityInfoIndication {
     pub protocol_i_es: UECapabilityInfoIndicationProtocolIEs,
@@ -18322,7 +18296,7 @@ impl entropic::Entropic for UECapabilityInfoIndication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct UECapabilityInfoRequest(pub u8);
 impl UECapabilityInfoRequest {
@@ -18342,7 +18316,7 @@ impl entropic::Entropic for UECapabilityInfoRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct UEContextModificationConfirm {
     pub protocol_i_es: UEContextModificationConfirmProtocolIEs,
@@ -18367,7 +18341,7 @@ impl entropic::Entropic for UEContextModificationConfirm {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct UEContextModificationFailure {
     pub protocol_i_es: UEContextModificationFailureProtocolIEs,
@@ -18392,7 +18366,7 @@ impl entropic::Entropic for UEContextModificationFailure {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct UEContextModificationIndication {
     pub protocol_i_es: UEContextModificationIndicationProtocolIEs,
@@ -18417,7 +18391,7 @@ impl entropic::Entropic for UEContextModificationIndication {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct UEContextModificationRequest {
     pub protocol_i_es: UEContextModificationRequestProtocolIEs,
@@ -18442,7 +18416,7 @@ impl entropic::Entropic for UEContextModificationRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct UEContextModificationResponse {
     pub protocol_i_es: UEContextModificationResponseProtocolIEs,
@@ -18467,7 +18441,7 @@ impl entropic::Entropic for UEContextModificationResponse {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct UEContextReleaseCommand {
     pub protocol_i_es: UEContextReleaseCommandProtocolIEs,
@@ -18492,7 +18466,7 @@ impl entropic::Entropic for UEContextReleaseCommand {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct UEContextReleaseComplete {
     pub protocol_i_es: UEContextReleaseCompleteProtocolIEs,
@@ -18517,7 +18491,7 @@ impl entropic::Entropic for UEContextReleaseComplete {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct UEContextReleaseRequest {
     pub protocol_i_es: UEContextReleaseRequestProtocolIEs,
@@ -18542,7 +18516,7 @@ impl entropic::Entropic for UEContextReleaseRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct UEContextResumeFailure {
     pub protocol_i_es: UEContextResumeFailureProtocolIEs,
@@ -18567,7 +18541,7 @@ impl entropic::Entropic for UEContextResumeFailure {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct UEContextResumeRequest {
     pub protocol_i_es: UEContextResumeRequestProtocolIEs,
@@ -18592,7 +18566,7 @@ impl entropic::Entropic for UEContextResumeRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct UEContextResumeResponse {
     pub protocol_i_es: UEContextResumeResponseProtocolIEs,
@@ -18617,7 +18591,7 @@ impl entropic::Entropic for UEContextResumeResponse {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct UEContextSuspendRequest {
     pub protocol_i_es: UEContextSuspendRequestProtocolIEs,
@@ -18642,7 +18616,7 @@ impl entropic::Entropic for UEContextSuspendRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct UEContextSuspendResponse {
     pub protocol_i_es: UEContextSuspendResponseProtocolIEs,
@@ -18667,7 +18641,7 @@ impl entropic::Entropic for UEContextSuspendResponse {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "10", sz_ub = "10")]
 pub struct UEIdentityIndexValue(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for UEIdentityIndexValue {
@@ -18708,7 +18682,7 @@ impl entropic::Entropic for UEIdentityIndexValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct UEInformationTransfer {
     pub protocol_i_es: UEInformationTransferProtocolIEs,
@@ -18733,7 +18707,7 @@ impl entropic::Entropic for UEInformationTransfer {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "1", extensible = true)]
 pub enum UEPagingID {
     #[asn(key = 0, extended = false)]
@@ -18753,19 +18727,19 @@ impl asn1_codecs::Asn1Choice for UEPagingID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct UERadioCapability(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct UERadioCapabilityForPaging(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct UERadioCapabilityID(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct UERadioCapabilityIDMappingRequest {
     pub protocol_i_es: UERadioCapabilityIDMappingRequestProtocolIEs,
@@ -18790,7 +18764,7 @@ impl entropic::Entropic for UERadioCapabilityIDMappingRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct UERadioCapabilityIDMappingResponse {
     pub protocol_i_es: UERadioCapabilityIDMappingResponseProtocolIEs,
@@ -18815,7 +18789,7 @@ impl entropic::Entropic for UERadioCapabilityIDMappingResponse {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct UERadioCapabilityMatchRequest {
     pub protocol_i_es: UERadioCapabilityMatchRequestProtocolIEs,
@@ -18840,7 +18814,7 @@ impl entropic::Entropic for UERadioCapabilityMatchRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct UERadioCapabilityMatchResponse {
     pub protocol_i_es: UERadioCapabilityMatchResponseProtocolIEs,
@@ -18865,7 +18839,7 @@ impl entropic::Entropic for UERadioCapabilityMatchResponse {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct UESecurityCapabilities {
     pub encryption_algorithms: EncryptionAlgorithms,
@@ -18902,7 +18876,7 @@ impl entropic::Entropic for UESecurityCapabilities {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct UESidelinkAggregateMaximumBitrate {
     pub ue_sidelink_aggregate_maximum_bit_rate: BitRate,
@@ -18933,7 +18907,7 @@ impl entropic::Entropic for UESidelinkAggregateMaximumBitrate {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct UEUserPlaneCIoTSupportIndicator(pub u8);
 impl UEUserPlaneCIoTSupportIndicator {
@@ -18955,7 +18929,7 @@ impl entropic::Entropic for UEUserPlaneCIoTSupportIndicator {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct UL_CP_SecurityInformation {
     pub ul_nas_mac: UL_NAS_MAC,
@@ -18991,7 +18965,7 @@ impl entropic::Entropic for UL_CP_SecurityInformation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "5", sz_ub = "5")]
 pub struct UL_NAS_Count(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for UL_NAS_Count {
@@ -19032,7 +19006,7 @@ impl entropic::Entropic for UL_NAS_Count {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "16", sz_ub = "16")]
 pub struct UL_NAS_MAC(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for UL_NAS_MAC {
@@ -19073,11 +19047,11 @@ impl entropic::Entropic for UL_NAS_MAC {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "VisibleString")]
 pub struct URI_Address(pub String);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct UnlicensedSpectrumRestriction(pub u8);
 impl UnlicensedSpectrumRestriction {
@@ -19099,7 +19073,7 @@ impl entropic::Entropic for UnlicensedSpectrumRestriction {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UnsuccessfulOutcome {
     #[asn(key_field = true)]
@@ -19133,7 +19107,7 @@ impl entropic::Entropic for UnsuccessfulOutcome {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct UplinkNASTransport {
     pub protocol_i_es: UplinkNASTransportProtocolIEs,
@@ -19157,7 +19131,7 @@ impl entropic::Entropic for UplinkNASTransport {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct UplinkNonUEAssociatedLPPaTransport {
     pub protocol_i_es: UplinkNonUEAssociatedLPPaTransportProtocolIEs,
@@ -19182,7 +19156,7 @@ impl entropic::Entropic for UplinkNonUEAssociatedLPPaTransport {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct UplinkS1cdma2000tunnelling {
     pub protocol_i_es: UplinkS1cdma2000tunnellingProtocolIEs,
@@ -19207,7 +19181,7 @@ impl entropic::Entropic for UplinkS1cdma2000tunnelling {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct UplinkUEAssociatedLPPaTransport {
     pub protocol_i_es: UplinkUEAssociatedLPPaTransportProtocolIEs,
@@ -19232,7 +19206,7 @@ impl entropic::Entropic for UplinkUEAssociatedLPPaTransport {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct UserLocationInformation {
     pub eutran_cgi: EUTRAN_CGI,
@@ -19266,7 +19240,7 @@ impl entropic::Entropic for UserLocationInformation {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 3)]
 pub struct V2XServicesAuthorized {
     #[asn(optional_idx = 0)]
@@ -19304,7 +19278,7 @@ impl entropic::Entropic for V2XServicesAuthorized {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct VehicleUE(pub u8);
 impl VehicleUE {
@@ -19325,7 +19299,7 @@ impl entropic::Entropic for VehicleUE {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct VoiceSupportMatchIndicator(pub u8);
 impl VoiceSupportMatchIndicator {
@@ -19346,7 +19320,7 @@ impl entropic::Entropic for VoiceSupportMatchIndicator {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct WLANMeasConfig(pub u8);
 impl WLANMeasConfig {
@@ -19366,14 +19340,14 @@ impl entropic::Entropic for WLANMeasConfig {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE-OF", sz_extensible = false, sz_lb = "1", sz_ub = "4")]
 pub struct WLANMeasConfigNameList(pub Vec<WLANName>);
 impl entropic::Entropic for WLANMeasConfigNameList {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(4, 16383);
+        let capped_max = std::cmp::min(4, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -19386,7 +19360,7 @@ impl entropic::Entropic for WLANMeasConfigNameList {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(4, 16383);
+        let capped_max = std::cmp::min(4, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -19395,7 +19369,7 @@ impl entropic::Entropic for WLANMeasConfigNameList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 4)]
 pub struct WLANMeasurementConfiguration {
     pub wlan_meas_config: WLANMeasConfig,
@@ -19445,7 +19419,7 @@ impl entropic::Entropic for WLANMeasurementConfiguration {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "OCTET-STRING",
     sz_extensible = false,
@@ -19477,7 +19451,7 @@ impl entropic::Entropic for WLANName {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct WUS_Assistance_Information {
     pub paging_probability_information: PagingProbabilityInformation,
@@ -19508,7 +19482,7 @@ impl entropic::Entropic for WUS_Assistance_Information {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "OCTET-STRING",
     sz_extensible = false,
@@ -19540,7 +19514,7 @@ impl entropic::Entropic for WarningAreaCoordinates {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "CHOICE", lb = "0", ub = "2", extensible = true)]
 pub enum WarningAreaList {
     #[asn(key = 0, extended = false)]
@@ -19563,7 +19537,7 @@ impl asn1_codecs::Asn1Choice for WarningAreaList {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "OCTET-STRING",
     sz_extensible = false,
@@ -19595,7 +19569,7 @@ impl entropic::Entropic for WarningMessageContents {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "OCTET-STRING",
     sz_extensible = false,
@@ -19627,7 +19601,7 @@ impl entropic::Entropic for WarningSecurityInfo {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "OCTET-STRING", sz_extensible = false, sz_lb = "2", sz_ub = "2")]
 pub struct WarningType(pub Vec<u8>);
 impl entropic::Entropic for WarningType {
@@ -19654,7 +19628,7 @@ impl entropic::Entropic for WarningType {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct WriteReplaceWarningRequest {
     pub protocol_i_es: WriteReplaceWarningRequestProtocolIEs,
@@ -19679,7 +19653,7 @@ impl entropic::Entropic for WriteReplaceWarningRequest {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true)]
 pub struct WriteReplaceWarningResponse {
     pub protocol_i_es: WriteReplaceWarningResponseProtocolIEs,
@@ -19704,7 +19678,7 @@ impl entropic::Entropic for WriteReplaceWarningResponse {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = true, optional_fields = 1)]
 pub struct X2TNLConfigurationInfo {
     pub enbx2_transport_layer_addresses: ENBX2TLAs,
@@ -19734,11 +19708,11 @@ impl entropic::Entropic for X2TNLConfigurationInfo {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct ActivatedCellsList_ItemCell_ID(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct Additional_GUTIIE_Extensions_Entry {}
 impl entropic::Entropic for Additional_GUTIIE_Extensions_Entry {
@@ -19756,7 +19730,7 @@ impl entropic::Entropic for Additional_GUTIIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -19768,7 +19742,7 @@ impl entropic::Entropic for Additional_GUTIIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -19783,7 +19757,7 @@ impl entropic::Entropic for Additional_GUTIIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -19792,7 +19766,7 @@ impl entropic::Entropic for Additional_GUTIIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct AllocationAndRetentionPriorityIE_Extensions_Entry {}
 impl entropic::Entropic for AllocationAndRetentionPriorityIE_Extensions_Entry {
@@ -19810,7 +19784,7 @@ impl entropic::Entropic for AllocationAndRetentionPriorityIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -19824,7 +19798,7 @@ impl entropic::Entropic for AllocationAndRetentionPriorityIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -19837,7 +19811,7 @@ impl entropic::Entropic for AllocationAndRetentionPriorityIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -19846,11 +19820,11 @@ impl entropic::Entropic for AllocationAndRetentionPriorityIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "NULL")]
 pub struct AreaScopeOfMDT_pLMNWide;
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct AssistanceDataForCECapableUEsIE_Extensions_Entry {}
 impl entropic::Entropic for AssistanceDataForCECapableUEsIE_Extensions_Entry {
@@ -19868,7 +19842,7 @@ impl entropic::Entropic for AssistanceDataForCECapableUEsIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -19882,7 +19856,7 @@ impl entropic::Entropic for AssistanceDataForCECapableUEsIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -19895,7 +19869,7 @@ impl entropic::Entropic for AssistanceDataForCECapableUEsIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -19904,7 +19878,7 @@ impl entropic::Entropic for AssistanceDataForCECapableUEsIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct AssistanceDataForPagingIE_Extensions_Entry {}
 impl entropic::Entropic for AssistanceDataForPagingIE_Extensions_Entry {
@@ -19922,7 +19896,7 @@ impl entropic::Entropic for AssistanceDataForPagingIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -19936,7 +19910,7 @@ impl entropic::Entropic for AssistanceDataForPagingIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -19949,7 +19923,7 @@ impl entropic::Entropic for AssistanceDataForPagingIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -19958,7 +19932,7 @@ impl entropic::Entropic for AssistanceDataForPagingIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct AssistanceDataForRecommendedCellsIE_Extensions_Entry {}
 impl entropic::Entropic for AssistanceDataForRecommendedCellsIE_Extensions_Entry {
@@ -19976,7 +19950,7 @@ impl entropic::Entropic for AssistanceDataForRecommendedCellsIE_Extensions_Entry
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -19990,7 +19964,7 @@ impl entropic::Entropic for AssistanceDataForRecommendedCellsIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -20005,7 +19979,7 @@ impl entropic::Entropic for AssistanceDataForRecommendedCellsIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -20014,7 +19988,7 @@ impl entropic::Entropic for AssistanceDataForRecommendedCellsIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct Bearers_SubjectToEarlyStatusTransfer_ItemIE_Extensions_Entry {}
 impl entropic::Entropic for Bearers_SubjectToEarlyStatusTransfer_ItemIE_Extensions_Entry {
@@ -20032,7 +20006,7 @@ impl entropic::Entropic for Bearers_SubjectToEarlyStatusTransfer_ItemIE_Extensio
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -20046,7 +20020,7 @@ impl entropic::Entropic for Bearers_SubjectToEarlyStatusTransfer_ItemIE_Extensio
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -20063,7 +20037,7 @@ impl entropic::Entropic for Bearers_SubjectToEarlyStatusTransfer_ItemIE_Extensio
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -20072,7 +20046,7 @@ impl entropic::Entropic for Bearers_SubjectToEarlyStatusTransfer_ItemIE_Extensio
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum Bearers_SubjectToEarlyStatusTransferList_EntryValue {
     #[asn(key = 322)]
@@ -20089,7 +20063,7 @@ impl asn1_codecs::Asn1Choice for Bearers_SubjectToEarlyStatusTransferList_EntryV
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct Bearers_SubjectToEarlyStatusTransferList_Entry {
     #[asn(key_field = true)]
@@ -20124,7 +20098,7 @@ impl entropic::Entropic for Bearers_SubjectToEarlyStatusTransferList_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum Bearers_SubjectToStatusTransfer_ItemIE_Extensions_EntryExtensionValue {
     #[asn(key = 180)]
@@ -20158,7 +20132,7 @@ impl asn1_codecs::Asn1Choice
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct Bearers_SubjectToStatusTransfer_ItemIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -20195,7 +20169,7 @@ impl entropic::Entropic for Bearers_SubjectToStatusTransfer_ItemIE_Extensions_En
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -20209,7 +20183,7 @@ impl entropic::Entropic for Bearers_SubjectToStatusTransfer_ItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -20226,7 +20200,7 @@ impl entropic::Entropic for Bearers_SubjectToStatusTransfer_ItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -20235,7 +20209,7 @@ impl entropic::Entropic for Bearers_SubjectToStatusTransfer_ItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum Bearers_SubjectToStatusTransferList_EntryValue {
     #[asn(key = 89)]
@@ -20252,7 +20226,7 @@ impl asn1_codecs::Asn1Choice for Bearers_SubjectToStatusTransferList_EntryValue 
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct Bearers_SubjectToStatusTransferList_Entry {
     #[asn(key_field = true)]
@@ -20287,7 +20261,7 @@ impl entropic::Entropic for Bearers_SubjectToStatusTransferList_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct BluetoothMeasurementConfigurationBt_rssi(pub u8);
 impl BluetoothMeasurementConfigurationBt_rssi {
@@ -20309,7 +20283,7 @@ impl entropic::Entropic for BluetoothMeasurementConfigurationBt_rssi {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct BluetoothMeasurementConfigurationIE_Extensions_Entry {}
 impl entropic::Entropic for BluetoothMeasurementConfigurationIE_Extensions_Entry {
@@ -20327,7 +20301,7 @@ impl entropic::Entropic for BluetoothMeasurementConfigurationIE_Extensions_Entry
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -20341,7 +20315,7 @@ impl entropic::Entropic for BluetoothMeasurementConfigurationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -20356,7 +20330,7 @@ impl entropic::Entropic for BluetoothMeasurementConfigurationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -20365,7 +20339,7 @@ impl entropic::Entropic for BluetoothMeasurementConfigurationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct CGIIE_Extensions_Entry {}
 impl entropic::Entropic for CGIIE_Extensions_Entry {
@@ -20383,7 +20357,7 @@ impl entropic::Entropic for CGIIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -20395,7 +20369,7 @@ impl entropic::Entropic for CGIIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -20408,7 +20382,7 @@ impl entropic::Entropic for CGIIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -20417,7 +20391,7 @@ impl entropic::Entropic for CGIIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct CNTypeRestrictions_ItemIE_Extensions_Entry {}
 impl entropic::Entropic for CNTypeRestrictions_ItemIE_Extensions_Entry {
@@ -20435,7 +20409,7 @@ impl entropic::Entropic for CNTypeRestrictions_ItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -20449,7 +20423,7 @@ impl entropic::Entropic for CNTypeRestrictions_ItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -20462,7 +20436,7 @@ impl entropic::Entropic for CNTypeRestrictions_ItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -20471,7 +20445,7 @@ impl entropic::Entropic for CNTypeRestrictions_ItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct COUNTValueExtendedIE_Extensions_Entry {}
 impl entropic::Entropic for COUNTValueExtendedIE_Extensions_Entry {
@@ -20489,7 +20463,7 @@ impl entropic::Entropic for COUNTValueExtendedIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -20501,7 +20475,7 @@ impl entropic::Entropic for COUNTValueExtendedIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -20516,7 +20490,7 @@ impl entropic::Entropic for COUNTValueExtendedIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -20525,7 +20499,7 @@ impl entropic::Entropic for COUNTValueExtendedIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct COUNTvalueIE_Extensions_Entry {}
 impl entropic::Entropic for COUNTvalueIE_Extensions_Entry {
@@ -20543,7 +20517,7 @@ impl entropic::Entropic for COUNTvalueIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -20555,7 +20529,7 @@ impl entropic::Entropic for COUNTvalueIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -20568,7 +20542,7 @@ impl entropic::Entropic for COUNTvalueIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -20577,7 +20551,7 @@ impl entropic::Entropic for COUNTvalueIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct COUNTvaluePDCP_SNlength18IE_Extensions_Entry {}
 impl entropic::Entropic for COUNTvaluePDCP_SNlength18IE_Extensions_Entry {
@@ -20595,7 +20569,7 @@ impl entropic::Entropic for COUNTvaluePDCP_SNlength18IE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -20609,7 +20583,7 @@ impl entropic::Entropic for COUNTvaluePDCP_SNlength18IE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -20622,7 +20596,7 @@ impl entropic::Entropic for COUNTvaluePDCP_SNlength18IE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -20631,7 +20605,7 @@ impl entropic::Entropic for COUNTvaluePDCP_SNlength18IE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct CSG_IdList_ItemIE_Extensions_Entry {}
 impl entropic::Entropic for CSG_IdList_ItemIE_Extensions_Entry {
@@ -20649,7 +20623,7 @@ impl entropic::Entropic for CSG_IdList_ItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -20661,7 +20635,7 @@ impl entropic::Entropic for CSG_IdList_ItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -20676,7 +20650,7 @@ impl entropic::Entropic for CSG_IdList_ItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -20685,7 +20659,7 @@ impl entropic::Entropic for CSG_IdList_ItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct CSGMembershipInfoIE_Extensions_Entry {}
 impl entropic::Entropic for CSGMembershipInfoIE_Extensions_Entry {
@@ -20703,7 +20677,7 @@ impl entropic::Entropic for CSGMembershipInfoIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -20715,7 +20689,7 @@ impl entropic::Entropic for CSGMembershipInfoIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -20730,7 +20704,7 @@ impl entropic::Entropic for CSGMembershipInfoIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -20739,7 +20713,7 @@ impl entropic::Entropic for CSGMembershipInfoIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct CancelledCellinEAI_ItemIE_Extensions_Entry {}
 impl entropic::Entropic for CancelledCellinEAI_ItemIE_Extensions_Entry {
@@ -20757,7 +20731,7 @@ impl entropic::Entropic for CancelledCellinEAI_ItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -20771,7 +20745,7 @@ impl entropic::Entropic for CancelledCellinEAI_ItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -20784,7 +20758,7 @@ impl entropic::Entropic for CancelledCellinEAI_ItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -20793,7 +20767,7 @@ impl entropic::Entropic for CancelledCellinEAI_ItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct CancelledCellinTAI_ItemIE_Extensions_Entry {}
 impl entropic::Entropic for CancelledCellinTAI_ItemIE_Extensions_Entry {
@@ -20811,7 +20785,7 @@ impl entropic::Entropic for CancelledCellinTAI_ItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -20825,7 +20799,7 @@ impl entropic::Entropic for CancelledCellinTAI_ItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -20838,7 +20812,7 @@ impl entropic::Entropic for CancelledCellinTAI_ItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -20847,7 +20821,7 @@ impl entropic::Entropic for CancelledCellinTAI_ItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "503")]
 pub struct CandidatePCIPCI(pub u16);
 impl entropic::Entropic for CandidatePCIPCI {
@@ -20864,11 +20838,11 @@ impl entropic::Entropic for CandidatePCIPCI {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct CandidatePCIEARFCN(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct Cdma2000OneXSRVCCInfoIE_Extensions_Entry {}
 impl entropic::Entropic for Cdma2000OneXSRVCCInfoIE_Extensions_Entry {
@@ -20886,7 +20860,7 @@ impl entropic::Entropic for Cdma2000OneXSRVCCInfoIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -20898,7 +20872,7 @@ impl entropic::Entropic for Cdma2000OneXSRVCCInfoIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -20911,7 +20885,7 @@ impl entropic::Entropic for Cdma2000OneXSRVCCInfoIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -20920,7 +20894,7 @@ impl entropic::Entropic for Cdma2000OneXSRVCCInfoIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "1", ub = "60")]
 pub struct CellActivationRequestMinimumActivationTime(pub u8);
 impl entropic::Entropic for CellActivationRequestMinimumActivationTime {
@@ -20939,7 +20913,7 @@ impl entropic::Entropic for CellActivationRequestMinimumActivationTime {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct CellBasedMDTIE_Extensions_Entry {}
 impl entropic::Entropic for CellBasedMDTIE_Extensions_Entry {
@@ -20957,7 +20931,7 @@ impl entropic::Entropic for CellBasedMDTIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -20969,7 +20943,7 @@ impl entropic::Entropic for CellBasedMDTIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -20984,7 +20958,7 @@ impl entropic::Entropic for CellBasedMDTIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -20993,7 +20967,7 @@ impl entropic::Entropic for CellBasedMDTIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct CellBasedQMCIE_Extensions_Entry {}
 impl entropic::Entropic for CellBasedQMCIE_Extensions_Entry {
@@ -21011,7 +20985,7 @@ impl entropic::Entropic for CellBasedQMCIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -21023,7 +20997,7 @@ impl entropic::Entropic for CellBasedQMCIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -21038,7 +21012,7 @@ impl entropic::Entropic for CellBasedQMCIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -21047,7 +21021,7 @@ impl entropic::Entropic for CellBasedQMCIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct CellID_Broadcast_ItemIE_Extensions_Entry {}
 impl entropic::Entropic for CellID_Broadcast_ItemIE_Extensions_Entry {
@@ -21065,7 +21039,7 @@ impl entropic::Entropic for CellID_Broadcast_ItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -21077,7 +21051,7 @@ impl entropic::Entropic for CellID_Broadcast_ItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -21090,7 +21064,7 @@ impl entropic::Entropic for CellID_Broadcast_ItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -21099,7 +21073,7 @@ impl entropic::Entropic for CellID_Broadcast_ItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct CellID_Cancelled_ItemIE_Extensions_Entry {}
 impl entropic::Entropic for CellID_Cancelled_ItemIE_Extensions_Entry {
@@ -21117,7 +21091,7 @@ impl entropic::Entropic for CellID_Cancelled_ItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -21129,7 +21103,7 @@ impl entropic::Entropic for CellID_Cancelled_ItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -21142,7 +21116,7 @@ impl entropic::Entropic for CellID_Cancelled_ItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -21151,7 +21125,7 @@ impl entropic::Entropic for CellID_Cancelled_ItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct CellIdentifierAndCELevelForCECapableUEsIE_Extensions_Entry {}
 impl entropic::Entropic for CellIdentifierAndCELevelForCECapableUEsIE_Extensions_Entry {
@@ -21169,7 +21143,7 @@ impl entropic::Entropic for CellIdentifierAndCELevelForCECapableUEsIE_Extensions
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -21183,7 +21157,7 @@ impl entropic::Entropic for CellIdentifierAndCELevelForCECapableUEsIE_Extensions
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -21200,7 +21174,7 @@ impl entropic::Entropic for CellIdentifierAndCELevelForCECapableUEsIE_Extensions
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -21209,15 +21183,15 @@ impl entropic::Entropic for CellIdentifierAndCELevelForCECapableUEsIE_Extensions
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct CellLoadReportingResponse_uTRAN(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct CellLoadReportingResponse_gERAN(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum CellTrafficTraceProtocolIEs_EntryValue {
     #[asn(key = 86)]
@@ -21249,7 +21223,7 @@ impl asn1_codecs::Asn1Choice for CellTrafficTraceProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct CellTrafficTraceProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -21284,7 +21258,7 @@ impl entropic::Entropic for CellTrafficTraceProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -21296,7 +21270,7 @@ impl entropic::Entropic for CellTrafficTraceProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -21311,7 +21285,7 @@ impl entropic::Entropic for CellTrafficTraceProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -21320,7 +21294,7 @@ impl entropic::Entropic for CellTrafficTraceProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct CellTypeIE_Extensions_Entry {}
 impl entropic::Entropic for CellTypeIE_Extensions_Entry {
@@ -21338,7 +21312,7 @@ impl entropic::Entropic for CellTypeIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -21350,7 +21324,7 @@ impl entropic::Entropic for CellTypeIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -21363,7 +21337,7 @@ impl entropic::Entropic for CellTypeIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -21372,11 +21346,11 @@ impl entropic::Entropic for CellTypeIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct CellsToActivateList_ItemCell_ID(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct CompletedCellinEAI_ItemIE_Extensions_Entry {}
 impl entropic::Entropic for CompletedCellinEAI_ItemIE_Extensions_Entry {
@@ -21394,7 +21368,7 @@ impl entropic::Entropic for CompletedCellinEAI_ItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -21408,7 +21382,7 @@ impl entropic::Entropic for CompletedCellinEAI_ItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -21421,7 +21395,7 @@ impl entropic::Entropic for CompletedCellinEAI_ItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -21430,7 +21404,7 @@ impl entropic::Entropic for CompletedCellinEAI_ItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct CompletedCellinTAI_ItemIE_Extensions_Entry {}
 impl entropic::Entropic for CompletedCellinTAI_ItemIE_Extensions_Entry {
@@ -21448,7 +21422,7 @@ impl entropic::Entropic for CompletedCellinTAI_ItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -21462,7 +21436,7 @@ impl entropic::Entropic for CompletedCellinTAI_ItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -21475,7 +21449,7 @@ impl entropic::Entropic for CompletedCellinTAI_ItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -21484,7 +21458,7 @@ impl entropic::Entropic for CompletedCellinTAI_ItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ConnectedengNBItemIE_Extensions_Entry {}
 impl entropic::Entropic for ConnectedengNBItemIE_Extensions_Entry {
@@ -21502,7 +21476,7 @@ impl entropic::Entropic for ConnectedengNBItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -21514,7 +21488,7 @@ impl entropic::Entropic for ConnectedengNBItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -21529,7 +21503,7 @@ impl entropic::Entropic for ConnectedengNBItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -21538,7 +21512,7 @@ impl entropic::Entropic for ConnectedengNBItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum ConnectionEstablishmentIndicationProtocolIEs_EntryValue {
     #[asn(key = 271)]
@@ -21582,7 +21556,7 @@ impl asn1_codecs::Asn1Choice for ConnectionEstablishmentIndicationProtocolIEs_En
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ConnectionEstablishmentIndicationProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -21617,7 +21591,7 @@ impl entropic::Entropic for ConnectionEstablishmentIndicationProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -21631,7 +21605,7 @@ impl entropic::Entropic for ConnectionEstablishmentIndicationProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -21646,7 +21620,7 @@ impl entropic::Entropic for ConnectionEstablishmentIndicationProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -21655,7 +21629,7 @@ impl entropic::Entropic for ConnectionEstablishmentIndicationProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ContextatSourceIE_Extensions_Entry {}
 impl entropic::Entropic for ContextatSourceIE_Extensions_Entry {
@@ -21673,7 +21647,7 @@ impl entropic::Entropic for ContextatSourceIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -21685,7 +21659,7 @@ impl entropic::Entropic for ContextatSourceIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -21700,7 +21674,7 @@ impl entropic::Entropic for ContextatSourceIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -21709,7 +21683,7 @@ impl entropic::Entropic for ContextatSourceIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct CriticalityDiagnosticsIE_Extensions_Entry {}
 impl entropic::Entropic for CriticalityDiagnosticsIE_Extensions_Entry {
@@ -21727,7 +21701,7 @@ impl entropic::Entropic for CriticalityDiagnosticsIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -21739,7 +21713,7 @@ impl entropic::Entropic for CriticalityDiagnosticsIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -21752,7 +21726,7 @@ impl entropic::Entropic for CriticalityDiagnosticsIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -21761,7 +21735,7 @@ impl entropic::Entropic for CriticalityDiagnosticsIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct CriticalityDiagnostics_IE_ItemIE_Extensions_Entry {}
 impl entropic::Entropic for CriticalityDiagnostics_IE_ItemIE_Extensions_Entry {
@@ -21779,7 +21753,7 @@ impl entropic::Entropic for CriticalityDiagnostics_IE_ItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -21793,7 +21767,7 @@ impl entropic::Entropic for CriticalityDiagnostics_IE_ItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -21806,7 +21780,7 @@ impl entropic::Entropic for CriticalityDiagnostics_IE_ItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -21815,7 +21789,7 @@ impl entropic::Entropic for CriticalityDiagnostics_IE_ItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct DAPSRequestInfoDAPSIndicator(pub u8);
 impl DAPSRequestInfoDAPSIndicator {
@@ -21837,7 +21811,7 @@ impl entropic::Entropic for DAPSRequestInfoDAPSIndicator {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct DAPSRequestInfoIE_Extensions_Entry {}
 impl entropic::Entropic for DAPSRequestInfoIE_Extensions_Entry {
@@ -21855,7 +21829,7 @@ impl entropic::Entropic for DAPSRequestInfoIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -21867,7 +21841,7 @@ impl entropic::Entropic for DAPSRequestInfoIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -21882,7 +21856,7 @@ impl entropic::Entropic for DAPSRequestInfoIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -21891,7 +21865,7 @@ impl entropic::Entropic for DAPSRequestInfoIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct DAPSResponseInfoDapsresponseindicator(pub u8);
 impl DAPSResponseInfoDapsresponseindicator {
@@ -21914,7 +21888,7 @@ impl entropic::Entropic for DAPSResponseInfoDapsresponseindicator {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct DAPSResponseInfoIE_Extensions_Entry {}
 impl entropic::Entropic for DAPSResponseInfoIE_Extensions_Entry {
@@ -21932,7 +21906,7 @@ impl entropic::Entropic for DAPSResponseInfoIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -21944,7 +21918,7 @@ impl entropic::Entropic for DAPSResponseInfoIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -21959,7 +21933,7 @@ impl entropic::Entropic for DAPSResponseInfoIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -21968,7 +21942,7 @@ impl entropic::Entropic for DAPSResponseInfoIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct DAPSResponseInfoItemIE_Extensions_Entry {}
 impl entropic::Entropic for DAPSResponseInfoItemIE_Extensions_Entry {
@@ -21986,7 +21960,7 @@ impl entropic::Entropic for DAPSResponseInfoItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -21998,7 +21972,7 @@ impl entropic::Entropic for DAPSResponseInfoItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -22011,7 +21985,7 @@ impl entropic::Entropic for DAPSResponseInfoItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -22020,7 +21994,7 @@ impl entropic::Entropic for DAPSResponseInfoItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum DAPSResponseInfoList_EntryValue {
     #[asn(key = 319)]
@@ -22037,7 +22011,7 @@ impl asn1_codecs::Asn1Choice for DAPSResponseInfoList_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct DAPSResponseInfoList_Entry {
     #[asn(key_field = true)]
@@ -22071,7 +22045,7 @@ impl entropic::Entropic for DAPSResponseInfoList_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct DL_CP_SecurityInformationIE_Extensions_Entry {}
 impl entropic::Entropic for DL_CP_SecurityInformationIE_Extensions_Entry {
@@ -22089,7 +22063,7 @@ impl entropic::Entropic for DL_CP_SecurityInformationIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -22103,7 +22077,7 @@ impl entropic::Entropic for DL_CP_SecurityInformationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -22116,7 +22090,7 @@ impl entropic::Entropic for DL_CP_SecurityInformationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -22125,7 +22099,7 @@ impl entropic::Entropic for DL_CP_SecurityInformationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum DeactivateTraceProtocolIEs_EntryValue {
     #[asn(key = 86)]
@@ -22148,7 +22122,7 @@ impl asn1_codecs::Asn1Choice for DeactivateTraceProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct DeactivateTraceProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -22182,7 +22156,7 @@ impl entropic::Entropic for DeactivateTraceProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -22194,7 +22168,7 @@ impl entropic::Entropic for DeactivateTraceProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -22209,7 +22183,7 @@ impl entropic::Entropic for DeactivateTraceProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -22218,7 +22192,7 @@ impl entropic::Entropic for DeactivateTraceProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum DownlinkNASTransportProtocolIEs_EntryValue {
     #[asn(key = 299)]
@@ -22283,7 +22257,7 @@ impl asn1_codecs::Asn1Choice for DownlinkNASTransportProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct DownlinkNASTransportProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -22318,7 +22292,7 @@ impl entropic::Entropic for DownlinkNASTransportProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -22330,7 +22304,7 @@ impl entropic::Entropic for DownlinkNASTransportProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -22345,7 +22319,7 @@ impl entropic::Entropic for DownlinkNASTransportProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -22354,7 +22328,7 @@ impl entropic::Entropic for DownlinkNASTransportProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum DownlinkNonUEAssociatedLPPaTransportProtocolIEs_EntryValue {
     #[asn(key = 147)]
@@ -22374,7 +22348,7 @@ impl asn1_codecs::Asn1Choice for DownlinkNonUEAssociatedLPPaTransportProtocolIEs
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct DownlinkNonUEAssociatedLPPaTransportProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -22409,7 +22383,7 @@ impl entropic::Entropic for DownlinkNonUEAssociatedLPPaTransportProtocolIEs_Entr
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -22423,7 +22397,7 @@ impl entropic::Entropic for DownlinkNonUEAssociatedLPPaTransportProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -22438,7 +22412,7 @@ impl entropic::Entropic for DownlinkNonUEAssociatedLPPaTransportProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -22447,7 +22421,7 @@ impl entropic::Entropic for DownlinkNonUEAssociatedLPPaTransportProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum DownlinkS1cdma2000tunnellingProtocolIEs_EntryValue {
     #[asn(key = 12)]
@@ -22479,7 +22453,7 @@ impl asn1_codecs::Asn1Choice for DownlinkS1cdma2000tunnellingProtocolIEs_EntryVa
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct DownlinkS1cdma2000tunnellingProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -22514,7 +22488,7 @@ impl entropic::Entropic for DownlinkS1cdma2000tunnellingProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -22528,7 +22502,7 @@ impl entropic::Entropic for DownlinkS1cdma2000tunnellingProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -22541,7 +22515,7 @@ impl entropic::Entropic for DownlinkS1cdma2000tunnellingProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -22550,7 +22524,7 @@ impl entropic::Entropic for DownlinkS1cdma2000tunnellingProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum DownlinkUEAssociatedLPPaTransportProtocolIEs_EntryValue {
     #[asn(key = 147)]
@@ -22576,7 +22550,7 @@ impl asn1_codecs::Asn1Choice for DownlinkUEAssociatedLPPaTransportProtocolIEs_En
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct DownlinkUEAssociatedLPPaTransportProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -22611,7 +22585,7 @@ impl entropic::Entropic for DownlinkUEAssociatedLPPaTransportProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -22625,7 +22599,7 @@ impl entropic::Entropic for DownlinkUEAssociatedLPPaTransportProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -22640,7 +22614,7 @@ impl entropic::Entropic for DownlinkUEAssociatedLPPaTransportProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -22649,7 +22623,7 @@ impl entropic::Entropic for DownlinkUEAssociatedLPPaTransportProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABAdmittedItemIE_Extensions_Entry {}
 impl entropic::Entropic for E_RABAdmittedItemIE_Extensions_Entry {
@@ -22667,7 +22641,7 @@ impl entropic::Entropic for E_RABAdmittedItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -22679,7 +22653,7 @@ impl entropic::Entropic for E_RABAdmittedItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -22694,7 +22668,7 @@ impl entropic::Entropic for E_RABAdmittedItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -22703,7 +22677,7 @@ impl entropic::Entropic for E_RABAdmittedItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABAdmittedList_EntryValue {
     #[asn(key = 20)]
@@ -22720,7 +22694,7 @@ impl asn1_codecs::Asn1Choice for E_RABAdmittedList_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABAdmittedList_Entry {
     #[asn(key_field = true)]
@@ -22754,7 +22728,7 @@ impl entropic::Entropic for E_RABAdmittedList_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABDataForwardingItemIE_Extensions_Entry {}
 impl entropic::Entropic for E_RABDataForwardingItemIE_Extensions_Entry {
@@ -22772,7 +22746,7 @@ impl entropic::Entropic for E_RABDataForwardingItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -22786,7 +22760,7 @@ impl entropic::Entropic for E_RABDataForwardingItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -22799,7 +22773,7 @@ impl entropic::Entropic for E_RABDataForwardingItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -22808,7 +22782,7 @@ impl entropic::Entropic for E_RABDataForwardingItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABFailedToResumeItemResumeReqIE_Extensions_Entry {}
 impl entropic::Entropic for E_RABFailedToResumeItemResumeReqIE_Extensions_Entry {
@@ -22826,7 +22800,7 @@ impl entropic::Entropic for E_RABFailedToResumeItemResumeReqIE_Extensions_Entry 
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -22840,7 +22814,7 @@ impl entropic::Entropic for E_RABFailedToResumeItemResumeReqIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -22855,7 +22829,7 @@ impl entropic::Entropic for E_RABFailedToResumeItemResumeReqIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -22864,7 +22838,7 @@ impl entropic::Entropic for E_RABFailedToResumeItemResumeReqIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABFailedToResumeItemResumeResIE_Extensions_Entry {}
 impl entropic::Entropic for E_RABFailedToResumeItemResumeResIE_Extensions_Entry {
@@ -22882,7 +22856,7 @@ impl entropic::Entropic for E_RABFailedToResumeItemResumeResIE_Extensions_Entry 
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -22896,7 +22870,7 @@ impl entropic::Entropic for E_RABFailedToResumeItemResumeResIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -22911,7 +22885,7 @@ impl entropic::Entropic for E_RABFailedToResumeItemResumeResIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -22920,7 +22894,7 @@ impl entropic::Entropic for E_RABFailedToResumeItemResumeResIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABFailedToResumeListResumeReq_EntryValue {
     #[asn(key = 236)]
@@ -22937,7 +22911,7 @@ impl asn1_codecs::Asn1Choice for E_RABFailedToResumeListResumeReq_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABFailedToResumeListResumeReq_Entry {
     #[asn(key_field = true)]
@@ -22972,7 +22946,7 @@ impl entropic::Entropic for E_RABFailedToResumeListResumeReq_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABFailedToResumeListResumeRes_EntryValue {
     #[asn(key = 238)]
@@ -22989,7 +22963,7 @@ impl asn1_codecs::Asn1Choice for E_RABFailedToResumeListResumeRes_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABFailedToResumeListResumeRes_Entry {
     #[asn(key_field = true)]
@@ -23024,7 +22998,7 @@ impl entropic::Entropic for E_RABFailedToResumeListResumeRes_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABFailedToSetupItemHOReqAckIE_Extensions_Entry {}
 impl entropic::Entropic for E_RABFailedToSetupItemHOReqAckIE_Extensions_Entry {
@@ -23042,7 +23016,7 @@ impl entropic::Entropic for E_RABFailedToSetupItemHOReqAckIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -23056,7 +23030,7 @@ impl entropic::Entropic for E_RABFailedToSetupItemHOReqAckIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -23069,7 +23043,7 @@ impl entropic::Entropic for E_RABFailedToSetupItemHOReqAckIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -23078,7 +23052,7 @@ impl entropic::Entropic for E_RABFailedToSetupItemHOReqAckIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABFailedtoSetupListHOReqAck_EntryValue {
     #[asn(key = 21)]
@@ -23095,7 +23069,7 @@ impl asn1_codecs::Asn1Choice for E_RABFailedtoSetupListHOReqAck_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABFailedtoSetupListHOReqAck_Entry {
     #[asn(key_field = true)]
@@ -23130,7 +23104,7 @@ impl entropic::Entropic for E_RABFailedtoSetupListHOReqAck_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABInformationList_EntryValue {
     #[asn(key = 78)]
@@ -23147,7 +23121,7 @@ impl asn1_codecs::Asn1Choice for E_RABInformationList_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABInformationList_Entry {
     #[asn(key_field = true)]
@@ -23181,7 +23155,7 @@ impl entropic::Entropic for E_RABInformationList_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABInformationListItemIE_Extensions_EntryExtensionValue {
     #[asn(key = 317)]
@@ -23198,7 +23172,7 @@ impl asn1_codecs::Asn1Choice for E_RABInformationListItemIE_Extensions_EntryExte
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABInformationListItemIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -23235,7 +23209,7 @@ impl entropic::Entropic for E_RABInformationListItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -23249,7 +23223,7 @@ impl entropic::Entropic for E_RABInformationListItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -23262,7 +23236,7 @@ impl entropic::Entropic for E_RABInformationListItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -23271,7 +23245,7 @@ impl entropic::Entropic for E_RABInformationListItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABItemIE_Extensions_Entry {}
 impl entropic::Entropic for E_RABItemIE_Extensions_Entry {
@@ -23289,7 +23263,7 @@ impl entropic::Entropic for E_RABItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -23301,7 +23275,7 @@ impl entropic::Entropic for E_RABItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -23314,7 +23288,7 @@ impl entropic::Entropic for E_RABItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -23323,7 +23297,7 @@ impl entropic::Entropic for E_RABItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABLevelQoSParametersIE_Extensions_EntryExtensionValue {
     #[asn(key = 273)]
@@ -23343,7 +23317,7 @@ impl asn1_codecs::Asn1Choice for E_RABLevelQoSParametersIE_Extensions_EntryExten
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABLevelQoSParametersIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -23380,7 +23354,7 @@ impl entropic::Entropic for E_RABLevelQoSParametersIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -23394,7 +23368,7 @@ impl entropic::Entropic for E_RABLevelQoSParametersIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -23407,7 +23381,7 @@ impl entropic::Entropic for E_RABLevelQoSParametersIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -23416,7 +23390,7 @@ impl entropic::Entropic for E_RABLevelQoSParametersIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABList_EntryValue {
     #[asn(key = 35)]
@@ -23433,7 +23407,7 @@ impl asn1_codecs::Asn1Choice for E_RABList_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABList_Entry {
     #[asn(key_field = true)]
@@ -23467,7 +23441,7 @@ impl entropic::Entropic for E_RABList_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABModificationConfirmProtocolIEs_EntryValue {
     #[asn(key = 146)]
@@ -23502,7 +23476,7 @@ impl asn1_codecs::Asn1Choice for E_RABModificationConfirmProtocolIEs_EntryValue 
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABModificationConfirmProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -23537,7 +23511,7 @@ impl entropic::Entropic for E_RABModificationConfirmProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -23549,7 +23523,7 @@ impl entropic::Entropic for E_RABModificationConfirmProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -23562,7 +23536,7 @@ impl entropic::Entropic for E_RABModificationConfirmProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -23571,7 +23545,7 @@ impl entropic::Entropic for E_RABModificationConfirmProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABModificationIndicationProtocolIEs_EntryValue {
     #[asn(key = 226)]
@@ -23609,7 +23583,7 @@ impl asn1_codecs::Asn1Choice for E_RABModificationIndicationProtocolIEs_EntryVal
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABModificationIndicationProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -23644,7 +23618,7 @@ impl entropic::Entropic for E_RABModificationIndicationProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -23658,7 +23632,7 @@ impl entropic::Entropic for E_RABModificationIndicationProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -23671,7 +23645,7 @@ impl entropic::Entropic for E_RABModificationIndicationProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -23680,7 +23654,7 @@ impl entropic::Entropic for E_RABModificationIndicationProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABModifyItemBearerModConfIE_Extensions_Entry {}
 impl entropic::Entropic for E_RABModifyItemBearerModConfIE_Extensions_Entry {
@@ -23698,7 +23672,7 @@ impl entropic::Entropic for E_RABModifyItemBearerModConfIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -23712,7 +23686,7 @@ impl entropic::Entropic for E_RABModifyItemBearerModConfIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -23725,7 +23699,7 @@ impl entropic::Entropic for E_RABModifyItemBearerModConfIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -23734,7 +23708,7 @@ impl entropic::Entropic for E_RABModifyItemBearerModConfIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABModifyItemBearerModResIE_Extensions_Entry {}
 impl entropic::Entropic for E_RABModifyItemBearerModResIE_Extensions_Entry {
@@ -23752,7 +23726,7 @@ impl entropic::Entropic for E_RABModifyItemBearerModResIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -23766,7 +23740,7 @@ impl entropic::Entropic for E_RABModifyItemBearerModResIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -23779,7 +23753,7 @@ impl entropic::Entropic for E_RABModifyItemBearerModResIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -23788,7 +23762,7 @@ impl entropic::Entropic for E_RABModifyItemBearerModResIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABModifyListBearerModConf_EntryValue {
     #[asn(key = 204)]
@@ -23805,7 +23779,7 @@ impl asn1_codecs::Asn1Choice for E_RABModifyListBearerModConf_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABModifyListBearerModConf_Entry {
     #[asn(key_field = true)]
@@ -23840,7 +23814,7 @@ impl entropic::Entropic for E_RABModifyListBearerModConf_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABModifyListBearerModRes_EntryValue {
     #[asn(key = 37)]
@@ -23857,7 +23831,7 @@ impl asn1_codecs::Asn1Choice for E_RABModifyListBearerModRes_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABModifyListBearerModRes_Entry {
     #[asn(key_field = true)]
@@ -23892,7 +23866,7 @@ impl entropic::Entropic for E_RABModifyListBearerModRes_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABModifyRequestProtocolIEs_EntryValue {
     #[asn(key = 30)]
@@ -23921,7 +23895,7 @@ impl asn1_codecs::Asn1Choice for E_RABModifyRequestProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABModifyRequestProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -23956,7 +23930,7 @@ impl entropic::Entropic for E_RABModifyRequestProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -23968,7 +23942,7 @@ impl entropic::Entropic for E_RABModifyRequestProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -23983,7 +23957,7 @@ impl entropic::Entropic for E_RABModifyRequestProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -23992,7 +23966,7 @@ impl entropic::Entropic for E_RABModifyRequestProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABModifyResponseProtocolIEs_EntryValue {
     #[asn(key = 58)]
@@ -24024,7 +23998,7 @@ impl asn1_codecs::Asn1Choice for E_RABModifyResponseProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABModifyResponseProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -24059,7 +24033,7 @@ impl entropic::Entropic for E_RABModifyResponseProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -24071,7 +24045,7 @@ impl entropic::Entropic for E_RABModifyResponseProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -24086,7 +24060,7 @@ impl entropic::Entropic for E_RABModifyResponseProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -24095,7 +24069,7 @@ impl entropic::Entropic for E_RABModifyResponseProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABNotToBeModifiedItemBearerModIndIE_Extensions_Entry {}
 impl entropic::Entropic for E_RABNotToBeModifiedItemBearerModIndIE_Extensions_Entry {
@@ -24113,7 +24087,7 @@ impl entropic::Entropic for E_RABNotToBeModifiedItemBearerModIndIE_Extensions_En
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -24127,7 +24101,7 @@ impl entropic::Entropic for E_RABNotToBeModifiedItemBearerModIndIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -24144,7 +24118,7 @@ impl entropic::Entropic for E_RABNotToBeModifiedItemBearerModIndIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -24153,7 +24127,7 @@ impl entropic::Entropic for E_RABNotToBeModifiedItemBearerModIndIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABNotToBeModifiedListBearerModInd_EntryValue {
     #[asn(key = 202)]
@@ -24170,7 +24144,7 @@ impl asn1_codecs::Asn1Choice for E_RABNotToBeModifiedListBearerModInd_EntryValue
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABNotToBeModifiedListBearerModInd_Entry {
     #[asn(key_field = true)]
@@ -24205,7 +24179,7 @@ impl entropic::Entropic for E_RABNotToBeModifiedListBearerModInd_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABReleaseCommandProtocolIEs_EntryValue {
     #[asn(key = 33)]
@@ -24234,7 +24208,7 @@ impl asn1_codecs::Asn1Choice for E_RABReleaseCommandProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABReleaseCommandProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -24269,7 +24243,7 @@ impl entropic::Entropic for E_RABReleaseCommandProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -24281,7 +24255,7 @@ impl entropic::Entropic for E_RABReleaseCommandProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -24296,7 +24270,7 @@ impl entropic::Entropic for E_RABReleaseCommandProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -24305,7 +24279,7 @@ impl entropic::Entropic for E_RABReleaseCommandProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABReleaseIndicationProtocolIEs_EntryValue {
     #[asn(key = 110)]
@@ -24334,7 +24308,7 @@ impl asn1_codecs::Asn1Choice for E_RABReleaseIndicationProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABReleaseIndicationProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -24369,7 +24343,7 @@ impl entropic::Entropic for E_RABReleaseIndicationProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -24381,7 +24355,7 @@ impl entropic::Entropic for E_RABReleaseIndicationProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -24394,7 +24368,7 @@ impl entropic::Entropic for E_RABReleaseIndicationProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -24403,7 +24377,7 @@ impl entropic::Entropic for E_RABReleaseIndicationProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABReleaseItemBearerRelCompIE_Extensions_Entry {}
 impl entropic::Entropic for E_RABReleaseItemBearerRelCompIE_Extensions_Entry {
@@ -24421,7 +24395,7 @@ impl entropic::Entropic for E_RABReleaseItemBearerRelCompIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -24435,7 +24409,7 @@ impl entropic::Entropic for E_RABReleaseItemBearerRelCompIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -24448,7 +24422,7 @@ impl entropic::Entropic for E_RABReleaseItemBearerRelCompIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -24457,7 +24431,7 @@ impl entropic::Entropic for E_RABReleaseItemBearerRelCompIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABReleaseListBearerRelComp_EntryValue {
     #[asn(key = 15)]
@@ -24474,7 +24448,7 @@ impl asn1_codecs::Asn1Choice for E_RABReleaseListBearerRelComp_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABReleaseListBearerRelComp_Entry {
     #[asn(key_field = true)]
@@ -24509,7 +24483,7 @@ impl entropic::Entropic for E_RABReleaseListBearerRelComp_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABReleaseResponseProtocolIEs_EntryValue {
     #[asn(key = 58)]
@@ -24544,7 +24518,7 @@ impl asn1_codecs::Asn1Choice for E_RABReleaseResponseProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABReleaseResponseProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -24579,7 +24553,7 @@ impl entropic::Entropic for E_RABReleaseResponseProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -24591,7 +24565,7 @@ impl entropic::Entropic for E_RABReleaseResponseProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -24606,7 +24580,7 @@ impl entropic::Entropic for E_RABReleaseResponseProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -24615,7 +24589,7 @@ impl entropic::Entropic for E_RABReleaseResponseProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABSetupItemBearerSUResIE_Extensions_Entry {}
 impl entropic::Entropic for E_RABSetupItemBearerSUResIE_Extensions_Entry {
@@ -24633,7 +24607,7 @@ impl entropic::Entropic for E_RABSetupItemBearerSUResIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -24647,7 +24621,7 @@ impl entropic::Entropic for E_RABSetupItemBearerSUResIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -24660,7 +24634,7 @@ impl entropic::Entropic for E_RABSetupItemBearerSUResIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -24669,7 +24643,7 @@ impl entropic::Entropic for E_RABSetupItemBearerSUResIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABSetupItemCtxtSUResIE_Extensions_Entry {}
 impl entropic::Entropic for E_RABSetupItemCtxtSUResIE_Extensions_Entry {
@@ -24687,7 +24661,7 @@ impl entropic::Entropic for E_RABSetupItemCtxtSUResIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -24701,7 +24675,7 @@ impl entropic::Entropic for E_RABSetupItemCtxtSUResIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -24714,7 +24688,7 @@ impl entropic::Entropic for E_RABSetupItemCtxtSUResIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -24723,7 +24697,7 @@ impl entropic::Entropic for E_RABSetupItemCtxtSUResIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABSetupListBearerSURes_EntryValue {
     #[asn(key = 39)]
@@ -24740,7 +24714,7 @@ impl asn1_codecs::Asn1Choice for E_RABSetupListBearerSURes_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABSetupListBearerSURes_Entry {
     #[asn(key_field = true)]
@@ -24774,7 +24748,7 @@ impl entropic::Entropic for E_RABSetupListBearerSURes_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABSetupListCtxtSURes_EntryValue {
     #[asn(key = 50)]
@@ -24791,7 +24765,7 @@ impl asn1_codecs::Asn1Choice for E_RABSetupListCtxtSURes_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABSetupListCtxtSURes_Entry {
     #[asn(key_field = true)]
@@ -24825,7 +24799,7 @@ impl entropic::Entropic for E_RABSetupListCtxtSURes_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABSetupRequestProtocolIEs_EntryValue {
     #[asn(key = 16)]
@@ -24851,7 +24825,7 @@ impl asn1_codecs::Asn1Choice for E_RABSetupRequestProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABSetupRequestProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -24886,7 +24860,7 @@ impl entropic::Entropic for E_RABSetupRequestProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -24898,7 +24872,7 @@ impl entropic::Entropic for E_RABSetupRequestProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -24913,7 +24887,7 @@ impl entropic::Entropic for E_RABSetupRequestProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -24922,7 +24896,7 @@ impl entropic::Entropic for E_RABSetupRequestProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABSetupResponseProtocolIEs_EntryValue {
     #[asn(key = 58)]
@@ -24951,7 +24925,7 @@ impl asn1_codecs::Asn1Choice for E_RABSetupResponseProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABSetupResponseProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -24986,7 +24960,7 @@ impl entropic::Entropic for E_RABSetupResponseProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -24998,7 +24972,7 @@ impl entropic::Entropic for E_RABSetupResponseProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -25013,7 +24987,7 @@ impl entropic::Entropic for E_RABSetupResponseProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -25022,7 +24996,7 @@ impl entropic::Entropic for E_RABSetupResponseProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABSubjecttoDataForwardingList_EntryValue {
     #[asn(key = 14)]
@@ -25039,7 +25013,7 @@ impl asn1_codecs::Asn1Choice for E_RABSubjecttoDataForwardingList_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABSubjecttoDataForwardingList_Entry {
     #[asn(key_field = true)]
@@ -25074,7 +25048,7 @@ impl entropic::Entropic for E_RABSubjecttoDataForwardingList_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABToBeModifiedItemBearerModIndIE_Extensions_Entry {}
 impl entropic::Entropic for E_RABToBeModifiedItemBearerModIndIE_Extensions_Entry {
@@ -25092,7 +25066,7 @@ impl entropic::Entropic for E_RABToBeModifiedItemBearerModIndIE_Extensions_Entry
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -25106,7 +25080,7 @@ impl entropic::Entropic for E_RABToBeModifiedItemBearerModIndIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -25121,7 +25095,7 @@ impl entropic::Entropic for E_RABToBeModifiedItemBearerModIndIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -25130,7 +25104,7 @@ impl entropic::Entropic for E_RABToBeModifiedItemBearerModIndIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABToBeModifiedItemBearerModReqIE_Extensions_EntryExtensionValue {
     #[asn(key = 185)]
@@ -25149,7 +25123,7 @@ impl asn1_codecs::Asn1Choice
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABToBeModifiedItemBearerModReqIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -25186,7 +25160,7 @@ impl entropic::Entropic for E_RABToBeModifiedItemBearerModReqIE_Extensions_Entry
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -25200,7 +25174,7 @@ impl entropic::Entropic for E_RABToBeModifiedItemBearerModReqIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -25215,7 +25189,7 @@ impl entropic::Entropic for E_RABToBeModifiedItemBearerModReqIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -25224,7 +25198,7 @@ impl entropic::Entropic for E_RABToBeModifiedItemBearerModReqIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABToBeModifiedListBearerModInd_EntryValue {
     #[asn(key = 200)]
@@ -25241,7 +25215,7 @@ impl asn1_codecs::Asn1Choice for E_RABToBeModifiedListBearerModInd_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABToBeModifiedListBearerModInd_Entry {
     #[asn(key_field = true)]
@@ -25276,7 +25250,7 @@ impl entropic::Entropic for E_RABToBeModifiedListBearerModInd_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABToBeModifiedListBearerModReq_EntryValue {
     #[asn(key = 36)]
@@ -25293,7 +25267,7 @@ impl asn1_codecs::Asn1Choice for E_RABToBeModifiedListBearerModReq_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABToBeModifiedListBearerModReq_Entry {
     #[asn(key_field = true)]
@@ -25328,7 +25302,7 @@ impl entropic::Entropic for E_RABToBeModifiedListBearerModReq_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABToBeSetupItemBearerSUReqIE_Extensions_EntryExtensionValue {
     #[asn(key = 233)]
@@ -25354,7 +25328,7 @@ impl asn1_codecs::Asn1Choice for E_RABToBeSetupItemBearerSUReqIE_Extensions_Entr
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABToBeSetupItemBearerSUReqIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -25391,7 +25365,7 @@ impl entropic::Entropic for E_RABToBeSetupItemBearerSUReqIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -25405,7 +25379,7 @@ impl entropic::Entropic for E_RABToBeSetupItemBearerSUReqIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -25418,7 +25392,7 @@ impl entropic::Entropic for E_RABToBeSetupItemBearerSUReqIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -25427,7 +25401,7 @@ impl entropic::Entropic for E_RABToBeSetupItemBearerSUReqIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABToBeSetupItemCtxtSUReqIE_Extensions_EntryExtensionValue {
     #[asn(key = 233)]
@@ -25453,7 +25427,7 @@ impl asn1_codecs::Asn1Choice for E_RABToBeSetupItemCtxtSUReqIE_Extensions_EntryE
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABToBeSetupItemCtxtSUReqIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -25490,7 +25464,7 @@ impl entropic::Entropic for E_RABToBeSetupItemCtxtSUReqIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -25504,7 +25478,7 @@ impl entropic::Entropic for E_RABToBeSetupItemCtxtSUReqIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -25517,7 +25491,7 @@ impl entropic::Entropic for E_RABToBeSetupItemCtxtSUReqIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -25526,7 +25500,7 @@ impl entropic::Entropic for E_RABToBeSetupItemCtxtSUReqIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABToBeSetupItemHOReqIE_Extensions_EntryExtensionValue {
     #[asn(key = 233)]
@@ -25549,7 +25523,7 @@ impl asn1_codecs::Asn1Choice for E_RABToBeSetupItemHOReqIE_Extensions_EntryExten
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABToBeSetupItemHOReqIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -25586,7 +25560,7 @@ impl entropic::Entropic for E_RABToBeSetupItemHOReqIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -25600,7 +25574,7 @@ impl entropic::Entropic for E_RABToBeSetupItemHOReqIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -25613,7 +25587,7 @@ impl entropic::Entropic for E_RABToBeSetupItemHOReqIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -25622,7 +25596,7 @@ impl entropic::Entropic for E_RABToBeSetupItemHOReqIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABToBeSetupListBearerSUReq_EntryValue {
     #[asn(key = 17)]
@@ -25639,7 +25613,7 @@ impl asn1_codecs::Asn1Choice for E_RABToBeSetupListBearerSUReq_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABToBeSetupListBearerSUReq_Entry {
     #[asn(key_field = true)]
@@ -25674,7 +25648,7 @@ impl entropic::Entropic for E_RABToBeSetupListBearerSUReq_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABToBeSetupListCtxtSUReq_EntryValue {
     #[asn(key = 52)]
@@ -25691,7 +25665,7 @@ impl asn1_codecs::Asn1Choice for E_RABToBeSetupListCtxtSUReq_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABToBeSetupListCtxtSUReq_Entry {
     #[asn(key_field = true)]
@@ -25726,7 +25700,7 @@ impl entropic::Entropic for E_RABToBeSetupListCtxtSUReq_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABToBeSetupListHOReq_EntryValue {
     #[asn(key = 27)]
@@ -25743,7 +25717,7 @@ impl asn1_codecs::Asn1Choice for E_RABToBeSetupListHOReq_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABToBeSetupListHOReq_Entry {
     #[asn(key_field = true)]
@@ -25777,7 +25751,7 @@ impl entropic::Entropic for E_RABToBeSetupListHOReq_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABToBeSwitchedDLItemIE_Extensions_Entry {}
 impl entropic::Entropic for E_RABToBeSwitchedDLItemIE_Extensions_Entry {
@@ -25795,7 +25769,7 @@ impl entropic::Entropic for E_RABToBeSwitchedDLItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -25809,7 +25783,7 @@ impl entropic::Entropic for E_RABToBeSwitchedDLItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -25822,7 +25796,7 @@ impl entropic::Entropic for E_RABToBeSwitchedDLItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -25831,7 +25805,7 @@ impl entropic::Entropic for E_RABToBeSwitchedDLItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABToBeSwitchedDLList_EntryValue {
     #[asn(key = 23)]
@@ -25848,7 +25822,7 @@ impl asn1_codecs::Asn1Choice for E_RABToBeSwitchedDLList_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABToBeSwitchedDLList_Entry {
     #[asn(key_field = true)]
@@ -25882,7 +25856,7 @@ impl entropic::Entropic for E_RABToBeSwitchedDLList_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABToBeSwitchedULItemIE_Extensions_Entry {}
 impl entropic::Entropic for E_RABToBeSwitchedULItemIE_Extensions_Entry {
@@ -25900,7 +25874,7 @@ impl entropic::Entropic for E_RABToBeSwitchedULItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -25914,7 +25888,7 @@ impl entropic::Entropic for E_RABToBeSwitchedULItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -25927,7 +25901,7 @@ impl entropic::Entropic for E_RABToBeSwitchedULItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -25936,7 +25910,7 @@ impl entropic::Entropic for E_RABToBeSwitchedULItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABToBeSwitchedULList_EntryValue {
     #[asn(key = 94)]
@@ -25953,7 +25927,7 @@ impl asn1_codecs::Asn1Choice for E_RABToBeSwitchedULList_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABToBeSwitchedULList_Entry {
     #[asn(key_field = true)]
@@ -25987,7 +25961,7 @@ impl entropic::Entropic for E_RABToBeSwitchedULList_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "OCTET-STRING", sz_extensible = false, sz_lb = "4", sz_ub = "4")]
 pub struct E_RABUsageReportItemStartTimestamp(pub Vec<u8>);
 impl entropic::Entropic for E_RABUsageReportItemStartTimestamp {
@@ -26014,7 +25988,7 @@ impl entropic::Entropic for E_RABUsageReportItemStartTimestamp {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "OCTET-STRING", sz_extensible = false, sz_lb = "4", sz_ub = "4")]
 pub struct E_RABUsageReportItemEndTimestamp(pub Vec<u8>);
 impl entropic::Entropic for E_RABUsageReportItemEndTimestamp {
@@ -26041,7 +26015,7 @@ impl entropic::Entropic for E_RABUsageReportItemEndTimestamp {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "18446744073709551615")]
 pub struct E_RABUsageReportItemUsageCountUL(pub u64);
 impl entropic::Entropic for E_RABUsageReportItemUsageCountUL {
@@ -26060,7 +26034,7 @@ impl entropic::Entropic for E_RABUsageReportItemUsageCountUL {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "18446744073709551615")]
 pub struct E_RABUsageReportItemUsageCountDL(pub u64);
 impl entropic::Entropic for E_RABUsageReportItemUsageCountDL {
@@ -26079,7 +26053,7 @@ impl entropic::Entropic for E_RABUsageReportItemUsageCountDL {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABUsageReportItemIE_Extensions_Entry {}
 impl entropic::Entropic for E_RABUsageReportItemIE_Extensions_Entry {
@@ -26097,7 +26071,7 @@ impl entropic::Entropic for E_RABUsageReportItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -26109,7 +26083,7 @@ impl entropic::Entropic for E_RABUsageReportItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -26122,7 +26096,7 @@ impl entropic::Entropic for E_RABUsageReportItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -26131,7 +26105,7 @@ impl entropic::Entropic for E_RABUsageReportItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum E_RABUsageReportList_EntryValue {
     #[asn(key = 267)]
@@ -26148,7 +26122,7 @@ impl asn1_codecs::Asn1Choice for E_RABUsageReportList_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct E_RABUsageReportList_Entry {
     #[asn(key_field = true)]
@@ -26182,7 +26156,7 @@ impl entropic::Entropic for E_RABUsageReportList_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct EN_DCSONConfigurationTransferIE_Extensions_Entry {}
 impl entropic::Entropic for EN_DCSONConfigurationTransferIE_Extensions_Entry {
@@ -26200,7 +26174,7 @@ impl entropic::Entropic for EN_DCSONConfigurationTransferIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -26214,7 +26188,7 @@ impl entropic::Entropic for EN_DCSONConfigurationTransferIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -26227,7 +26201,7 @@ impl entropic::Entropic for EN_DCSONConfigurationTransferIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -26236,7 +26210,7 @@ impl entropic::Entropic for EN_DCSONConfigurationTransferIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct EN_DCSONeNBIdentificationIE_Extensions_Entry {}
 impl entropic::Entropic for EN_DCSONeNBIdentificationIE_Extensions_Entry {
@@ -26254,7 +26228,7 @@ impl entropic::Entropic for EN_DCSONeNBIdentificationIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -26268,7 +26242,7 @@ impl entropic::Entropic for EN_DCSONeNBIdentificationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -26281,7 +26255,7 @@ impl entropic::Entropic for EN_DCSONeNBIdentificationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -26290,7 +26264,7 @@ impl entropic::Entropic for EN_DCSONeNBIdentificationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct EN_DCSONengNBIdentificationIE_Extensions_Entry {}
 impl entropic::Entropic for EN_DCSONengNBIdentificationIE_Extensions_Entry {
@@ -26308,7 +26282,7 @@ impl entropic::Entropic for EN_DCSONengNBIdentificationIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -26322,7 +26296,7 @@ impl entropic::Entropic for EN_DCSONengNBIdentificationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -26335,7 +26309,7 @@ impl entropic::Entropic for EN_DCSONengNBIdentificationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -26344,7 +26318,7 @@ impl entropic::Entropic for EN_DCSONengNBIdentificationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct EN_DCTransferTypeReplyIE_Extensions_Entry {}
 impl entropic::Entropic for EN_DCTransferTypeReplyIE_Extensions_Entry {
@@ -26362,7 +26336,7 @@ impl entropic::Entropic for EN_DCTransferTypeReplyIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -26374,7 +26348,7 @@ impl entropic::Entropic for EN_DCTransferTypeReplyIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -26387,7 +26361,7 @@ impl entropic::Entropic for EN_DCTransferTypeReplyIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -26396,7 +26370,7 @@ impl entropic::Entropic for EN_DCTransferTypeReplyIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct EN_DCTransferTypeRequestIE_Extensions_Entry {}
 impl entropic::Entropic for EN_DCTransferTypeRequestIE_Extensions_Entry {
@@ -26414,7 +26388,7 @@ impl entropic::Entropic for EN_DCTransferTypeRequestIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -26428,7 +26402,7 @@ impl entropic::Entropic for EN_DCTransferTypeRequestIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -26441,7 +26415,7 @@ impl entropic::Entropic for EN_DCTransferTypeRequestIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -26450,7 +26424,7 @@ impl entropic::Entropic for EN_DCTransferTypeRequestIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ENB_EarlyStatusTransfer_TransparentContainerIE_Extensions_Entry {}
 impl entropic::Entropic for ENB_EarlyStatusTransfer_TransparentContainerIE_Extensions_Entry {
@@ -26468,7 +26442,7 @@ impl entropic::Entropic for ENB_EarlyStatusTransfer_TransparentContainerIE_Exten
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -26482,7 +26456,7 @@ impl entropic::Entropic for ENB_EarlyStatusTransfer_TransparentContainerIE_Exten
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -26495,7 +26469,7 @@ impl entropic::Entropic for ENB_EarlyStatusTransfer_TransparentContainerIE_Exten
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -26504,7 +26478,7 @@ impl entropic::Entropic for ENB_EarlyStatusTransfer_TransparentContainerIE_Exten
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "20", sz_ub = "20")]
 pub struct ENB_ID_macroENB_ID(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for ENB_ID_macroENB_ID {
@@ -26545,7 +26519,7 @@ impl entropic::Entropic for ENB_ID_macroENB_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "28", sz_ub = "28")]
 pub struct ENB_ID_homeENB_ID(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for ENB_ID_homeENB_ID {
@@ -26586,7 +26560,7 @@ impl entropic::Entropic for ENB_ID_homeENB_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "18", sz_ub = "18")]
 pub struct ENB_ID_short_macroENB_ID(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for ENB_ID_short_macroENB_ID {
@@ -26627,7 +26601,7 @@ impl entropic::Entropic for ENB_ID_short_macroENB_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "21", sz_ub = "21")]
 pub struct ENB_ID_long_macroENB_ID(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for ENB_ID_long_macroENB_ID {
@@ -26668,7 +26642,7 @@ impl entropic::Entropic for ENB_ID_long_macroENB_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ENB_StatusTransfer_TransparentContainerIE_Extensions_Entry {}
 impl entropic::Entropic for ENB_StatusTransfer_TransparentContainerIE_Extensions_Entry {
@@ -26686,7 +26660,7 @@ impl entropic::Entropic for ENB_StatusTransfer_TransparentContainerIE_Extensions
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -26700,7 +26674,7 @@ impl entropic::Entropic for ENB_StatusTransfer_TransparentContainerIE_Extensions
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -26717,7 +26691,7 @@ impl entropic::Entropic for ENB_StatusTransfer_TransparentContainerIE_Extensions
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -26726,7 +26700,7 @@ impl entropic::Entropic for ENB_StatusTransfer_TransparentContainerIE_Extensions
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum ENBCPRelocationIndicationProtocolIEs_EntryValue {
     #[asn(key = 100)]
@@ -26755,7 +26729,7 @@ impl asn1_codecs::Asn1Choice for ENBCPRelocationIndicationProtocolIEs_EntryValue
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ENBCPRelocationIndicationProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -26790,7 +26764,7 @@ impl entropic::Entropic for ENBCPRelocationIndicationProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -26804,7 +26778,7 @@ impl entropic::Entropic for ENBCPRelocationIndicationProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -26817,7 +26791,7 @@ impl entropic::Entropic for ENBCPRelocationIndicationProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -26826,7 +26800,7 @@ impl entropic::Entropic for ENBCPRelocationIndicationProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum ENBConfigurationTransferProtocolIEs_EntryValue {
     #[asn(key = 294)]
@@ -26849,7 +26823,7 @@ impl asn1_codecs::Asn1Choice for ENBConfigurationTransferProtocolIEs_EntryValue 
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ENBConfigurationTransferProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -26884,7 +26858,7 @@ impl entropic::Entropic for ENBConfigurationTransferProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -26896,7 +26870,7 @@ impl entropic::Entropic for ENBConfigurationTransferProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -26909,7 +26883,7 @@ impl entropic::Entropic for ENBConfigurationTransferProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -26918,7 +26892,7 @@ impl entropic::Entropic for ENBConfigurationTransferProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum ENBConfigurationUpdateProtocolIEs_EntryValue {
     #[asn(key = 128)]
@@ -26953,7 +26927,7 @@ impl asn1_codecs::Asn1Choice for ENBConfigurationUpdateProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ENBConfigurationUpdateProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -26988,7 +26962,7 @@ impl entropic::Entropic for ENBConfigurationUpdateProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -27000,7 +26974,7 @@ impl entropic::Entropic for ENBConfigurationUpdateProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -27013,7 +26987,7 @@ impl entropic::Entropic for ENBConfigurationUpdateProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -27022,7 +26996,7 @@ impl entropic::Entropic for ENBConfigurationUpdateProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum ENBConfigurationUpdateAcknowledgeProtocolIEs_EntryValue {
     #[asn(key = 58)]
@@ -27039,7 +27013,7 @@ impl asn1_codecs::Asn1Choice for ENBConfigurationUpdateAcknowledgeProtocolIEs_En
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ENBConfigurationUpdateAcknowledgeProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -27074,7 +27048,7 @@ impl entropic::Entropic for ENBConfigurationUpdateAcknowledgeProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -27088,7 +27062,7 @@ impl entropic::Entropic for ENBConfigurationUpdateAcknowledgeProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -27103,7 +27077,7 @@ impl entropic::Entropic for ENBConfigurationUpdateAcknowledgeProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -27112,7 +27086,7 @@ impl entropic::Entropic for ENBConfigurationUpdateAcknowledgeProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum ENBConfigurationUpdateFailureProtocolIEs_EntryValue {
     #[asn(key = 2)]
@@ -27135,7 +27109,7 @@ impl asn1_codecs::Asn1Choice for ENBConfigurationUpdateFailureProtocolIEs_EntryV
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ENBConfigurationUpdateFailureProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -27170,7 +27144,7 @@ impl entropic::Entropic for ENBConfigurationUpdateFailureProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -27184,7 +27158,7 @@ impl entropic::Entropic for ENBConfigurationUpdateFailureProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -27197,7 +27171,7 @@ impl entropic::Entropic for ENBConfigurationUpdateFailureProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -27206,7 +27180,7 @@ impl entropic::Entropic for ENBConfigurationUpdateFailureProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum ENBDirectInformationTransferProtocolIEs_EntryValue {
     #[asn(key = 121)]
@@ -27223,7 +27197,7 @@ impl asn1_codecs::Asn1Choice for ENBDirectInformationTransferProtocolIEs_EntryVa
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ENBDirectInformationTransferProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -27258,7 +27232,7 @@ impl entropic::Entropic for ENBDirectInformationTransferProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -27272,7 +27246,7 @@ impl entropic::Entropic for ENBDirectInformationTransferProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -27285,7 +27259,7 @@ impl entropic::Entropic for ENBDirectInformationTransferProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -27294,7 +27268,7 @@ impl entropic::Entropic for ENBDirectInformationTransferProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum ENBEarlyStatusTransferProtocolIEs_EntryValue {
     #[asn(key = 0)]
@@ -27317,7 +27291,7 @@ impl asn1_codecs::Asn1Choice for ENBEarlyStatusTransferProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ENBEarlyStatusTransferProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -27352,7 +27326,7 @@ impl entropic::Entropic for ENBEarlyStatusTransferProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -27364,7 +27338,7 @@ impl entropic::Entropic for ENBEarlyStatusTransferProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -27377,7 +27351,7 @@ impl entropic::Entropic for ENBEarlyStatusTransferProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -27386,7 +27360,7 @@ impl entropic::Entropic for ENBEarlyStatusTransferProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum ENBStatusTransferProtocolIEs_EntryValue {
     #[asn(key = 0)]
@@ -27409,7 +27383,7 @@ impl asn1_codecs::Asn1Choice for ENBStatusTransferProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ENBStatusTransferProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -27444,7 +27418,7 @@ impl entropic::Entropic for ENBStatusTransferProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -27456,7 +27430,7 @@ impl entropic::Entropic for ENBStatusTransferProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -27471,7 +27445,7 @@ impl entropic::Entropic for ENBStatusTransferProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -27480,7 +27454,7 @@ impl entropic::Entropic for ENBStatusTransferProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ENBX2ExtTLAIE_Extensions_Entry {}
 impl entropic::Entropic for ENBX2ExtTLAIE_Extensions_Entry {
@@ -27498,7 +27472,7 @@ impl entropic::Entropic for ENBX2ExtTLAIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -27510,7 +27484,7 @@ impl entropic::Entropic for ENBX2ExtTLAIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -27523,7 +27497,7 @@ impl entropic::Entropic for ENBX2ExtTLAIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -27532,7 +27506,7 @@ impl entropic::Entropic for ENBX2ExtTLAIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct EUTRAN_CGIIE_Extensions_Entry {}
 impl entropic::Entropic for EUTRAN_CGIIE_Extensions_Entry {
@@ -27550,7 +27524,7 @@ impl entropic::Entropic for EUTRAN_CGIIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -27562,7 +27536,7 @@ impl entropic::Entropic for EUTRAN_CGIIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -27575,7 +27549,7 @@ impl entropic::Entropic for EUTRAN_CGIIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -27584,11 +27558,11 @@ impl entropic::Entropic for EUTRAN_CGIIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct EUTRANResponseCell_ID(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct EmergencyAreaID_Broadcast_ItemIE_Extensions_Entry {}
 impl entropic::Entropic for EmergencyAreaID_Broadcast_ItemIE_Extensions_Entry {
@@ -27606,7 +27580,7 @@ impl entropic::Entropic for EmergencyAreaID_Broadcast_ItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -27620,7 +27594,7 @@ impl entropic::Entropic for EmergencyAreaID_Broadcast_ItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -27633,7 +27607,7 @@ impl entropic::Entropic for EmergencyAreaID_Broadcast_ItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -27642,7 +27616,7 @@ impl entropic::Entropic for EmergencyAreaID_Broadcast_ItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct EmergencyAreaID_Cancelled_ItemIE_Extensions_Entry {}
 impl entropic::Entropic for EmergencyAreaID_Cancelled_ItemIE_Extensions_Entry {
@@ -27660,7 +27634,7 @@ impl entropic::Entropic for EmergencyAreaID_Cancelled_ItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -27674,7 +27648,7 @@ impl entropic::Entropic for EmergencyAreaID_Cancelled_ItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -27687,7 +27661,7 @@ impl entropic::Entropic for EmergencyAreaID_Cancelled_ItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -27696,7 +27670,7 @@ impl entropic::Entropic for EmergencyAreaID_Cancelled_ItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum ErrorIndicationProtocolIEs_EntryValue {
     #[asn(key = 2)]
@@ -27725,7 +27699,7 @@ impl asn1_codecs::Asn1Choice for ErrorIndicationProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ErrorIndicationProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -27759,7 +27733,7 @@ impl entropic::Entropic for ErrorIndicationProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -27771,7 +27745,7 @@ impl entropic::Entropic for ErrorIndicationProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -27786,7 +27760,7 @@ impl entropic::Entropic for ErrorIndicationProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -27795,7 +27769,7 @@ impl entropic::Entropic for ErrorIndicationProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ExpectedUEActivityBehaviourIE_Extensions_Entry {}
 impl entropic::Entropic for ExpectedUEActivityBehaviourIE_Extensions_Entry {
@@ -27813,7 +27787,7 @@ impl entropic::Entropic for ExpectedUEActivityBehaviourIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -27827,7 +27801,7 @@ impl entropic::Entropic for ExpectedUEActivityBehaviourIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -27840,7 +27814,7 @@ impl entropic::Entropic for ExpectedUEActivityBehaviourIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -27849,7 +27823,7 @@ impl entropic::Entropic for ExpectedUEActivityBehaviourIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ExpectedUEBehaviourIE_Extensions_Entry {}
 impl entropic::Entropic for ExpectedUEBehaviourIE_Extensions_Entry {
@@ -27867,7 +27841,7 @@ impl entropic::Entropic for ExpectedUEBehaviourIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -27879,7 +27853,7 @@ impl entropic::Entropic for ExpectedUEBehaviourIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -27894,7 +27868,7 @@ impl entropic::Entropic for ExpectedUEBehaviourIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -27903,7 +27877,7 @@ impl entropic::Entropic for ExpectedUEBehaviourIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct FiveGSTAIIE_Extensions_Entry {}
 impl entropic::Entropic for FiveGSTAIIE_Extensions_Entry {
@@ -27921,7 +27895,7 @@ impl entropic::Entropic for FiveGSTAIIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -27933,7 +27907,7 @@ impl entropic::Entropic for FiveGSTAIIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -27946,7 +27920,7 @@ impl entropic::Entropic for FiveGSTAIIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -27955,7 +27929,7 @@ impl entropic::Entropic for FiveGSTAIIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ForbiddenLAs_ItemIE_Extensions_Entry {}
 impl entropic::Entropic for ForbiddenLAs_ItemIE_Extensions_Entry {
@@ -27973,7 +27947,7 @@ impl entropic::Entropic for ForbiddenLAs_ItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -27985,7 +27959,7 @@ impl entropic::Entropic for ForbiddenLAs_ItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -28000,7 +27974,7 @@ impl entropic::Entropic for ForbiddenLAs_ItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -28009,7 +27983,7 @@ impl entropic::Entropic for ForbiddenLAs_ItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ForbiddenTAs_ItemIE_Extensions_Entry {}
 impl entropic::Entropic for ForbiddenTAs_ItemIE_Extensions_Entry {
@@ -28027,7 +28001,7 @@ impl entropic::Entropic for ForbiddenTAs_ItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -28039,7 +28013,7 @@ impl entropic::Entropic for ForbiddenTAs_ItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -28054,7 +28028,7 @@ impl entropic::Entropic for ForbiddenTAs_ItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -28063,7 +28037,7 @@ impl entropic::Entropic for ForbiddenTAs_ItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum GBR_QosInformationIE_Extensions_EntryExtensionValue {
     #[asn(key = 257)]
@@ -28089,7 +28063,7 @@ impl asn1_codecs::Asn1Choice for GBR_QosInformationIE_Extensions_EntryExtensionV
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct GBR_QosInformationIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -28126,7 +28100,7 @@ impl entropic::Entropic for GBR_QosInformationIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -28138,7 +28112,7 @@ impl entropic::Entropic for GBR_QosInformationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -28153,7 +28127,7 @@ impl entropic::Entropic for GBR_QosInformationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -28162,7 +28136,7 @@ impl entropic::Entropic for GBR_QosInformationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct GERAN_Cell_IDIE_Extensions_Entry {}
 impl entropic::Entropic for GERAN_Cell_IDIE_Extensions_Entry {
@@ -28180,7 +28154,7 @@ impl entropic::Entropic for GERAN_Cell_IDIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -28192,7 +28166,7 @@ impl entropic::Entropic for GERAN_Cell_IDIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -28207,7 +28181,7 @@ impl entropic::Entropic for GERAN_Cell_IDIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -28216,7 +28190,7 @@ impl entropic::Entropic for GERAN_Cell_IDIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct GNBIE_Extensions_Entry {}
 impl entropic::Entropic for GNBIE_Extensions_Entry {
@@ -28234,7 +28208,7 @@ impl entropic::Entropic for GNBIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -28246,7 +28220,7 @@ impl entropic::Entropic for GNBIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -28259,7 +28233,7 @@ impl entropic::Entropic for GNBIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -28268,7 +28242,7 @@ impl entropic::Entropic for GNBIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct GUMMEIIE_Extensions_Entry {}
 impl entropic::Entropic for GUMMEIIE_Extensions_Entry {
@@ -28286,7 +28260,7 @@ impl entropic::Entropic for GUMMEIIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -28298,7 +28272,7 @@ impl entropic::Entropic for GUMMEIIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -28311,7 +28285,7 @@ impl entropic::Entropic for GUMMEIIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -28320,7 +28294,7 @@ impl entropic::Entropic for GUMMEIIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct Global_ENB_IDIE_Extensions_Entry {}
 impl entropic::Entropic for Global_ENB_IDIE_Extensions_Entry {
@@ -28338,7 +28312,7 @@ impl entropic::Entropic for Global_ENB_IDIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -28350,7 +28324,7 @@ impl entropic::Entropic for Global_ENB_IDIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -28365,7 +28339,7 @@ impl entropic::Entropic for Global_ENB_IDIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -28374,7 +28348,7 @@ impl entropic::Entropic for Global_ENB_IDIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct Global_GNB_IDIE_Extensions_Entry {}
 impl entropic::Entropic for Global_GNB_IDIE_Extensions_Entry {
@@ -28392,7 +28366,7 @@ impl entropic::Entropic for Global_GNB_IDIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -28404,7 +28378,7 @@ impl entropic::Entropic for Global_GNB_IDIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -28419,7 +28393,7 @@ impl entropic::Entropic for Global_GNB_IDIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -28428,7 +28402,7 @@ impl entropic::Entropic for Global_GNB_IDIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct Global_en_gNB_IDIE_Extensions_Entry {}
 impl entropic::Entropic for Global_en_gNB_IDIE_Extensions_Entry {
@@ -28446,7 +28420,7 @@ impl entropic::Entropic for Global_en_gNB_IDIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -28458,7 +28432,7 @@ impl entropic::Entropic for Global_en_gNB_IDIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -28473,7 +28447,7 @@ impl entropic::Entropic for Global_en_gNB_IDIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -28482,7 +28456,7 @@ impl entropic::Entropic for Global_en_gNB_IDIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum HandoverCancelProtocolIEs_EntryValue {
     #[asn(key = 2)]
@@ -28505,7 +28479,7 @@ impl asn1_codecs::Asn1Choice for HandoverCancelProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct HandoverCancelProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -28539,7 +28513,7 @@ impl entropic::Entropic for HandoverCancelProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -28551,7 +28525,7 @@ impl entropic::Entropic for HandoverCancelProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -28566,7 +28540,7 @@ impl entropic::Entropic for HandoverCancelProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -28575,7 +28549,7 @@ impl entropic::Entropic for HandoverCancelProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum HandoverCancelAcknowledgeProtocolIEs_EntryValue {
     #[asn(key = 58)]
@@ -28598,7 +28572,7 @@ impl asn1_codecs::Asn1Choice for HandoverCancelAcknowledgeProtocolIEs_EntryValue
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct HandoverCancelAcknowledgeProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -28633,7 +28607,7 @@ impl entropic::Entropic for HandoverCancelAcknowledgeProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -28647,7 +28621,7 @@ impl entropic::Entropic for HandoverCancelAcknowledgeProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -28660,7 +28634,7 @@ impl entropic::Entropic for HandoverCancelAcknowledgeProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -28669,7 +28643,7 @@ impl entropic::Entropic for HandoverCancelAcknowledgeProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum HandoverCommandProtocolIEs_EntryValue {
     #[asn(key = 58)]
@@ -28712,7 +28686,7 @@ impl asn1_codecs::Asn1Choice for HandoverCommandProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct HandoverCommandProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -28746,7 +28720,7 @@ impl entropic::Entropic for HandoverCommandProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -28758,7 +28732,7 @@ impl entropic::Entropic for HandoverCommandProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -28773,7 +28747,7 @@ impl entropic::Entropic for HandoverCommandProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -28782,7 +28756,7 @@ impl entropic::Entropic for HandoverCommandProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum HandoverFailureProtocolIEs_EntryValue {
     #[asn(key = 2)]
@@ -28805,7 +28779,7 @@ impl asn1_codecs::Asn1Choice for HandoverFailureProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct HandoverFailureProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -28839,7 +28813,7 @@ impl entropic::Entropic for HandoverFailureProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -28851,7 +28825,7 @@ impl entropic::Entropic for HandoverFailureProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -28866,7 +28840,7 @@ impl entropic::Entropic for HandoverFailureProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -28875,7 +28849,7 @@ impl entropic::Entropic for HandoverFailureProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum HandoverNotifyProtocolIEs_EntryValue {
     #[asn(key = 100)]
@@ -28913,7 +28887,7 @@ impl asn1_codecs::Asn1Choice for HandoverNotifyProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct HandoverNotifyProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -28947,7 +28921,7 @@ impl entropic::Entropic for HandoverNotifyProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -28959,7 +28933,7 @@ impl entropic::Entropic for HandoverNotifyProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -28974,7 +28948,7 @@ impl entropic::Entropic for HandoverNotifyProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -28983,7 +28957,7 @@ impl entropic::Entropic for HandoverNotifyProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum HandoverPreparationFailureProtocolIEs_EntryValue {
     #[asn(key = 2)]
@@ -29009,7 +28983,7 @@ impl asn1_codecs::Asn1Choice for HandoverPreparationFailureProtocolIEs_EntryValu
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct HandoverPreparationFailureProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -29044,7 +29018,7 @@ impl entropic::Entropic for HandoverPreparationFailureProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -29058,7 +29032,7 @@ impl entropic::Entropic for HandoverPreparationFailureProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -29071,7 +29045,7 @@ impl entropic::Entropic for HandoverPreparationFailureProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -29080,7 +29054,7 @@ impl entropic::Entropic for HandoverPreparationFailureProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum HandoverRequestProtocolIEs_EntryValue {
     #[asn(key = 299)]
@@ -29205,7 +29179,7 @@ impl asn1_codecs::Asn1Choice for HandoverRequestProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct HandoverRequestProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -29239,7 +29213,7 @@ impl entropic::Entropic for HandoverRequestProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -29251,7 +29225,7 @@ impl entropic::Entropic for HandoverRequestProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -29266,7 +29240,7 @@ impl entropic::Entropic for HandoverRequestProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -29275,7 +29249,7 @@ impl entropic::Entropic for HandoverRequestProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum HandoverRequestAcknowledgeProtocolIEs_EntryValue {
     #[asn(key = 242)]
@@ -29316,7 +29290,7 @@ impl asn1_codecs::Asn1Choice for HandoverRequestAcknowledgeProtocolIEs_EntryValu
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct HandoverRequestAcknowledgeProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -29351,7 +29325,7 @@ impl entropic::Entropic for HandoverRequestAcknowledgeProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -29365,7 +29339,7 @@ impl entropic::Entropic for HandoverRequestAcknowledgeProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -29378,7 +29352,7 @@ impl entropic::Entropic for HandoverRequestAcknowledgeProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -29387,7 +29361,7 @@ impl entropic::Entropic for HandoverRequestAcknowledgeProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum HandoverRequiredProtocolIEs_EntryValue {
     #[asn(key = 127)]
@@ -29445,7 +29419,7 @@ impl asn1_codecs::Asn1Choice for HandoverRequiredProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct HandoverRequiredProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -29480,7 +29454,7 @@ impl entropic::Entropic for HandoverRequiredProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -29492,7 +29466,7 @@ impl entropic::Entropic for HandoverRequiredProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -29507,7 +29481,7 @@ impl entropic::Entropic for HandoverRequiredProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -29516,7 +29490,7 @@ impl entropic::Entropic for HandoverRequiredProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum HandoverRestrictionListIE_Extensions_EntryExtensionValue {
     #[asn(key = 282)]
@@ -29545,7 +29519,7 @@ impl asn1_codecs::Asn1Choice for HandoverRestrictionListIE_Extensions_EntryExten
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct HandoverRestrictionListIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -29582,7 +29556,7 @@ impl entropic::Entropic for HandoverRestrictionListIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -29596,7 +29570,7 @@ impl entropic::Entropic for HandoverRestrictionListIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -29609,7 +29583,7 @@ impl entropic::Entropic for HandoverRestrictionListIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -29618,7 +29592,7 @@ impl entropic::Entropic for HandoverRestrictionListIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum HandoverSuccessProtocolIEs_EntryValue {
     #[asn(key = 0)]
@@ -29638,7 +29612,7 @@ impl asn1_codecs::Asn1Choice for HandoverSuccessProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct HandoverSuccessProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -29672,7 +29646,7 @@ impl entropic::Entropic for HandoverSuccessProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -29684,7 +29658,7 @@ impl entropic::Entropic for HandoverSuccessProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -29699,7 +29673,7 @@ impl entropic::Entropic for HandoverSuccessProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -29708,19 +29682,19 @@ impl entropic::Entropic for HandoverSuccessProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct IRAT_Cell_ID_eUTRAN(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct IRAT_Cell_ID_uTRAN(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct IRAT_Cell_ID_gERAN(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum ImmediateMDTIE_Extensions_EntryExtensionValue {
     #[asn(key = 284)]
@@ -29758,7 +29732,7 @@ impl asn1_codecs::Asn1Choice for ImmediateMDTIE_Extensions_EntryExtensionValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ImmediateMDTIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -29795,7 +29769,7 @@ impl entropic::Entropic for ImmediateMDTIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -29807,7 +29781,7 @@ impl entropic::Entropic for ImmediateMDTIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -29822,7 +29796,7 @@ impl entropic::Entropic for ImmediateMDTIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -29831,7 +29805,7 @@ impl entropic::Entropic for ImmediateMDTIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct InformationOnRecommendedCellsAndENBsForPagingIE_Extensions_Entry {}
 impl entropic::Entropic for InformationOnRecommendedCellsAndENBsForPagingIE_Extensions_Entry {
@@ -29849,7 +29823,7 @@ impl entropic::Entropic for InformationOnRecommendedCellsAndENBsForPagingIE_Exte
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -29863,7 +29837,7 @@ impl entropic::Entropic for InformationOnRecommendedCellsAndENBsForPagingIE_Exte
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -29878,7 +29852,7 @@ impl entropic::Entropic for InformationOnRecommendedCellsAndENBsForPagingIE_Exte
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -29887,7 +29861,7 @@ impl entropic::Entropic for InformationOnRecommendedCellsAndENBsForPagingIE_Exte
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum InitialContextSetupFailureProtocolIEs_EntryValue {
     #[asn(key = 2)]
@@ -29913,7 +29887,7 @@ impl asn1_codecs::Asn1Choice for InitialContextSetupFailureProtocolIEs_EntryValu
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct InitialContextSetupFailureProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -29948,7 +29922,7 @@ impl entropic::Entropic for InitialContextSetupFailureProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -29962,7 +29936,7 @@ impl entropic::Entropic for InitialContextSetupFailureProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -29975,7 +29949,7 @@ impl entropic::Entropic for InitialContextSetupFailureProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -29984,7 +29958,7 @@ impl entropic::Entropic for InitialContextSetupFailureProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum InitialContextSetupRequestProtocolIEs_EntryValue {
     #[asn(key = 187)]
@@ -30109,7 +30083,7 @@ impl asn1_codecs::Asn1Choice for InitialContextSetupRequestProtocolIEs_EntryValu
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct InitialContextSetupRequestProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -30144,7 +30118,7 @@ impl entropic::Entropic for InitialContextSetupRequestProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -30158,7 +30132,7 @@ impl entropic::Entropic for InitialContextSetupRequestProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -30171,7 +30145,7 @@ impl entropic::Entropic for InitialContextSetupRequestProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -30180,7 +30154,7 @@ impl entropic::Entropic for InitialContextSetupRequestProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum InitialContextSetupResponseProtocolIEs_EntryValue {
     #[asn(key = 58)]
@@ -30209,7 +30183,7 @@ impl asn1_codecs::Asn1Choice for InitialContextSetupResponseProtocolIEs_EntryVal
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct InitialContextSetupResponseProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -30244,7 +30218,7 @@ impl entropic::Entropic for InitialContextSetupResponseProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -30258,7 +30232,7 @@ impl entropic::Entropic for InitialContextSetupResponseProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -30271,7 +30245,7 @@ impl entropic::Entropic for InitialContextSetupResponseProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -30280,7 +30254,7 @@ impl entropic::Entropic for InitialContextSetupResponseProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum InitialUEMessageProtocolIEs_EntryValue {
     #[asn(key = 242)]
@@ -30363,7 +30337,7 @@ impl asn1_codecs::Asn1Choice for InitialUEMessageProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct InitialUEMessageProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -30398,7 +30372,7 @@ impl entropic::Entropic for InitialUEMessageProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -30410,7 +30384,7 @@ impl entropic::Entropic for InitialUEMessageProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -30425,7 +30399,7 @@ impl entropic::Entropic for InitialUEMessageProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -30434,7 +30408,7 @@ impl entropic::Entropic for InitialUEMessageProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum InitiatingMessageValue {
     #[asn(key = 42)]
@@ -30507,8 +30481,8 @@ pub enum InitiatingMessageValue {
     Id_Paging(Paging),
     #[asn(key = 3)]
     Id_PathSwitchRequest(PathSwitchRequest),
-//    #[asn(key = 39)]
-//    Id_PrivateMessage(PrivateMessage),
+    #[asn(key = 39)]
+    Id_PrivateMessage(PrivateMessage),
     #[asn(key = 52)]
     Id_RerouteNASRequest(RerouteNASRequest),
     #[asn(key = 14)]
@@ -30613,7 +30587,7 @@ impl asn1_codecs::Asn1Choice for InitiatingMessageValue {
             Self::Id_PWSRestartIndication(_) => 49u128.try_into().unwrap(),
             Self::Id_Paging(_) => 10u128.try_into().unwrap(),
             Self::Id_PathSwitchRequest(_) => 3u128.try_into().unwrap(),
-//            Self::Id_PrivateMessage(_) => 39u128.try_into().unwrap(),
+            Self::Id_PrivateMessage(_) => 39u128.try_into().unwrap(),
             Self::Id_RerouteNASRequest(_) => 52u128.try_into().unwrap(),
             Self::Id_Reset(_) => 14u128.try_into().unwrap(),
             Self::Id_RetrieveUEInformation(_) => 58u128.try_into().unwrap(),
@@ -30649,7 +30623,7 @@ impl asn1_codecs::Asn1Choice for InitiatingMessageValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "1", ub = "1024")]
 pub struct InterSystemMeasurementItemFreqBandIndicatorNR(pub u16);
 impl entropic::Entropic for InterSystemMeasurementItemFreqBandIndicatorNR {
@@ -30668,7 +30642,7 @@ impl entropic::Entropic for InterSystemMeasurementItemFreqBandIndicatorNR {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "32")]
 pub struct InterSystemMeasurementItemSSBfrequencies(pub u8);
 impl entropic::Entropic for InterSystemMeasurementItemSSBfrequencies {
@@ -30687,7 +30661,7 @@ impl entropic::Entropic for InterSystemMeasurementItemSSBfrequencies {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "4")]
 pub struct InterSystemMeasurementItemSubcarrierSpacingSSB(pub u8);
 impl InterSystemMeasurementItemSubcarrierSpacingSSB {
@@ -30713,7 +30687,7 @@ impl entropic::Entropic for InterSystemMeasurementItemSubcarrierSpacingSSB {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "1", ub = "16")]
 pub struct InterSystemMeasurementItemMaxRSIndexCellQual(pub u8);
 impl entropic::Entropic for InterSystemMeasurementItemMaxRSIndexCellQual {
@@ -30732,31 +30706,31 @@ impl entropic::Entropic for InterSystemMeasurementItemMaxRSIndexCellQual {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct InterSystemMeasurementItemSMTC(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct InterSystemMeasurementItemThreshRS_Index_r15(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct InterSystemMeasurementItemSSBToMeasure(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct InterSystemMeasurementItemSSRSSIMeasurement(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct InterSystemMeasurementItemQuantityConfigNR_R15(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct InterSystemMeasurementItemBlackCellsToAddModList(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct InterSystemMeasurementItemIE_Extensions_Entry {}
 impl entropic::Entropic for InterSystemMeasurementItemIE_Extensions_Entry {
@@ -30774,7 +30748,7 @@ impl entropic::Entropic for InterSystemMeasurementItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -30788,7 +30762,7 @@ impl entropic::Entropic for InterSystemMeasurementItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -30801,7 +30775,7 @@ impl entropic::Entropic for InterSystemMeasurementItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -30810,7 +30784,7 @@ impl entropic::Entropic for InterSystemMeasurementItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "1", ub = "100")]
 pub struct InterSystemMeasurementParametersMeasurementDuration(pub u8);
 impl entropic::Entropic for InterSystemMeasurementParametersMeasurementDuration {
@@ -30829,7 +30803,7 @@ impl entropic::Entropic for InterSystemMeasurementParametersMeasurementDuration 
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct InterSystemMeasurementParametersIE_Extensions_Entry {}
 impl entropic::Entropic for InterSystemMeasurementParametersIE_Extensions_Entry {
@@ -30847,7 +30821,7 @@ impl entropic::Entropic for InterSystemMeasurementParametersIE_Extensions_Entry 
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -30861,7 +30835,7 @@ impl entropic::Entropic for InterSystemMeasurementParametersIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -30876,7 +30850,7 @@ impl entropic::Entropic for InterSystemMeasurementParametersIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -30885,7 +30859,7 @@ impl entropic::Entropic for InterSystemMeasurementParametersIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "127")]
 pub struct IntersystemMeasurementConfigurationRSRP(pub u8);
 impl entropic::Entropic for IntersystemMeasurementConfigurationRSRP {
@@ -30904,7 +30878,7 @@ impl entropic::Entropic for IntersystemMeasurementConfigurationRSRP {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "127")]
 pub struct IntersystemMeasurementConfigurationRSRQ(pub u8);
 impl entropic::Entropic for IntersystemMeasurementConfigurationRSRQ {
@@ -30923,7 +30897,7 @@ impl entropic::Entropic for IntersystemMeasurementConfigurationRSRQ {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "127")]
 pub struct IntersystemMeasurementConfigurationSINR(pub u8);
 impl entropic::Entropic for IntersystemMeasurementConfigurationSINR {
@@ -30942,7 +30916,7 @@ impl entropic::Entropic for IntersystemMeasurementConfigurationSINR {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct IntersystemMeasurementConfigurationIE_Extensions_Entry {}
 impl entropic::Entropic for IntersystemMeasurementConfigurationIE_Extensions_Entry {
@@ -30960,7 +30934,7 @@ impl entropic::Entropic for IntersystemMeasurementConfigurationIE_Extensions_Ent
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -30974,7 +30948,7 @@ impl entropic::Entropic for IntersystemMeasurementConfigurationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -30991,7 +30965,7 @@ impl entropic::Entropic for IntersystemMeasurementConfigurationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -31000,7 +30974,7 @@ impl entropic::Entropic for IntersystemMeasurementConfigurationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum KillRequestProtocolIEs_EntryValue {
     #[asn(key = 191)]
@@ -31026,7 +31000,7 @@ impl asn1_codecs::Asn1Choice for KillRequestProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct KillRequestProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -31060,7 +31034,7 @@ impl entropic::Entropic for KillRequestProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -31072,7 +31046,7 @@ impl entropic::Entropic for KillRequestProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -31085,7 +31059,7 @@ impl entropic::Entropic for KillRequestProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -31094,7 +31068,7 @@ impl entropic::Entropic for KillRequestProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum KillResponseProtocolIEs_EntryValue {
     #[asn(key = 141)]
@@ -31120,7 +31094,7 @@ impl asn1_codecs::Asn1Choice for KillResponseProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct KillResponseProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -31154,7 +31128,7 @@ impl entropic::Entropic for KillResponseProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -31166,7 +31140,7 @@ impl entropic::Entropic for KillResponseProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -31179,7 +31153,7 @@ impl entropic::Entropic for KillResponseProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -31188,7 +31162,7 @@ impl entropic::Entropic for KillResponseProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct LAIIE_Extensions_Entry {}
 impl entropic::Entropic for LAIIE_Extensions_Entry {
@@ -31206,7 +31180,7 @@ impl entropic::Entropic for LAIIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -31218,7 +31192,7 @@ impl entropic::Entropic for LAIIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -31231,7 +31205,7 @@ impl entropic::Entropic for LAIIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -31240,7 +31214,7 @@ impl entropic::Entropic for LAIIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum LastVisitedEUTRANCellInformationIE_Extensions_EntryExtensionValue {
     #[asn(key = 168)]
@@ -31260,7 +31234,7 @@ impl asn1_codecs::Asn1Choice for LastVisitedEUTRANCellInformationIE_Extensions_E
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct LastVisitedEUTRANCellInformationIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -31297,7 +31271,7 @@ impl entropic::Entropic for LastVisitedEUTRANCellInformationIE_Extensions_Entry 
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -31311,7 +31285,7 @@ impl entropic::Entropic for LastVisitedEUTRANCellInformationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -31326,7 +31300,7 @@ impl entropic::Entropic for LastVisitedEUTRANCellInformationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -31335,11 +31309,11 @@ impl entropic::Entropic for LastVisitedEUTRANCellInformationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "NULL")]
 pub struct LastVisitedGERANCellInformation_undefined;
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "3")]
 pub struct ListeningSubframePatternPattern_period(pub u8);
 impl ListeningSubframePatternPattern_period {
@@ -31364,7 +31338,7 @@ impl entropic::Entropic for ListeningSubframePatternPattern_period {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "10239", extensible = true)]
 pub struct ListeningSubframePatternPattern_offset(pub u16);
 impl entropic::Entropic for ListeningSubframePatternPattern_offset {
@@ -31383,7 +31357,7 @@ impl entropic::Entropic for ListeningSubframePatternPattern_offset {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ListeningSubframePatternIE_Extensions_Entry {}
 impl entropic::Entropic for ListeningSubframePatternIE_Extensions_Entry {
@@ -31401,7 +31375,7 @@ impl entropic::Entropic for ListeningSubframePatternIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -31415,7 +31389,7 @@ impl entropic::Entropic for ListeningSubframePatternIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -31428,7 +31402,7 @@ impl entropic::Entropic for ListeningSubframePatternIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -31437,7 +31411,7 @@ impl entropic::Entropic for ListeningSubframePatternIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum LocationReportProtocolIEs_EntryValue {
     #[asn(key = 100)]
@@ -31469,7 +31443,7 @@ impl asn1_codecs::Asn1Choice for LocationReportProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct LocationReportProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -31503,7 +31477,7 @@ impl entropic::Entropic for LocationReportProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -31515,7 +31489,7 @@ impl entropic::Entropic for LocationReportProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -31530,7 +31504,7 @@ impl entropic::Entropic for LocationReportProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -31539,7 +31513,7 @@ impl entropic::Entropic for LocationReportProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum LocationReportingControlProtocolIEs_EntryValue {
     #[asn(key = 0)]
@@ -31562,7 +31536,7 @@ impl asn1_codecs::Asn1Choice for LocationReportingControlProtocolIEs_EntryValue 
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct LocationReportingControlProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -31597,7 +31571,7 @@ impl entropic::Entropic for LocationReportingControlProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -31609,7 +31583,7 @@ impl entropic::Entropic for LocationReportingControlProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -31622,7 +31596,7 @@ impl entropic::Entropic for LocationReportingControlProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -31631,7 +31605,7 @@ impl entropic::Entropic for LocationReportingControlProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum LocationReportingFailureIndicationProtocolIEs_EntryValue {
     #[asn(key = 2)]
@@ -31654,7 +31628,7 @@ impl asn1_codecs::Asn1Choice for LocationReportingFailureIndicationProtocolIEs_E
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct LocationReportingFailureIndicationProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -31689,7 +31663,7 @@ impl entropic::Entropic for LocationReportingFailureIndicationProtocolIEs_Entry 
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -31703,7 +31677,7 @@ impl entropic::Entropic for LocationReportingFailureIndicationProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -31718,7 +31692,7 @@ impl entropic::Entropic for LocationReportingFailureIndicationProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -31727,7 +31701,7 @@ impl entropic::Entropic for LocationReportingFailureIndicationProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct LoggedMBSFNMDTIE_Extensions_Entry {}
 impl entropic::Entropic for LoggedMBSFNMDTIE_Extensions_Entry {
@@ -31745,7 +31719,7 @@ impl entropic::Entropic for LoggedMBSFNMDTIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -31757,7 +31731,7 @@ impl entropic::Entropic for LoggedMBSFNMDTIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -31772,7 +31746,7 @@ impl entropic::Entropic for LoggedMBSFNMDTIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -31781,7 +31755,7 @@ impl entropic::Entropic for LoggedMBSFNMDTIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum LoggedMDTIE_Extensions_EntryExtensionValue {
     #[asn(key = 284)]
@@ -31801,7 +31775,7 @@ impl asn1_codecs::Asn1Choice for LoggedMDTIE_Extensions_EntryExtensionValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct LoggedMDTIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -31838,7 +31812,7 @@ impl entropic::Entropic for LoggedMDTIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -31850,7 +31824,7 @@ impl entropic::Entropic for LoggedMDTIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -31863,7 +31837,7 @@ impl entropic::Entropic for LoggedMDTIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -31872,7 +31846,7 @@ impl entropic::Entropic for LoggedMDTIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct M1PeriodicReportingIE_Extensions_Entry {}
 impl entropic::Entropic for M1PeriodicReportingIE_Extensions_Entry {
@@ -31890,7 +31864,7 @@ impl entropic::Entropic for M1PeriodicReportingIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -31902,7 +31876,7 @@ impl entropic::Entropic for M1PeriodicReportingIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -31917,7 +31891,7 @@ impl entropic::Entropic for M1PeriodicReportingIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -31926,7 +31900,7 @@ impl entropic::Entropic for M1PeriodicReportingIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct M1ThresholdEventA2IE_Extensions_Entry {}
 impl entropic::Entropic for M1ThresholdEventA2IE_Extensions_Entry {
@@ -31944,7 +31918,7 @@ impl entropic::Entropic for M1ThresholdEventA2IE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -31956,7 +31930,7 @@ impl entropic::Entropic for M1ThresholdEventA2IE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -31971,7 +31945,7 @@ impl entropic::Entropic for M1ThresholdEventA2IE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -31980,7 +31954,7 @@ impl entropic::Entropic for M1ThresholdEventA2IE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct M3ConfigurationIE_Extensions_Entry {}
 impl entropic::Entropic for M3ConfigurationIE_Extensions_Entry {
@@ -31998,7 +31972,7 @@ impl entropic::Entropic for M3ConfigurationIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -32010,7 +31984,7 @@ impl entropic::Entropic for M3ConfigurationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -32025,7 +31999,7 @@ impl entropic::Entropic for M3ConfigurationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -32034,7 +32008,7 @@ impl entropic::Entropic for M3ConfigurationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct M4ConfigurationIE_Extensions_Entry {}
 impl entropic::Entropic for M4ConfigurationIE_Extensions_Entry {
@@ -32052,7 +32026,7 @@ impl entropic::Entropic for M4ConfigurationIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -32064,7 +32038,7 @@ impl entropic::Entropic for M4ConfigurationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -32079,7 +32053,7 @@ impl entropic::Entropic for M4ConfigurationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -32088,7 +32062,7 @@ impl entropic::Entropic for M4ConfigurationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct M5ConfigurationIE_Extensions_Entry {}
 impl entropic::Entropic for M5ConfigurationIE_Extensions_Entry {
@@ -32106,7 +32080,7 @@ impl entropic::Entropic for M5ConfigurationIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -32118,7 +32092,7 @@ impl entropic::Entropic for M5ConfigurationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -32133,7 +32107,7 @@ impl entropic::Entropic for M5ConfigurationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -32142,7 +32116,7 @@ impl entropic::Entropic for M5ConfigurationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct M6ConfigurationIE_Extensions_Entry {}
 impl entropic::Entropic for M6ConfigurationIE_Extensions_Entry {
@@ -32160,7 +32134,7 @@ impl entropic::Entropic for M6ConfigurationIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -32172,7 +32146,7 @@ impl entropic::Entropic for M6ConfigurationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -32187,7 +32161,7 @@ impl entropic::Entropic for M6ConfigurationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -32196,7 +32170,7 @@ impl entropic::Entropic for M6ConfigurationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct M7ConfigurationIE_Extensions_Entry {}
 impl entropic::Entropic for M7ConfigurationIE_Extensions_Entry {
@@ -32214,7 +32188,7 @@ impl entropic::Entropic for M7ConfigurationIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -32226,7 +32200,7 @@ impl entropic::Entropic for M7ConfigurationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -32241,7 +32215,7 @@ impl entropic::Entropic for M7ConfigurationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -32250,7 +32224,7 @@ impl entropic::Entropic for M7ConfigurationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "255")]
 pub struct MBSFN_ResultToLogInfoMBSFN_AreaId(pub u8);
 impl entropic::Entropic for MBSFN_ResultToLogInfoMBSFN_AreaId {
@@ -32269,7 +32243,7 @@ impl entropic::Entropic for MBSFN_ResultToLogInfoMBSFN_AreaId {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct MBSFN_ResultToLogInfoIE_Extensions_Entry {}
 impl entropic::Entropic for MBSFN_ResultToLogInfoIE_Extensions_Entry {
@@ -32287,7 +32261,7 @@ impl entropic::Entropic for MBSFN_ResultToLogInfoIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -32299,7 +32273,7 @@ impl entropic::Entropic for MBSFN_ResultToLogInfoIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -32312,7 +32286,7 @@ impl entropic::Entropic for MBSFN_ResultToLogInfoIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -32321,7 +32295,7 @@ impl entropic::Entropic for MBSFN_ResultToLogInfoIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum MDT_ConfigurationIE_Extensions_EntryExtensionValue {
     #[asn(key = 178)]
@@ -32338,7 +32312,7 @@ impl asn1_codecs::Asn1Choice for MDT_ConfigurationIE_Extensions_EntryExtensionVa
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct MDT_ConfigurationIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -32375,7 +32349,7 @@ impl entropic::Entropic for MDT_ConfigurationIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -32387,7 +32361,7 @@ impl entropic::Entropic for MDT_ConfigurationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -32402,7 +32376,7 @@ impl entropic::Entropic for MDT_ConfigurationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -32411,7 +32385,7 @@ impl entropic::Entropic for MDT_ConfigurationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum MDTMode_ExtensionValue {
     #[asn(key = 197)]
@@ -32428,7 +32402,7 @@ impl asn1_codecs::Asn1Choice for MDTMode_ExtensionValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum MMECPRelocationIndicationProtocolIEs_EntryValue {
     #[asn(key = 0)]
@@ -32448,7 +32422,7 @@ impl asn1_codecs::Asn1Choice for MMECPRelocationIndicationProtocolIEs_EntryValue
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct MMECPRelocationIndicationProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -32483,7 +32457,7 @@ impl entropic::Entropic for MMECPRelocationIndicationProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -32497,7 +32471,7 @@ impl entropic::Entropic for MMECPRelocationIndicationProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -32510,7 +32484,7 @@ impl entropic::Entropic for MMECPRelocationIndicationProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -32519,7 +32493,7 @@ impl entropic::Entropic for MMECPRelocationIndicationProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum MMEConfigurationTransferProtocolIEs_EntryValue {
     #[asn(key = 295)]
@@ -32542,7 +32516,7 @@ impl asn1_codecs::Asn1Choice for MMEConfigurationTransferProtocolIEs_EntryValue 
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct MMEConfigurationTransferProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -32577,7 +32551,7 @@ impl entropic::Entropic for MMEConfigurationTransferProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -32589,7 +32563,7 @@ impl entropic::Entropic for MMEConfigurationTransferProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -32602,7 +32576,7 @@ impl entropic::Entropic for MMEConfigurationTransferProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -32611,7 +32585,7 @@ impl entropic::Entropic for MMEConfigurationTransferProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum MMEConfigurationUpdateProtocolIEs_EntryValue {
     #[asn(key = 61)]
@@ -32637,7 +32611,7 @@ impl asn1_codecs::Asn1Choice for MMEConfigurationUpdateProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct MMEConfigurationUpdateProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -32672,7 +32646,7 @@ impl entropic::Entropic for MMEConfigurationUpdateProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -32684,7 +32658,7 @@ impl entropic::Entropic for MMEConfigurationUpdateProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -32697,7 +32671,7 @@ impl entropic::Entropic for MMEConfigurationUpdateProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -32706,7 +32680,7 @@ impl entropic::Entropic for MMEConfigurationUpdateProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum MMEConfigurationUpdateAcknowledgeProtocolIEs_EntryValue {
     #[asn(key = 58)]
@@ -32723,7 +32697,7 @@ impl asn1_codecs::Asn1Choice for MMEConfigurationUpdateAcknowledgeProtocolIEs_En
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct MMEConfigurationUpdateAcknowledgeProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -32758,7 +32732,7 @@ impl entropic::Entropic for MMEConfigurationUpdateAcknowledgeProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -32772,7 +32746,7 @@ impl entropic::Entropic for MMEConfigurationUpdateAcknowledgeProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -32787,7 +32761,7 @@ impl entropic::Entropic for MMEConfigurationUpdateAcknowledgeProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -32796,7 +32770,7 @@ impl entropic::Entropic for MMEConfigurationUpdateAcknowledgeProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum MMEConfigurationUpdateFailureProtocolIEs_EntryValue {
     #[asn(key = 2)]
@@ -32819,7 +32793,7 @@ impl asn1_codecs::Asn1Choice for MMEConfigurationUpdateFailureProtocolIEs_EntryV
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct MMEConfigurationUpdateFailureProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -32854,7 +32828,7 @@ impl entropic::Entropic for MMEConfigurationUpdateFailureProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -32868,7 +32842,7 @@ impl entropic::Entropic for MMEConfigurationUpdateFailureProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -32881,7 +32855,7 @@ impl entropic::Entropic for MMEConfigurationUpdateFailureProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -32890,7 +32864,7 @@ impl entropic::Entropic for MMEConfigurationUpdateFailureProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum MMEDirectInformationTransferProtocolIEs_EntryValue {
     #[asn(key = 122)]
@@ -32907,7 +32881,7 @@ impl asn1_codecs::Asn1Choice for MMEDirectInformationTransferProtocolIEs_EntryVa
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct MMEDirectInformationTransferProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -32942,7 +32916,7 @@ impl entropic::Entropic for MMEDirectInformationTransferProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -32956,7 +32930,7 @@ impl entropic::Entropic for MMEDirectInformationTransferProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -32969,7 +32943,7 @@ impl entropic::Entropic for MMEDirectInformationTransferProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -32978,7 +32952,7 @@ impl entropic::Entropic for MMEDirectInformationTransferProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum MMEEarlyStatusTransferProtocolIEs_EntryValue {
     #[asn(key = 0)]
@@ -33001,7 +32975,7 @@ impl asn1_codecs::Asn1Choice for MMEEarlyStatusTransferProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct MMEEarlyStatusTransferProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -33036,7 +33010,7 @@ impl entropic::Entropic for MMEEarlyStatusTransferProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -33048,7 +33022,7 @@ impl entropic::Entropic for MMEEarlyStatusTransferProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -33061,7 +33035,7 @@ impl entropic::Entropic for MMEEarlyStatusTransferProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -33070,7 +33044,7 @@ impl entropic::Entropic for MMEEarlyStatusTransferProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum MMEStatusTransferProtocolIEs_EntryValue {
     #[asn(key = 0)]
@@ -33093,7 +33067,7 @@ impl asn1_codecs::Asn1Choice for MMEStatusTransferProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct MMEStatusTransferProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -33128,7 +33102,7 @@ impl entropic::Entropic for MMEStatusTransferProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -33140,7 +33114,7 @@ impl entropic::Entropic for MMEStatusTransferProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -33155,7 +33129,7 @@ impl entropic::Entropic for MMEStatusTransferProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -33164,15 +33138,15 @@ impl entropic::Entropic for MMEStatusTransferProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct MultiCellLoadReportingResponse_Item_uTRANResponse(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct MultiCellLoadReportingResponse_Item_gERANResponse(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "4")]
 pub struct MutingPatternInformationMuting_pattern_period(pub u8);
 impl MutingPatternInformationMuting_pattern_period {
@@ -33198,7 +33172,7 @@ impl entropic::Entropic for MutingPatternInformationMuting_pattern_period {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "10239", extensible = true)]
 pub struct MutingPatternInformationMuting_pattern_offset(pub u16);
 impl entropic::Entropic for MutingPatternInformationMuting_pattern_offset {
@@ -33217,7 +33191,7 @@ impl entropic::Entropic for MutingPatternInformationMuting_pattern_offset {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct MutingPatternInformationIE_Extensions_Entry {}
 impl entropic::Entropic for MutingPatternInformationIE_Extensions_Entry {
@@ -33235,7 +33209,7 @@ impl entropic::Entropic for MutingPatternInformationIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -33249,7 +33223,7 @@ impl entropic::Entropic for MutingPatternInformationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -33262,7 +33236,7 @@ impl entropic::Entropic for MutingPatternInformationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -33271,7 +33245,7 @@ impl entropic::Entropic for MutingPatternInformationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum NASDeliveryIndicationProtocolIEs_EntryValue {
     #[asn(key = 0)]
@@ -33291,7 +33265,7 @@ impl asn1_codecs::Asn1Choice for NASDeliveryIndicationProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct NASDeliveryIndicationProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -33326,7 +33300,7 @@ impl entropic::Entropic for NASDeliveryIndicationProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -33338,7 +33312,7 @@ impl entropic::Entropic for NASDeliveryIndicationProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -33353,7 +33327,7 @@ impl entropic::Entropic for NASDeliveryIndicationProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -33362,7 +33336,7 @@ impl entropic::Entropic for NASDeliveryIndicationProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum NASNonDeliveryIndicationProtocolIEs_EntryValue {
     #[asn(key = 2)]
@@ -33388,7 +33362,7 @@ impl asn1_codecs::Asn1Choice for NASNonDeliveryIndicationProtocolIEs_EntryValue 
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct NASNonDeliveryIndicationProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -33423,7 +33397,7 @@ impl entropic::Entropic for NASNonDeliveryIndicationProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -33435,7 +33409,7 @@ impl entropic::Entropic for NASNonDeliveryIndicationProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -33448,7 +33422,7 @@ impl entropic::Entropic for NASNonDeliveryIndicationProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -33457,7 +33431,7 @@ impl entropic::Entropic for NASNonDeliveryIndicationProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct NB_IoT_Paging_eDRXInformationIE_Extensions_Entry {}
 impl entropic::Entropic for NB_IoT_Paging_eDRXInformationIE_Extensions_Entry {
@@ -33475,7 +33449,7 @@ impl entropic::Entropic for NB_IoT_Paging_eDRXInformationIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -33489,7 +33463,7 @@ impl entropic::Entropic for NB_IoT_Paging_eDRXInformationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -33502,7 +33476,7 @@ impl entropic::Entropic for NB_IoT_Paging_eDRXInformationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -33511,7 +33485,7 @@ impl entropic::Entropic for NB_IoT_Paging_eDRXInformationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct NG_eNBIE_Extensions_Entry {}
 impl entropic::Entropic for NG_eNBIE_Extensions_Entry {
@@ -33529,7 +33503,7 @@ impl entropic::Entropic for NG_eNBIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -33541,7 +33515,7 @@ impl entropic::Entropic for NG_eNBIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -33554,7 +33528,7 @@ impl entropic::Entropic for NG_eNBIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -33563,7 +33537,7 @@ impl entropic::Entropic for NG_eNBIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct NR_CGIIE_Extensions_Entry {}
 impl entropic::Entropic for NR_CGIIE_Extensions_Entry {
@@ -33581,7 +33555,7 @@ impl entropic::Entropic for NR_CGIIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -33593,7 +33567,7 @@ impl entropic::Entropic for NR_CGIIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -33606,7 +33580,7 @@ impl entropic::Entropic for NR_CGIIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -33615,7 +33589,7 @@ impl entropic::Entropic for NR_CGIIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct NRUESecurityCapabilitiesIE_Extensions_Entry {}
 impl entropic::Entropic for NRUESecurityCapabilitiesIE_Extensions_Entry {
@@ -33633,7 +33607,7 @@ impl entropic::Entropic for NRUESecurityCapabilitiesIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -33647,7 +33621,7 @@ impl entropic::Entropic for NRUESecurityCapabilitiesIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -33660,7 +33634,7 @@ impl entropic::Entropic for NRUESecurityCapabilitiesIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -33669,7 +33643,7 @@ impl entropic::Entropic for NRUESecurityCapabilitiesIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct NRUESidelinkAggregateMaximumBitrateIE_Extensions_Entry {}
 impl entropic::Entropic for NRUESidelinkAggregateMaximumBitrateIE_Extensions_Entry {
@@ -33687,7 +33661,7 @@ impl entropic::Entropic for NRUESidelinkAggregateMaximumBitrateIE_Extensions_Ent
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -33701,7 +33675,7 @@ impl entropic::Entropic for NRUESidelinkAggregateMaximumBitrateIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -33718,7 +33692,7 @@ impl entropic::Entropic for NRUESidelinkAggregateMaximumBitrateIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -33727,7 +33701,7 @@ impl entropic::Entropic for NRUESidelinkAggregateMaximumBitrateIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct NRV2XServicesAuthorizedIE_Extensions_Entry {}
 impl entropic::Entropic for NRV2XServicesAuthorizedIE_Extensions_Entry {
@@ -33745,7 +33719,7 @@ impl entropic::Entropic for NRV2XServicesAuthorizedIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -33759,7 +33733,7 @@ impl entropic::Entropic for NRV2XServicesAuthorizedIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -33772,7 +33746,7 @@ impl entropic::Entropic for NRV2XServicesAuthorizedIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -33781,11 +33755,11 @@ impl entropic::Entropic for NRV2XServicesAuthorizedIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct NotificationCellList_ItemCell_ID(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum OverloadStartProtocolIEs_EntryValue {
     #[asn(key = 154)]
@@ -33808,7 +33782,7 @@ impl asn1_codecs::Asn1Choice for OverloadStartProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct OverloadStartProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -33842,7 +33816,7 @@ impl entropic::Entropic for OverloadStartProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -33854,7 +33828,7 @@ impl entropic::Entropic for OverloadStartProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -33867,7 +33841,7 @@ impl entropic::Entropic for OverloadStartProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -33876,7 +33850,7 @@ impl entropic::Entropic for OverloadStartProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum OverloadStopProtocolIEs_EntryValue {
     #[asn(key = 154)]
@@ -33893,7 +33867,7 @@ impl asn1_codecs::Asn1Choice for OverloadStopProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct OverloadStopProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -33927,7 +33901,7 @@ impl entropic::Entropic for OverloadStopProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -33939,7 +33913,7 @@ impl entropic::Entropic for OverloadStopProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -33952,7 +33926,7 @@ impl entropic::Entropic for OverloadStopProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -33961,7 +33935,7 @@ impl entropic::Entropic for OverloadStopProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct PC5FlowBitRatesIE_Extensions_Entry {}
 impl entropic::Entropic for PC5FlowBitRatesIE_Extensions_Entry {
@@ -33979,7 +33953,7 @@ impl entropic::Entropic for PC5FlowBitRatesIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -33991,7 +33965,7 @@ impl entropic::Entropic for PC5FlowBitRatesIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -34006,7 +33980,7 @@ impl entropic::Entropic for PC5FlowBitRatesIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -34015,7 +33989,7 @@ impl entropic::Entropic for PC5FlowBitRatesIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct PC5QoSFlowItemIE_Extensions_Entry {}
 impl entropic::Entropic for PC5QoSFlowItemIE_Extensions_Entry {
@@ -34033,7 +34007,7 @@ impl entropic::Entropic for PC5QoSFlowItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -34045,7 +34019,7 @@ impl entropic::Entropic for PC5QoSFlowItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -34060,7 +34034,7 @@ impl entropic::Entropic for PC5QoSFlowItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -34069,7 +34043,7 @@ impl entropic::Entropic for PC5QoSFlowItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct PC5QoSParametersIE_Extensions_Entry {}
 impl entropic::Entropic for PC5QoSParametersIE_Extensions_Entry {
@@ -34087,7 +34061,7 @@ impl entropic::Entropic for PC5QoSParametersIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -34099,7 +34073,7 @@ impl entropic::Entropic for PC5QoSParametersIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -34114,7 +34088,7 @@ impl entropic::Entropic for PC5QoSParametersIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -34123,7 +34097,7 @@ impl entropic::Entropic for PC5QoSParametersIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct PLMNAreaBasedQMCIE_Extensions_Entry {}
 impl entropic::Entropic for PLMNAreaBasedQMCIE_Extensions_Entry {
@@ -34141,7 +34115,7 @@ impl entropic::Entropic for PLMNAreaBasedQMCIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -34153,7 +34127,7 @@ impl entropic::Entropic for PLMNAreaBasedQMCIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -34168,7 +34142,7 @@ impl entropic::Entropic for PLMNAreaBasedQMCIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -34177,7 +34151,7 @@ impl entropic::Entropic for PLMNAreaBasedQMCIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct PSCellInformationIE_Extensions_Entry {}
 impl entropic::Entropic for PSCellInformationIE_Extensions_Entry {
@@ -34195,7 +34169,7 @@ impl entropic::Entropic for PSCellInformationIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -34207,7 +34181,7 @@ impl entropic::Entropic for PSCellInformationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -34222,7 +34196,7 @@ impl entropic::Entropic for PSCellInformationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -34231,7 +34205,7 @@ impl entropic::Entropic for PSCellInformationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum PWSFailureIndicationProtocolIEs_EntryValue {
     #[asn(key = 59)]
@@ -34251,7 +34225,7 @@ impl asn1_codecs::Asn1Choice for PWSFailureIndicationProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct PWSFailureIndicationProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -34286,7 +34260,7 @@ impl entropic::Entropic for PWSFailureIndicationProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -34298,7 +34272,7 @@ impl entropic::Entropic for PWSFailureIndicationProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -34313,7 +34287,7 @@ impl entropic::Entropic for PWSFailureIndicationProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -34322,7 +34296,7 @@ impl entropic::Entropic for PWSFailureIndicationProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum PWSRestartIndicationProtocolIEs_EntryValue {
     #[asn(key = 182)]
@@ -34348,7 +34322,7 @@ impl asn1_codecs::Asn1Choice for PWSRestartIndicationProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct PWSRestartIndicationProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -34383,7 +34357,7 @@ impl entropic::Entropic for PWSRestartIndicationProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -34395,7 +34369,7 @@ impl entropic::Entropic for PWSRestartIndicationProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -34410,7 +34384,7 @@ impl entropic::Entropic for PWSRestartIndicationProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -34419,7 +34393,7 @@ impl entropic::Entropic for PWSRestartIndicationProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum PagingProtocolIEs_EntryValue {
     #[asn(key = 211)]
@@ -34487,7 +34461,7 @@ impl asn1_codecs::Asn1Choice for PagingProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct PagingProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -34521,7 +34495,7 @@ impl entropic::Entropic for PagingProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -34533,7 +34507,7 @@ impl entropic::Entropic for PagingProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -34546,7 +34520,7 @@ impl entropic::Entropic for PagingProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -34555,7 +34529,7 @@ impl entropic::Entropic for PagingProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct Paging_eDRXInformationIE_Extensions_Entry {}
 impl entropic::Entropic for Paging_eDRXInformationIE_Extensions_Entry {
@@ -34573,7 +34547,7 @@ impl entropic::Entropic for Paging_eDRXInformationIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -34585,7 +34559,7 @@ impl entropic::Entropic for Paging_eDRXInformationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -34598,7 +34572,7 @@ impl entropic::Entropic for Paging_eDRXInformationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -34607,7 +34581,7 @@ impl entropic::Entropic for Paging_eDRXInformationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct PagingAttemptInformationIE_Extensions_Entry {}
 impl entropic::Entropic for PagingAttemptInformationIE_Extensions_Entry {
@@ -34625,7 +34599,7 @@ impl entropic::Entropic for PagingAttemptInformationIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -34639,7 +34613,7 @@ impl entropic::Entropic for PagingAttemptInformationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -34652,7 +34626,7 @@ impl entropic::Entropic for PagingAttemptInformationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -34661,7 +34635,7 @@ impl entropic::Entropic for PagingAttemptInformationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum PathSwitchRequestProtocolIEs_EntryValue {
     #[asn(key = 127)]
@@ -34720,7 +34694,7 @@ impl asn1_codecs::Asn1Choice for PathSwitchRequestProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct PathSwitchRequestProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -34755,7 +34729,7 @@ impl entropic::Entropic for PathSwitchRequestProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -34767,7 +34741,7 @@ impl entropic::Entropic for PathSwitchRequestProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -34782,7 +34756,7 @@ impl entropic::Entropic for PathSwitchRequestProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -34791,7 +34765,7 @@ impl entropic::Entropic for PathSwitchRequestProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum PathSwitchRequestAcknowledgeProtocolIEs_EntryValue {
     #[asn(key = 299)]
@@ -34880,7 +34854,7 @@ impl asn1_codecs::Asn1Choice for PathSwitchRequestAcknowledgeProtocolIEs_EntryVa
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct PathSwitchRequestAcknowledgeProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -34915,7 +34889,7 @@ impl entropic::Entropic for PathSwitchRequestAcknowledgeProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -34929,7 +34903,7 @@ impl entropic::Entropic for PathSwitchRequestAcknowledgeProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -34942,7 +34916,7 @@ impl entropic::Entropic for PathSwitchRequestAcknowledgeProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -34951,7 +34925,7 @@ impl entropic::Entropic for PathSwitchRequestAcknowledgeProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum PathSwitchRequestFailureProtocolIEs_EntryValue {
     #[asn(key = 2)]
@@ -34977,7 +34951,7 @@ impl asn1_codecs::Asn1Choice for PathSwitchRequestFailureProtocolIEs_EntryValue 
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct PathSwitchRequestFailureProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -35012,7 +34986,7 @@ impl entropic::Entropic for PathSwitchRequestFailureProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -35024,7 +34998,7 @@ impl entropic::Entropic for PathSwitchRequestFailureProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -35037,7 +35011,7 @@ impl entropic::Entropic for PathSwitchRequestFailureProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -35046,7 +35020,7 @@ impl entropic::Entropic for PathSwitchRequestFailureProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "65535")]
 pub struct PrivateIE_ID_local(pub u16);
 impl entropic::Entropic for PrivateIE_ID_local {
@@ -35063,11 +35037,11 @@ impl entropic::Entropic for PrivateIE_ID_local {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OBJECT-IDENTIFIER")]
 pub struct PrivateIE_ID_global(Vec<u32>);
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct PrivateMessagePrivateIEs_Entry {}
 impl entropic::Entropic for PrivateMessagePrivateIEs_Entry {
@@ -35085,7 +35059,7 @@ impl entropic::Entropic for PrivateMessagePrivateIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -35097,7 +35071,7 @@ impl entropic::Entropic for PrivateMessagePrivateIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -35110,7 +35084,7 @@ impl entropic::Entropic for PrivateMessagePrivateIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -35119,7 +35093,7 @@ impl entropic::Entropic for PrivateMessagePrivateIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum ProSeAuthorizedIE_Extensions_EntryExtensionValue {
     #[asn(key = 216)]
@@ -35136,7 +35110,7 @@ impl asn1_codecs::Asn1Choice for ProSeAuthorizedIE_Extensions_EntryExtensionValu
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ProSeAuthorizedIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -35173,7 +35147,7 @@ impl entropic::Entropic for ProSeAuthorizedIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -35185,7 +35159,7 @@ impl entropic::Entropic for ProSeAuthorizedIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -35200,7 +35174,7 @@ impl entropic::Entropic for ProSeAuthorizedIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -35209,7 +35183,7 @@ impl entropic::Entropic for ProSeAuthorizedIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "OCTET-STRING",
     sz_extensible = false,
@@ -35241,7 +35215,7 @@ impl entropic::Entropic for RIMRoutingAddress_eHRPD_Sector_ID {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct RIMTransferIE_Extensions_Entry {}
 impl entropic::Entropic for RIMTransferIE_Extensions_Entry {
@@ -35259,7 +35233,7 @@ impl entropic::Entropic for RIMTransferIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -35271,7 +35245,7 @@ impl entropic::Entropic for RIMTransferIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -35284,7 +35258,7 @@ impl entropic::Entropic for RIMTransferIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -35293,7 +35267,7 @@ impl entropic::Entropic for RIMTransferIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum RLFReportInformationIE_Extensions_EntryExtensionValue {
     #[asn(key = 313)]
@@ -35310,7 +35284,7 @@ impl asn1_codecs::Asn1Choice for RLFReportInformationIE_Extensions_EntryExtensio
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct RLFReportInformationIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -35347,7 +35321,7 @@ impl entropic::Entropic for RLFReportInformationIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -35359,7 +35333,7 @@ impl entropic::Entropic for RLFReportInformationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -35372,7 +35346,7 @@ impl entropic::Entropic for RLFReportInformationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -35381,7 +35355,7 @@ impl entropic::Entropic for RLFReportInformationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "4095")]
 pub struct RecommendedCellItemTimeStayedInCell(pub u16);
 impl entropic::Entropic for RecommendedCellItemTimeStayedInCell {
@@ -35400,7 +35374,7 @@ impl entropic::Entropic for RecommendedCellItemTimeStayedInCell {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct RecommendedCellItemIE_Extensions_Entry {}
 impl entropic::Entropic for RecommendedCellItemIE_Extensions_Entry {
@@ -35418,7 +35392,7 @@ impl entropic::Entropic for RecommendedCellItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -35430,7 +35404,7 @@ impl entropic::Entropic for RecommendedCellItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -35445,7 +35419,7 @@ impl entropic::Entropic for RecommendedCellItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -35454,7 +35428,7 @@ impl entropic::Entropic for RecommendedCellItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum RecommendedCellList_EntryValue {
     #[asn(key = 214)]
@@ -35471,7 +35445,7 @@ impl asn1_codecs::Asn1Choice for RecommendedCellList_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct RecommendedCellList_Entry {
     #[asn(key_field = true)]
@@ -35505,7 +35479,7 @@ impl entropic::Entropic for RecommendedCellList_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct RecommendedCellsForPagingIE_Extensions_Entry {}
 impl entropic::Entropic for RecommendedCellsForPagingIE_Extensions_Entry {
@@ -35523,7 +35497,7 @@ impl entropic::Entropic for RecommendedCellsForPagingIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -35537,7 +35511,7 @@ impl entropic::Entropic for RecommendedCellsForPagingIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -35550,7 +35524,7 @@ impl entropic::Entropic for RecommendedCellsForPagingIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -35559,7 +35533,7 @@ impl entropic::Entropic for RecommendedCellsForPagingIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct RecommendedENBItemIE_Extensions_Entry {}
 impl entropic::Entropic for RecommendedENBItemIE_Extensions_Entry {
@@ -35577,7 +35551,7 @@ impl entropic::Entropic for RecommendedENBItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -35589,7 +35563,7 @@ impl entropic::Entropic for RecommendedENBItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -35604,7 +35578,7 @@ impl entropic::Entropic for RecommendedENBItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -35613,7 +35587,7 @@ impl entropic::Entropic for RecommendedENBItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum RecommendedENBList_EntryValue {
     #[asn(key = 215)]
@@ -35630,7 +35604,7 @@ impl asn1_codecs::Asn1Choice for RecommendedENBList_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct RecommendedENBList_Entry {
     #[asn(key_field = true)]
@@ -35664,7 +35638,7 @@ impl entropic::Entropic for RecommendedENBList_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct RecommendedENBsForPagingIE_Extensions_Entry {}
 impl entropic::Entropic for RecommendedENBsForPagingIE_Extensions_Entry {
@@ -35682,7 +35656,7 @@ impl entropic::Entropic for RecommendedENBsForPagingIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -35696,7 +35670,7 @@ impl entropic::Entropic for RecommendedENBsForPagingIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -35709,7 +35683,7 @@ impl entropic::Entropic for RecommendedENBsForPagingIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -35718,7 +35692,7 @@ impl entropic::Entropic for RecommendedENBsForPagingIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum RequestTypeIE_Extensions_EntryExtensionValue {
     #[asn(key = 298)]
@@ -35735,7 +35709,7 @@ impl asn1_codecs::Asn1Choice for RequestTypeIE_Extensions_EntryExtensionValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct RequestTypeIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -35772,7 +35746,7 @@ impl entropic::Entropic for RequestTypeIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -35784,7 +35758,7 @@ impl entropic::Entropic for RequestTypeIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -35797,7 +35771,7 @@ impl entropic::Entropic for RequestTypeIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -35806,7 +35780,7 @@ impl entropic::Entropic for RequestTypeIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum RerouteNASRequestProtocolIEs_EntryValue {
     #[asn(key = 224)]
@@ -35835,7 +35809,7 @@ impl asn1_codecs::Asn1Choice for RerouteNASRequestProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct RerouteNASRequestProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -35870,7 +35844,7 @@ impl entropic::Entropic for RerouteNASRequestProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -35882,7 +35856,7 @@ impl entropic::Entropic for RerouteNASRequestProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -35897,7 +35871,7 @@ impl entropic::Entropic for RerouteNASRequestProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -35906,7 +35880,7 @@ impl entropic::Entropic for RerouteNASRequestProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum ResetProtocolIEs_EntryValue {
     #[asn(key = 2)]
@@ -35926,7 +35900,7 @@ impl asn1_codecs::Asn1Choice for ResetProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ResetProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -35960,7 +35934,7 @@ impl entropic::Entropic for ResetProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -35972,7 +35946,7 @@ impl entropic::Entropic for ResetProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -35985,7 +35959,7 @@ impl entropic::Entropic for ResetProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -35994,7 +35968,7 @@ impl entropic::Entropic for ResetProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum ResetAcknowledgeProtocolIEs_EntryValue {
     #[asn(key = 58)]
@@ -36014,7 +35988,7 @@ impl asn1_codecs::Asn1Choice for ResetAcknowledgeProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ResetAcknowledgeProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -36049,7 +36023,7 @@ impl entropic::Entropic for ResetAcknowledgeProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -36061,7 +36035,7 @@ impl entropic::Entropic for ResetAcknowledgeProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -36076,7 +36050,7 @@ impl entropic::Entropic for ResetAcknowledgeProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -36085,7 +36059,7 @@ impl entropic::Entropic for ResetAcknowledgeProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum RetrieveUEInformationProtocolIEs_EntryValue {
     #[asn(key = 96)]
@@ -36102,7 +36076,7 @@ impl asn1_codecs::Asn1Choice for RetrieveUEInformationProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct RetrieveUEInformationProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -36137,7 +36111,7 @@ impl entropic::Entropic for RetrieveUEInformationProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -36149,7 +36123,7 @@ impl entropic::Entropic for RetrieveUEInformationProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -36164,7 +36138,7 @@ impl entropic::Entropic for RetrieveUEInformationProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -36173,7 +36147,7 @@ impl entropic::Entropic for RetrieveUEInformationProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct S_TMSIIE_Extensions_Entry {}
 impl entropic::Entropic for S_TMSIIE_Extensions_Entry {
@@ -36191,7 +36165,7 @@ impl entropic::Entropic for S_TMSIIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -36203,7 +36177,7 @@ impl entropic::Entropic for S_TMSIIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -36216,7 +36190,7 @@ impl entropic::Entropic for S_TMSIIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -36225,7 +36199,7 @@ impl entropic::Entropic for S_TMSIIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum S1SetupFailureProtocolIEs_EntryValue {
     #[asn(key = 2)]
@@ -36248,7 +36222,7 @@ impl asn1_codecs::Asn1Choice for S1SetupFailureProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct S1SetupFailureProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -36282,7 +36256,7 @@ impl entropic::Entropic for S1SetupFailureProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -36294,7 +36268,7 @@ impl entropic::Entropic for S1SetupFailureProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -36309,7 +36283,7 @@ impl entropic::Entropic for S1SetupFailureProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -36318,7 +36292,7 @@ impl entropic::Entropic for S1SetupFailureProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum S1SetupRequestProtocolIEs_EntryValue {
     #[asn(key = 128)]
@@ -36356,7 +36330,7 @@ impl asn1_codecs::Asn1Choice for S1SetupRequestProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct S1SetupRequestProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -36390,7 +36364,7 @@ impl entropic::Entropic for S1SetupRequestProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -36402,7 +36376,7 @@ impl entropic::Entropic for S1SetupRequestProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -36417,7 +36391,7 @@ impl entropic::Entropic for S1SetupRequestProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -36426,7 +36400,7 @@ impl entropic::Entropic for S1SetupRequestProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum S1SetupResponseProtocolIEs_EntryValue {
     #[asn(key = 58)]
@@ -36464,7 +36438,7 @@ impl asn1_codecs::Asn1Choice for S1SetupResponseProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct S1SetupResponseProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -36498,7 +36472,7 @@ impl entropic::Entropic for S1SetupResponseProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -36510,7 +36484,7 @@ impl entropic::Entropic for S1SetupResponseProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -36525,7 +36499,7 @@ impl entropic::Entropic for S1SetupResponseProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -36534,7 +36508,7 @@ impl entropic::Entropic for S1SetupResponseProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum SONConfigurationTransferIE_Extensions_EntryExtensionValue {
     #[asn(key = 209)]
@@ -36554,7 +36528,7 @@ impl asn1_codecs::Asn1Choice for SONConfigurationTransferIE_Extensions_EntryExte
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct SONConfigurationTransferIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -36591,7 +36565,7 @@ impl entropic::Entropic for SONConfigurationTransferIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -36605,7 +36579,7 @@ impl entropic::Entropic for SONConfigurationTransferIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -36618,7 +36592,7 @@ impl entropic::Entropic for SONConfigurationTransferIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -36627,7 +36601,7 @@ impl entropic::Entropic for SONConfigurationTransferIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum SONInformation_ExtensionValue {
     #[asn(key = 206)]
@@ -36644,7 +36618,7 @@ impl asn1_codecs::Asn1Choice for SONInformation_ExtensionValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum SONInformationReplyIE_Extensions_EntryExtensionValue {
     #[asn(key = 208)]
@@ -36664,7 +36638,7 @@ impl asn1_codecs::Asn1Choice for SONInformationReplyIE_Extensions_EntryExtension
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct SONInformationReplyIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -36701,7 +36675,7 @@ impl entropic::Entropic for SONInformationReplyIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -36713,7 +36687,7 @@ impl entropic::Entropic for SONInformationReplyIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -36728,7 +36702,7 @@ impl entropic::Entropic for SONInformationReplyIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -36737,23 +36711,23 @@ impl entropic::Entropic for SONInformationReplyIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "NULL")]
 pub struct SONtransferRequestContainer_cellLoadReporting;
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "NULL")]
 pub struct SONtransferResponseContainer_hOReporting;
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "NULL")]
 pub struct SONtransferResponseContainer_energySavingsIndication;
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "NULL")]
 pub struct SONtransferResponseContainer_failureEventReporting;
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "BITSTRING", sz_extensible = false, sz_lb = "7", sz_ub = "7")]
 pub struct ScheduledCommunicationTimeDayofWeek(pub bitvec::vec::BitVec<u8, bitvec::order::Msb0>);
 impl entropic::Entropic for ScheduledCommunicationTimeDayofWeek {
@@ -36794,7 +36768,7 @@ impl entropic::Entropic for ScheduledCommunicationTimeDayofWeek {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "86399", extensible = true)]
 pub struct ScheduledCommunicationTimeTimeofDayStart(pub u32);
 impl entropic::Entropic for ScheduledCommunicationTimeTimeofDayStart {
@@ -36813,7 +36787,7 @@ impl entropic::Entropic for ScheduledCommunicationTimeTimeofDayStart {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "86399", extensible = true)]
 pub struct ScheduledCommunicationTimeTimeofDayEnd(pub u32);
 impl entropic::Entropic for ScheduledCommunicationTimeTimeofDayEnd {
@@ -36832,7 +36806,7 @@ impl entropic::Entropic for ScheduledCommunicationTimeTimeofDayEnd {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ScheduledCommunicationTimeIE_Extensions_Entry {}
 impl entropic::Entropic for ScheduledCommunicationTimeIE_Extensions_Entry {
@@ -36850,7 +36824,7 @@ impl entropic::Entropic for ScheduledCommunicationTimeIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -36864,7 +36838,7 @@ impl entropic::Entropic for ScheduledCommunicationTimeIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -36877,7 +36851,7 @@ impl entropic::Entropic for ScheduledCommunicationTimeIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -36886,7 +36860,7 @@ impl entropic::Entropic for ScheduledCommunicationTimeIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum SecondaryRATDataUsageReportProtocolIEs_EntryValue {
     #[asn(key = 266)]
@@ -36918,7 +36892,7 @@ impl asn1_codecs::Asn1Choice for SecondaryRATDataUsageReportProtocolIEs_EntryVal
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct SecondaryRATDataUsageReportProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -36953,7 +36927,7 @@ impl entropic::Entropic for SecondaryRATDataUsageReportProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -36967,7 +36941,7 @@ impl entropic::Entropic for SecondaryRATDataUsageReportProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -36980,7 +36954,7 @@ impl entropic::Entropic for SecondaryRATDataUsageReportProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -36989,7 +36963,7 @@ impl entropic::Entropic for SecondaryRATDataUsageReportProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct SecondaryRATDataUsageReportItemIE_Extensions_Entry {}
 impl entropic::Entropic for SecondaryRATDataUsageReportItemIE_Extensions_Entry {
@@ -37007,7 +36981,7 @@ impl entropic::Entropic for SecondaryRATDataUsageReportItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -37021,7 +36995,7 @@ impl entropic::Entropic for SecondaryRATDataUsageReportItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -37036,7 +37010,7 @@ impl entropic::Entropic for SecondaryRATDataUsageReportItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -37045,7 +37019,7 @@ impl entropic::Entropic for SecondaryRATDataUsageReportItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum SecondaryRATDataUsageReportList_EntryValue {
     #[asn(key = 265)]
@@ -37062,7 +37036,7 @@ impl asn1_codecs::Asn1Choice for SecondaryRATDataUsageReportList_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct SecondaryRATDataUsageReportList_Entry {
     #[asn(key_field = true)]
@@ -37097,7 +37071,7 @@ impl entropic::Entropic for SecondaryRATDataUsageReportList_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "0", ub = "7")]
 pub struct SecurityContextNextHopChainingCount(pub u8);
 impl entropic::Entropic for SecurityContextNextHopChainingCount {
@@ -37116,7 +37090,7 @@ impl entropic::Entropic for SecurityContextNextHopChainingCount {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct SecurityContextIE_Extensions_Entry {}
 impl entropic::Entropic for SecurityContextIE_Extensions_Entry {
@@ -37134,7 +37108,7 @@ impl entropic::Entropic for SecurityContextIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -37146,7 +37120,7 @@ impl entropic::Entropic for SecurityContextIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -37161,7 +37135,7 @@ impl entropic::Entropic for SecurityContextIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -37170,7 +37144,7 @@ impl entropic::Entropic for SecurityContextIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ServedDCNsItemIE_Extensions_Entry {}
 impl entropic::Entropic for ServedDCNsItemIE_Extensions_Entry {
@@ -37188,7 +37162,7 @@ impl entropic::Entropic for ServedDCNsItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -37200,7 +37174,7 @@ impl entropic::Entropic for ServedDCNsItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -37215,7 +37189,7 @@ impl entropic::Entropic for ServedDCNsItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -37224,7 +37198,7 @@ impl entropic::Entropic for ServedDCNsItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum ServedGUMMEIsItemIE_Extensions_EntryExtensionValue {
     #[asn(key = 170)]
@@ -37241,7 +37215,7 @@ impl asn1_codecs::Asn1Choice for ServedGUMMEIsItemIE_Extensions_EntryExtensionVa
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct ServedGUMMEIsItemIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -37278,7 +37252,7 @@ impl entropic::Entropic for ServedGUMMEIsItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -37290,7 +37264,7 @@ impl entropic::Entropic for ServedGUMMEIsItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -37305,7 +37279,7 @@ impl entropic::Entropic for ServedGUMMEIsItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -37314,7 +37288,7 @@ impl entropic::Entropic for ServedGUMMEIsItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct SourceNgRanNode_IDIE_Extensions_Entry {}
 impl entropic::Entropic for SourceNgRanNode_IDIE_Extensions_Entry {
@@ -37332,7 +37306,7 @@ impl entropic::Entropic for SourceNgRanNode_IDIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -37344,7 +37318,7 @@ impl entropic::Entropic for SourceNgRanNode_IDIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -37359,7 +37333,7 @@ impl entropic::Entropic for SourceNgRanNode_IDIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -37368,7 +37342,7 @@ impl entropic::Entropic for SourceNgRanNode_IDIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct SourceeNB_IDIE_Extensions_Entry {}
 impl entropic::Entropic for SourceeNB_IDIE_Extensions_Entry {
@@ -37386,7 +37360,7 @@ impl entropic::Entropic for SourceeNB_IDIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -37398,7 +37372,7 @@ impl entropic::Entropic for SourceeNB_IDIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -37413,7 +37387,7 @@ impl entropic::Entropic for SourceeNB_IDIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -37422,7 +37396,7 @@ impl entropic::Entropic for SourceeNB_IDIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum SourceeNB_ToTargeteNB_TransparentContainerIE_Extensions_EntryExtensionValue {
     #[asn(key = 299)]
@@ -37462,7 +37436,7 @@ impl asn1_codecs::Asn1Choice
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct SourceeNB_ToTargeteNB_TransparentContainerIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -37499,7 +37473,7 @@ impl entropic::Entropic for SourceeNB_ToTargeteNB_TransparentContainerIE_Extensi
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -37513,7 +37487,7 @@ impl entropic::Entropic for SourceeNB_ToTargeteNB_TransparentContainerIE_Extensi
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -37530,7 +37504,7 @@ impl entropic::Entropic for SourceeNB_ToTargeteNB_TransparentContainerIE_Extensi
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -37539,7 +37513,7 @@ impl entropic::Entropic for SourceeNB_ToTargeteNB_TransparentContainerIE_Extensi
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct Subscription_Based_UE_DifferentiationInfoPeriodicCommunicationIndicator(pub u8);
 impl Subscription_Based_UE_DifferentiationInfoPeriodicCommunicationIndicator {
@@ -37566,7 +37540,7 @@ impl entropic::Entropic
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "INTEGER", lb = "1", ub = "3600", extensible = true)]
 pub struct Subscription_Based_UE_DifferentiationInfoPeriodicTime(pub u16);
 impl entropic::Entropic for Subscription_Based_UE_DifferentiationInfoPeriodicTime {
@@ -37585,7 +37559,7 @@ impl entropic::Entropic for Subscription_Based_UE_DifferentiationInfoPeriodicTim
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "1")]
 pub struct Subscription_Based_UE_DifferentiationInfoStationaryIndication(pub u8);
 impl Subscription_Based_UE_DifferentiationInfoStationaryIndication {
@@ -37610,7 +37584,7 @@ impl entropic::Entropic for Subscription_Based_UE_DifferentiationInfoStationaryI
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "2")]
 pub struct Subscription_Based_UE_DifferentiationInfoTrafficProfile(pub u8);
 impl Subscription_Based_UE_DifferentiationInfoTrafficProfile {
@@ -37634,7 +37608,7 @@ impl entropic::Entropic for Subscription_Based_UE_DifferentiationInfoTrafficProf
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "2")]
 pub struct Subscription_Based_UE_DifferentiationInfoBatteryIndication(pub u8);
 impl Subscription_Based_UE_DifferentiationInfoBatteryIndication {
@@ -37658,7 +37632,7 @@ impl entropic::Entropic for Subscription_Based_UE_DifferentiationInfoBatteryIndi
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct Subscription_Based_UE_DifferentiationInfoIE_Extensions_Entry {}
 impl entropic::Entropic for Subscription_Based_UE_DifferentiationInfoIE_Extensions_Entry {
@@ -37676,7 +37650,7 @@ impl entropic::Entropic for Subscription_Based_UE_DifferentiationInfoIE_Extensio
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -37690,7 +37664,7 @@ impl entropic::Entropic for Subscription_Based_UE_DifferentiationInfoIE_Extensio
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -37707,7 +37681,7 @@ impl entropic::Entropic for Subscription_Based_UE_DifferentiationInfoIE_Extensio
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -37716,7 +37690,7 @@ impl entropic::Entropic for Subscription_Based_UE_DifferentiationInfoIE_Extensio
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum SuccessfulOutcomeValue {
     #[asn(key = 50)]
@@ -37796,7 +37770,7 @@ impl asn1_codecs::Asn1Choice for SuccessfulOutcomeValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum SupportedTAs_ItemIE_Extensions_EntryExtensionValue {
     #[asn(key = 232)]
@@ -37813,7 +37787,7 @@ impl asn1_codecs::Asn1Choice for SupportedTAs_ItemIE_Extensions_EntryExtensionVa
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct SupportedTAs_ItemIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -37850,7 +37824,7 @@ impl entropic::Entropic for SupportedTAs_ItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -37862,7 +37836,7 @@ impl entropic::Entropic for SupportedTAs_ItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -37877,7 +37851,7 @@ impl entropic::Entropic for SupportedTAs_ItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -37886,7 +37860,7 @@ impl entropic::Entropic for SupportedTAs_ItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct SynchronisationInformationIE_Extensions_Entry {}
 impl entropic::Entropic for SynchronisationInformationIE_Extensions_Entry {
@@ -37904,7 +37878,7 @@ impl entropic::Entropic for SynchronisationInformationIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -37918,7 +37892,7 @@ impl entropic::Entropic for SynchronisationInformationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -37931,7 +37905,7 @@ impl entropic::Entropic for SynchronisationInformationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -37940,7 +37914,7 @@ impl entropic::Entropic for SynchronisationInformationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct TABasedMDTIE_Extensions_Entry {}
 impl entropic::Entropic for TABasedMDTIE_Extensions_Entry {
@@ -37958,7 +37932,7 @@ impl entropic::Entropic for TABasedMDTIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -37970,7 +37944,7 @@ impl entropic::Entropic for TABasedMDTIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -37983,7 +37957,7 @@ impl entropic::Entropic for TABasedMDTIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -37992,7 +37966,7 @@ impl entropic::Entropic for TABasedMDTIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct TABasedQMCIE_Extensions_Entry {}
 impl entropic::Entropic for TABasedQMCIE_Extensions_Entry {
@@ -38010,7 +37984,7 @@ impl entropic::Entropic for TABasedQMCIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -38022,7 +37996,7 @@ impl entropic::Entropic for TABasedQMCIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -38035,7 +38009,7 @@ impl entropic::Entropic for TABasedQMCIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -38044,7 +38018,7 @@ impl entropic::Entropic for TABasedQMCIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct TAIIE_Extensions_Entry {}
 impl entropic::Entropic for TAIIE_Extensions_Entry {
@@ -38062,7 +38036,7 @@ impl entropic::Entropic for TAIIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -38074,7 +38048,7 @@ impl entropic::Entropic for TAIIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -38087,7 +38061,7 @@ impl entropic::Entropic for TAIIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -38096,7 +38070,7 @@ impl entropic::Entropic for TAIIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct TAI_Broadcast_ItemIE_Extensions_Entry {}
 impl entropic::Entropic for TAI_Broadcast_ItemIE_Extensions_Entry {
@@ -38114,7 +38088,7 @@ impl entropic::Entropic for TAI_Broadcast_ItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -38126,7 +38100,7 @@ impl entropic::Entropic for TAI_Broadcast_ItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -38141,7 +38115,7 @@ impl entropic::Entropic for TAI_Broadcast_ItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -38150,7 +38124,7 @@ impl entropic::Entropic for TAI_Broadcast_ItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct TAI_Cancelled_ItemIE_Extensions_Entry {}
 impl entropic::Entropic for TAI_Cancelled_ItemIE_Extensions_Entry {
@@ -38168,7 +38142,7 @@ impl entropic::Entropic for TAI_Cancelled_ItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -38180,7 +38154,7 @@ impl entropic::Entropic for TAI_Cancelled_ItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -38195,7 +38169,7 @@ impl entropic::Entropic for TAI_Cancelled_ItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -38204,7 +38178,7 @@ impl entropic::Entropic for TAI_Cancelled_ItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct TAIBasedMDTIE_Extensions_Entry {}
 impl entropic::Entropic for TAIBasedMDTIE_Extensions_Entry {
@@ -38222,7 +38196,7 @@ impl entropic::Entropic for TAIBasedMDTIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -38234,7 +38208,7 @@ impl entropic::Entropic for TAIBasedMDTIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -38247,7 +38221,7 @@ impl entropic::Entropic for TAIBasedMDTIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -38256,7 +38230,7 @@ impl entropic::Entropic for TAIBasedMDTIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct TAIBasedQMCIE_Extensions_Entry {}
 impl entropic::Entropic for TAIBasedQMCIE_Extensions_Entry {
@@ -38274,7 +38248,7 @@ impl entropic::Entropic for TAIBasedQMCIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -38286,7 +38260,7 @@ impl entropic::Entropic for TAIBasedQMCIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -38299,7 +38273,7 @@ impl entropic::Entropic for TAIBasedQMCIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -38308,7 +38282,7 @@ impl entropic::Entropic for TAIBasedQMCIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct TAIItemIE_Extensions_Entry {}
 impl entropic::Entropic for TAIItemIE_Extensions_Entry {
@@ -38326,7 +38300,7 @@ impl entropic::Entropic for TAIItemIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -38338,7 +38312,7 @@ impl entropic::Entropic for TAIItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -38351,7 +38325,7 @@ impl entropic::Entropic for TAIItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -38360,7 +38334,7 @@ impl entropic::Entropic for TAIItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum TAIList_EntryValue {
     #[asn(key = 47)]
@@ -38377,7 +38351,7 @@ impl asn1_codecs::Asn1Choice for TAIList_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct TAIList_Entry {
     #[asn(key_field = true)]
@@ -38411,7 +38385,7 @@ impl entropic::Entropic for TAIList_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct TargetNgRanNode_IDIE_Extensions_Entry {}
 impl entropic::Entropic for TargetNgRanNode_IDIE_Extensions_Entry {
@@ -38429,7 +38403,7 @@ impl entropic::Entropic for TargetNgRanNode_IDIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -38441,7 +38415,7 @@ impl entropic::Entropic for TargetNgRanNode_IDIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -38456,7 +38430,7 @@ impl entropic::Entropic for TargetNgRanNode_IDIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -38465,7 +38439,7 @@ impl entropic::Entropic for TargetNgRanNode_IDIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct TargetRNC_IDIE_Extensions_Entry {}
 impl entropic::Entropic for TargetRNC_IDIE_Extensions_Entry {
@@ -38483,7 +38457,7 @@ impl entropic::Entropic for TargetRNC_IDIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -38495,7 +38469,7 @@ impl entropic::Entropic for TargetRNC_IDIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -38510,7 +38484,7 @@ impl entropic::Entropic for TargetRNC_IDIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -38519,7 +38493,7 @@ impl entropic::Entropic for TargetRNC_IDIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct TargeteNB_IDIE_Extensions_Entry {}
 impl entropic::Entropic for TargeteNB_IDIE_Extensions_Entry {
@@ -38537,7 +38511,7 @@ impl entropic::Entropic for TargeteNB_IDIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -38549,7 +38523,7 @@ impl entropic::Entropic for TargeteNB_IDIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -38564,7 +38538,7 @@ impl entropic::Entropic for TargeteNB_IDIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -38573,7 +38547,7 @@ impl entropic::Entropic for TargeteNB_IDIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum TargeteNB_ToSourceeNB_TransparentContainerIE_Extensions_EntryExtensionValue {
     #[asn(key = 318)]
@@ -38592,7 +38566,7 @@ impl asn1_codecs::Asn1Choice
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct TargeteNB_ToSourceeNB_TransparentContainerIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -38629,7 +38603,7 @@ impl entropic::Entropic for TargeteNB_ToSourceeNB_TransparentContainerIE_Extensi
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -38643,7 +38617,7 @@ impl entropic::Entropic for TargeteNB_ToSourceeNB_TransparentContainerIE_Extensi
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -38660,7 +38634,7 @@ impl entropic::Entropic for TargeteNB_ToSourceeNB_TransparentContainerIE_Extensi
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -38669,7 +38643,7 @@ impl entropic::Entropic for TargeteNB_ToSourceeNB_TransparentContainerIE_Extensi
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum TimeSynchronisationInfoIE_Extensions_EntryExtensionValue {
     #[asn(key = 207)]
@@ -38686,7 +38660,7 @@ impl asn1_codecs::Asn1Choice for TimeSynchronisationInfoIE_Extensions_EntryExten
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct TimeSynchronisationInfoIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -38723,7 +38697,7 @@ impl entropic::Entropic for TimeSynchronisationInfoIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -38737,7 +38711,7 @@ impl entropic::Entropic for TimeSynchronisationInfoIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -38750,7 +38724,7 @@ impl entropic::Entropic for TimeSynchronisationInfoIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -38759,11 +38733,11 @@ impl entropic::Entropic for TimeSynchronisationInfoIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OCTET-STRING")]
 pub struct TooEarlyInterRATHOReportReportFromEUTRANUERLFReportContainer(pub Vec<u8>);
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum TraceActivationIE_Extensions_EntryExtensionValue {
     #[asn(key = 162)]
@@ -38789,7 +38763,7 @@ impl asn1_codecs::Asn1Choice for TraceActivationIE_Extensions_EntryExtensionValu
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct TraceActivationIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -38826,7 +38800,7 @@ impl entropic::Entropic for TraceActivationIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -38838,7 +38812,7 @@ impl entropic::Entropic for TraceActivationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -38853,7 +38827,7 @@ impl entropic::Entropic for TraceActivationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -38862,7 +38836,7 @@ impl entropic::Entropic for TraceActivationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum TraceFailureIndicationProtocolIEs_EntryValue {
     #[asn(key = 2)]
@@ -38888,7 +38862,7 @@ impl asn1_codecs::Asn1Choice for TraceFailureIndicationProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct TraceFailureIndicationProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -38923,7 +38897,7 @@ impl entropic::Entropic for TraceFailureIndicationProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -38935,7 +38909,7 @@ impl entropic::Entropic for TraceFailureIndicationProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -38948,7 +38922,7 @@ impl entropic::Entropic for TraceFailureIndicationProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -38957,7 +38931,7 @@ impl entropic::Entropic for TraceFailureIndicationProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum TraceStartProtocolIEs_EntryValue {
     #[asn(key = 0)]
@@ -38980,7 +38954,7 @@ impl asn1_codecs::Asn1Choice for TraceStartProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct TraceStartProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -39014,7 +38988,7 @@ impl entropic::Entropic for TraceStartProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -39026,7 +39000,7 @@ impl entropic::Entropic for TraceStartProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -39039,7 +39013,7 @@ impl entropic::Entropic for TraceStartProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -39048,7 +39022,7 @@ impl entropic::Entropic for TraceStartProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct TunnelInformationIE_Extensions_Entry {}
 impl entropic::Entropic for TunnelInformationIE_Extensions_Entry {
@@ -39066,7 +39040,7 @@ impl entropic::Entropic for TunnelInformationIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -39078,7 +39052,7 @@ impl entropic::Entropic for TunnelInformationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -39093,7 +39067,7 @@ impl entropic::Entropic for TunnelInformationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -39102,7 +39076,7 @@ impl entropic::Entropic for TunnelInformationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UE_S1AP_ID_pairIE_Extensions_Entry {}
 impl entropic::Entropic for UE_S1AP_ID_pairIE_Extensions_Entry {
@@ -39120,7 +39094,7 @@ impl entropic::Entropic for UE_S1AP_ID_pairIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -39132,7 +39106,7 @@ impl entropic::Entropic for UE_S1AP_ID_pairIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -39147,7 +39121,7 @@ impl entropic::Entropic for UE_S1AP_ID_pairIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -39156,7 +39130,7 @@ impl entropic::Entropic for UE_S1AP_ID_pairIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UE_associatedLogicalS1_ConnectionItemIE_Extensions_Entry {}
 impl entropic::Entropic for UE_associatedLogicalS1_ConnectionItemIE_Extensions_Entry {
@@ -39174,7 +39148,7 @@ impl entropic::Entropic for UE_associatedLogicalS1_ConnectionItemIE_Extensions_E
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -39188,7 +39162,7 @@ impl entropic::Entropic for UE_associatedLogicalS1_ConnectionItemIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -39205,7 +39179,7 @@ impl entropic::Entropic for UE_associatedLogicalS1_ConnectionItemIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -39214,7 +39188,7 @@ impl entropic::Entropic for UE_associatedLogicalS1_ConnectionItemIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UE_associatedLogicalS1_ConnectionListRes_EntryValue {
     #[asn(key = 91)]
@@ -39231,7 +39205,7 @@ impl asn1_codecs::Asn1Choice for UE_associatedLogicalS1_ConnectionListRes_EntryV
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UE_associatedLogicalS1_ConnectionListRes_Entry {
     #[asn(key_field = true)]
@@ -39266,7 +39240,7 @@ impl entropic::Entropic for UE_associatedLogicalS1_ConnectionListRes_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UE_associatedLogicalS1_ConnectionListResAck_EntryValue {
     #[asn(key = 91)]
@@ -39283,7 +39257,7 @@ impl asn1_codecs::Asn1Choice for UE_associatedLogicalS1_ConnectionListResAck_Ent
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UE_associatedLogicalS1_ConnectionListResAck_Entry {
     #[asn(key_field = true)]
@@ -39318,7 +39292,7 @@ impl entropic::Entropic for UE_associatedLogicalS1_ConnectionListResAck_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UEAggregateMaximumBitrateIE_Extensions_EntryExtensionValue {
     #[asn(key = 259)]
@@ -39338,7 +39312,7 @@ impl asn1_codecs::Asn1Choice for UEAggregateMaximumBitrateIE_Extensions_EntryExt
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UEAggregateMaximumBitrateIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -39375,7 +39349,7 @@ impl entropic::Entropic for UEAggregateMaximumBitrateIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -39389,7 +39363,7 @@ impl entropic::Entropic for UEAggregateMaximumBitrateIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -39402,7 +39376,7 @@ impl entropic::Entropic for UEAggregateMaximumBitrateIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -39411,7 +39385,7 @@ impl entropic::Entropic for UEAggregateMaximumBitrateIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "OCTET-STRING",
     sz_extensible = false,
@@ -39443,7 +39417,7 @@ impl entropic::Entropic for UEAppLayerMeasConfigContainerForAppLayerMeasConfig {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UEAppLayerMeasConfigIE_Extensions_EntryExtensionValue {
     #[asn(key = 276)]
@@ -39460,7 +39434,7 @@ impl asn1_codecs::Asn1Choice for UEAppLayerMeasConfigIE_Extensions_EntryExtensio
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UEAppLayerMeasConfigIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -39497,7 +39471,7 @@ impl entropic::Entropic for UEAppLayerMeasConfigIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -39509,7 +39483,7 @@ impl entropic::Entropic for UEAppLayerMeasConfigIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -39522,7 +39496,7 @@ impl entropic::Entropic for UEAppLayerMeasConfigIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -39531,7 +39505,7 @@ impl entropic::Entropic for UEAppLayerMeasConfigIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UECapabilityInfoIndicationProtocolIEs_EntryValue {
     #[asn(key = 272)]
@@ -39566,7 +39540,7 @@ impl asn1_codecs::Asn1Choice for UECapabilityInfoIndicationProtocolIEs_EntryValu
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UECapabilityInfoIndicationProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -39601,7 +39575,7 @@ impl entropic::Entropic for UECapabilityInfoIndicationProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -39615,7 +39589,7 @@ impl entropic::Entropic for UECapabilityInfoIndicationProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -39628,7 +39602,7 @@ impl entropic::Entropic for UECapabilityInfoIndicationProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -39637,7 +39611,7 @@ impl entropic::Entropic for UECapabilityInfoIndicationProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UEContextModificationConfirmProtocolIEs_EntryValue {
     #[asn(key = 146)]
@@ -39663,7 +39637,7 @@ impl asn1_codecs::Asn1Choice for UEContextModificationConfirmProtocolIEs_EntryVa
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UEContextModificationConfirmProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -39698,7 +39672,7 @@ impl entropic::Entropic for UEContextModificationConfirmProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -39712,7 +39686,7 @@ impl entropic::Entropic for UEContextModificationConfirmProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -39725,7 +39699,7 @@ impl entropic::Entropic for UEContextModificationConfirmProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -39734,7 +39708,7 @@ impl entropic::Entropic for UEContextModificationConfirmProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UEContextModificationFailureProtocolIEs_EntryValue {
     #[asn(key = 2)]
@@ -39760,7 +39734,7 @@ impl asn1_codecs::Asn1Choice for UEContextModificationFailureProtocolIEs_EntryVa
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UEContextModificationFailureProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -39795,7 +39769,7 @@ impl entropic::Entropic for UEContextModificationFailureProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -39809,7 +39783,7 @@ impl entropic::Entropic for UEContextModificationFailureProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -39822,7 +39796,7 @@ impl entropic::Entropic for UEContextModificationFailureProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -39831,7 +39805,7 @@ impl entropic::Entropic for UEContextModificationFailureProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UEContextModificationIndicationProtocolIEs_EntryValue {
     #[asn(key = 226)]
@@ -39854,7 +39828,7 @@ impl asn1_codecs::Asn1Choice for UEContextModificationIndicationProtocolIEs_Entr
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UEContextModificationIndicationProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -39889,7 +39863,7 @@ impl entropic::Entropic for UEContextModificationIndicationProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -39903,7 +39877,7 @@ impl entropic::Entropic for UEContextModificationIndicationProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -39916,7 +39890,7 @@ impl entropic::Entropic for UEContextModificationIndicationProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -39925,7 +39899,7 @@ impl entropic::Entropic for UEContextModificationIndicationProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UEContextModificationRequestProtocolIEs_EntryValue {
     #[asn(key = 187)]
@@ -40008,7 +39982,7 @@ impl asn1_codecs::Asn1Choice for UEContextModificationRequestProtocolIEs_EntryVa
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UEContextModificationRequestProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -40043,7 +40017,7 @@ impl entropic::Entropic for UEContextModificationRequestProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -40057,7 +40031,7 @@ impl entropic::Entropic for UEContextModificationRequestProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -40070,7 +40044,7 @@ impl entropic::Entropic for UEContextModificationRequestProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -40079,7 +40053,7 @@ impl entropic::Entropic for UEContextModificationRequestProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UEContextModificationResponseProtocolIEs_EntryValue {
     #[asn(key = 58)]
@@ -40102,7 +40076,7 @@ impl asn1_codecs::Asn1Choice for UEContextModificationResponseProtocolIEs_EntryV
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UEContextModificationResponseProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -40137,7 +40111,7 @@ impl entropic::Entropic for UEContextModificationResponseProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -40151,7 +40125,7 @@ impl entropic::Entropic for UEContextModificationResponseProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -40164,7 +40138,7 @@ impl entropic::Entropic for UEContextModificationResponseProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -40173,7 +40147,7 @@ impl entropic::Entropic for UEContextModificationResponseProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UEContextReleaseCommandProtocolIEs_EntryValue {
     #[asn(key = 2)]
@@ -40193,7 +40167,7 @@ impl asn1_codecs::Asn1Choice for UEContextReleaseCommandProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UEContextReleaseCommandProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -40228,7 +40202,7 @@ impl entropic::Entropic for UEContextReleaseCommandProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -40240,7 +40214,7 @@ impl entropic::Entropic for UEContextReleaseCommandProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -40253,7 +40227,7 @@ impl entropic::Entropic for UEContextReleaseCommandProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -40262,7 +40236,7 @@ impl entropic::Entropic for UEContextReleaseCommandProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UEContextReleaseCompleteProtocolIEs_EntryValue {
     #[asn(key = 212)]
@@ -40302,7 +40276,7 @@ impl asn1_codecs::Asn1Choice for UEContextReleaseCompleteProtocolIEs_EntryValue 
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UEContextReleaseCompleteProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -40337,7 +40311,7 @@ impl entropic::Entropic for UEContextReleaseCompleteProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -40349,7 +40323,7 @@ impl entropic::Entropic for UEContextReleaseCompleteProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -40362,7 +40336,7 @@ impl entropic::Entropic for UEContextReleaseCompleteProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -40371,7 +40345,7 @@ impl entropic::Entropic for UEContextReleaseCompleteProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UEContextReleaseRequestProtocolIEs_EntryValue {
     #[asn(key = 2)]
@@ -40400,7 +40374,7 @@ impl asn1_codecs::Asn1Choice for UEContextReleaseRequestProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UEContextReleaseRequestProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -40435,7 +40409,7 @@ impl entropic::Entropic for UEContextReleaseRequestProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -40447,7 +40421,7 @@ impl entropic::Entropic for UEContextReleaseRequestProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -40460,7 +40434,7 @@ impl entropic::Entropic for UEContextReleaseRequestProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -40469,7 +40443,7 @@ impl entropic::Entropic for UEContextReleaseRequestProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UEContextResumeFailureProtocolIEs_EntryValue {
     #[asn(key = 2)]
@@ -40495,7 +40469,7 @@ impl asn1_codecs::Asn1Choice for UEContextResumeFailureProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UEContextResumeFailureProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -40530,7 +40504,7 @@ impl entropic::Entropic for UEContextResumeFailureProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -40542,7 +40516,7 @@ impl entropic::Entropic for UEContextResumeFailureProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -40555,7 +40529,7 @@ impl entropic::Entropic for UEContextResumeFailureProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -40564,7 +40538,7 @@ impl entropic::Entropic for UEContextResumeFailureProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UEContextResumeRequestProtocolIEs_EntryValue {
     #[asn(key = 235)]
@@ -40590,7 +40564,7 @@ impl asn1_codecs::Asn1Choice for UEContextResumeRequestProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UEContextResumeRequestProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -40625,7 +40599,7 @@ impl entropic::Entropic for UEContextResumeRequestProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -40637,7 +40611,7 @@ impl entropic::Entropic for UEContextResumeRequestProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -40650,7 +40624,7 @@ impl entropic::Entropic for UEContextResumeRequestProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -40659,7 +40633,7 @@ impl entropic::Entropic for UEContextResumeRequestProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UEContextResumeResponseProtocolIEs_EntryValue {
     #[asn(key = 58)]
@@ -40691,7 +40665,7 @@ impl asn1_codecs::Asn1Choice for UEContextResumeResponseProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UEContextResumeResponseProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -40726,7 +40700,7 @@ impl entropic::Entropic for UEContextResumeResponseProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -40738,7 +40712,7 @@ impl entropic::Entropic for UEContextResumeResponseProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -40751,7 +40725,7 @@ impl entropic::Entropic for UEContextResumeResponseProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -40760,7 +40734,7 @@ impl entropic::Entropic for UEContextResumeResponseProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UEContextSuspendRequestProtocolIEs_EntryValue {
     #[asn(key = 212)]
@@ -40797,7 +40771,7 @@ impl asn1_codecs::Asn1Choice for UEContextSuspendRequestProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UEContextSuspendRequestProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -40832,7 +40806,7 @@ impl entropic::Entropic for UEContextSuspendRequestProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -40844,7 +40818,7 @@ impl entropic::Entropic for UEContextSuspendRequestProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -40857,7 +40831,7 @@ impl entropic::Entropic for UEContextSuspendRequestProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -40866,7 +40840,7 @@ impl entropic::Entropic for UEContextSuspendRequestProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UEContextSuspendResponseProtocolIEs_EntryValue {
     #[asn(key = 58)]
@@ -40892,7 +40866,7 @@ impl asn1_codecs::Asn1Choice for UEContextSuspendResponseProtocolIEs_EntryValue 
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UEContextSuspendResponseProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -40927,7 +40901,7 @@ impl entropic::Entropic for UEContextSuspendResponseProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -40939,7 +40913,7 @@ impl entropic::Entropic for UEContextSuspendResponseProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -40952,7 +40926,7 @@ impl entropic::Entropic for UEContextSuspendResponseProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -40961,7 +40935,7 @@ impl entropic::Entropic for UEContextSuspendResponseProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UEInformationTransferProtocolIEs_EntryValue {
     #[asn(key = 283)]
@@ -40990,7 +40964,7 @@ impl asn1_codecs::Asn1Choice for UEInformationTransferProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UEInformationTransferProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -41025,7 +40999,7 @@ impl entropic::Entropic for UEInformationTransferProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -41037,7 +41011,7 @@ impl entropic::Entropic for UEInformationTransferProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -41052,7 +41026,7 @@ impl entropic::Entropic for UEInformationTransferProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -41061,7 +41035,7 @@ impl entropic::Entropic for UEInformationTransferProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UERadioCapabilityIDMappingRequestProtocolIEs_EntryValue {
     #[asn(key = 314)]
@@ -41078,7 +41052,7 @@ impl asn1_codecs::Asn1Choice for UERadioCapabilityIDMappingRequestProtocolIEs_En
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UERadioCapabilityIDMappingRequestProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -41113,7 +41087,7 @@ impl entropic::Entropic for UERadioCapabilityIDMappingRequestProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -41127,7 +41101,7 @@ impl entropic::Entropic for UERadioCapabilityIDMappingRequestProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -41142,7 +41116,7 @@ impl entropic::Entropic for UERadioCapabilityIDMappingRequestProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -41151,7 +41125,7 @@ impl entropic::Entropic for UERadioCapabilityIDMappingRequestProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UERadioCapabilityIDMappingResponseProtocolIEs_EntryValue {
     #[asn(key = 58)]
@@ -41174,7 +41148,7 @@ impl asn1_codecs::Asn1Choice for UERadioCapabilityIDMappingResponseProtocolIEs_E
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UERadioCapabilityIDMappingResponseProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -41209,7 +41183,7 @@ impl entropic::Entropic for UERadioCapabilityIDMappingResponseProtocolIEs_Entry 
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -41223,7 +41197,7 @@ impl entropic::Entropic for UERadioCapabilityIDMappingResponseProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -41238,7 +41212,7 @@ impl entropic::Entropic for UERadioCapabilityIDMappingResponseProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -41247,7 +41221,7 @@ impl entropic::Entropic for UERadioCapabilityIDMappingResponseProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UERadioCapabilityMatchRequestProtocolIEs_EntryValue {
     #[asn(key = 0)]
@@ -41273,7 +41247,7 @@ impl asn1_codecs::Asn1Choice for UERadioCapabilityMatchRequestProtocolIEs_EntryV
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UERadioCapabilityMatchRequestProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -41308,7 +41282,7 @@ impl entropic::Entropic for UERadioCapabilityMatchRequestProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -41322,7 +41296,7 @@ impl entropic::Entropic for UERadioCapabilityMatchRequestProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -41335,7 +41309,7 @@ impl entropic::Entropic for UERadioCapabilityMatchRequestProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -41344,7 +41318,7 @@ impl entropic::Entropic for UERadioCapabilityMatchRequestProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UERadioCapabilityMatchResponseProtocolIEs_EntryValue {
     #[asn(key = 58)]
@@ -41370,7 +41344,7 @@ impl asn1_codecs::Asn1Choice for UERadioCapabilityMatchResponseProtocolIEs_Entry
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UERadioCapabilityMatchResponseProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -41405,7 +41379,7 @@ impl entropic::Entropic for UERadioCapabilityMatchResponseProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -41419,7 +41393,7 @@ impl entropic::Entropic for UERadioCapabilityMatchResponseProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -41432,7 +41406,7 @@ impl entropic::Entropic for UERadioCapabilityMatchResponseProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -41441,7 +41415,7 @@ impl entropic::Entropic for UERadioCapabilityMatchResponseProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UESecurityCapabilitiesIE_Extensions_Entry {}
 impl entropic::Entropic for UESecurityCapabilitiesIE_Extensions_Entry {
@@ -41459,7 +41433,7 @@ impl entropic::Entropic for UESecurityCapabilitiesIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -41471,7 +41445,7 @@ impl entropic::Entropic for UESecurityCapabilitiesIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -41484,7 +41458,7 @@ impl entropic::Entropic for UESecurityCapabilitiesIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -41493,7 +41467,7 @@ impl entropic::Entropic for UESecurityCapabilitiesIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UESidelinkAggregateMaximumBitrateIE_Extensions_Entry {}
 impl entropic::Entropic for UESidelinkAggregateMaximumBitrateIE_Extensions_Entry {
@@ -41511,7 +41485,7 @@ impl entropic::Entropic for UESidelinkAggregateMaximumBitrateIE_Extensions_Entry
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -41525,7 +41499,7 @@ impl entropic::Entropic for UESidelinkAggregateMaximumBitrateIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -41540,7 +41514,7 @@ impl entropic::Entropic for UESidelinkAggregateMaximumBitrateIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -41549,7 +41523,7 @@ impl entropic::Entropic for UESidelinkAggregateMaximumBitrateIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UL_CP_SecurityInformationIE_Extensions_Entry {}
 impl entropic::Entropic for UL_CP_SecurityInformationIE_Extensions_Entry {
@@ -41567,7 +41541,7 @@ impl entropic::Entropic for UL_CP_SecurityInformationIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -41581,7 +41555,7 @@ impl entropic::Entropic for UL_CP_SecurityInformationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -41594,7 +41568,7 @@ impl entropic::Entropic for UL_CP_SecurityInformationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -41603,7 +41577,7 @@ impl entropic::Entropic for UL_CP_SecurityInformationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UnsuccessfulOutcomeValue {
     #[asn(key = 29)]
@@ -41644,7 +41618,7 @@ impl asn1_codecs::Asn1Choice for UnsuccessfulOutcomeValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UplinkNASTransportProtocolIEs_EntryValue {
     #[asn(key = 100)]
@@ -41685,7 +41659,7 @@ impl asn1_codecs::Asn1Choice for UplinkNASTransportProtocolIEs_EntryValue {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UplinkNASTransportProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -41720,7 +41694,7 @@ impl entropic::Entropic for UplinkNASTransportProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -41732,7 +41706,7 @@ impl entropic::Entropic for UplinkNASTransportProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -41747,7 +41721,7 @@ impl entropic::Entropic for UplinkNASTransportProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -41756,7 +41730,7 @@ impl entropic::Entropic for UplinkNASTransportProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UplinkNonUEAssociatedLPPaTransportProtocolIEs_EntryValue {
     #[asn(key = 147)]
@@ -41776,7 +41750,7 @@ impl asn1_codecs::Asn1Choice for UplinkNonUEAssociatedLPPaTransportProtocolIEs_E
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UplinkNonUEAssociatedLPPaTransportProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -41811,7 +41785,7 @@ impl entropic::Entropic for UplinkNonUEAssociatedLPPaTransportProtocolIEs_Entry 
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -41825,7 +41799,7 @@ impl entropic::Entropic for UplinkNonUEAssociatedLPPaTransportProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -41840,7 +41814,7 @@ impl entropic::Entropic for UplinkNonUEAssociatedLPPaTransportProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -41849,7 +41823,7 @@ impl entropic::Entropic for UplinkNonUEAssociatedLPPaTransportProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UplinkS1cdma2000tunnellingProtocolIEs_EntryValue {
     #[asn(key = 140)]
@@ -41890,7 +41864,7 @@ impl asn1_codecs::Asn1Choice for UplinkS1cdma2000tunnellingProtocolIEs_EntryValu
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UplinkS1cdma2000tunnellingProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -41925,7 +41899,7 @@ impl entropic::Entropic for UplinkS1cdma2000tunnellingProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -41939,7 +41913,7 @@ impl entropic::Entropic for UplinkS1cdma2000tunnellingProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -41952,7 +41926,7 @@ impl entropic::Entropic for UplinkS1cdma2000tunnellingProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -41961,7 +41935,7 @@ impl entropic::Entropic for UplinkS1cdma2000tunnellingProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UplinkUEAssociatedLPPaTransportProtocolIEs_EntryValue {
     #[asn(key = 147)]
@@ -41987,7 +41961,7 @@ impl asn1_codecs::Asn1Choice for UplinkUEAssociatedLPPaTransportProtocolIEs_Entr
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UplinkUEAssociatedLPPaTransportProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -42022,7 +41996,7 @@ impl entropic::Entropic for UplinkUEAssociatedLPPaTransportProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -42036,7 +42010,7 @@ impl entropic::Entropic for UplinkUEAssociatedLPPaTransportProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -42049,7 +42023,7 @@ impl entropic::Entropic for UplinkUEAssociatedLPPaTransportProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -42058,7 +42032,7 @@ impl entropic::Entropic for UplinkUEAssociatedLPPaTransportProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum UserLocationInformationIE_Extensions_EntryExtensionValue {
     #[asn(key = 288)]
@@ -42075,7 +42049,7 @@ impl asn1_codecs::Asn1Choice for UserLocationInformationIE_Extensions_EntryExten
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct UserLocationInformationIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -42112,7 +42086,7 @@ impl entropic::Entropic for UserLocationInformationIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -42126,7 +42100,7 @@ impl entropic::Entropic for UserLocationInformationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -42139,7 +42113,7 @@ impl entropic::Entropic for UserLocationInformationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -42148,7 +42122,7 @@ impl entropic::Entropic for UserLocationInformationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct V2XServicesAuthorizedIE_Extensions_Entry {}
 impl entropic::Entropic for V2XServicesAuthorizedIE_Extensions_Entry {
@@ -42166,7 +42140,7 @@ impl entropic::Entropic for V2XServicesAuthorizedIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -42178,7 +42152,7 @@ impl entropic::Entropic for V2XServicesAuthorizedIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -42191,7 +42165,7 @@ impl entropic::Entropic for V2XServicesAuthorizedIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -42200,7 +42174,7 @@ impl entropic::Entropic for V2XServicesAuthorizedIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct WLANMeasurementConfigurationWlan_rssi(pub u8);
 impl WLANMeasurementConfigurationWlan_rssi {
@@ -42222,7 +42196,7 @@ impl entropic::Entropic for WLANMeasurementConfigurationWlan_rssi {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "ENUMERATED", extensible = true, lb = "0", ub = "0")]
 pub struct WLANMeasurementConfigurationWlan_rtt(pub u8);
 impl WLANMeasurementConfigurationWlan_rtt {
@@ -42244,7 +42218,7 @@ impl entropic::Entropic for WLANMeasurementConfigurationWlan_rtt {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct WLANMeasurementConfigurationIE_Extensions_Entry {}
 impl entropic::Entropic for WLANMeasurementConfigurationIE_Extensions_Entry {
@@ -42262,7 +42236,7 @@ impl entropic::Entropic for WLANMeasurementConfigurationIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -42276,7 +42250,7 @@ impl entropic::Entropic for WLANMeasurementConfigurationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -42289,7 +42263,7 @@ impl entropic::Entropic for WLANMeasurementConfigurationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -42298,7 +42272,7 @@ impl entropic::Entropic for WLANMeasurementConfigurationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct WUS_Assistance_InformationIE_Extensions_Entry {}
 impl entropic::Entropic for WUS_Assistance_InformationIE_Extensions_Entry {
@@ -42316,7 +42290,7 @@ impl entropic::Entropic for WUS_Assistance_InformationIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -42330,7 +42304,7 @@ impl entropic::Entropic for WUS_Assistance_InformationIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -42343,7 +42317,7 @@ impl entropic::Entropic for WUS_Assistance_InformationIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -42352,7 +42326,7 @@ impl entropic::Entropic for WUS_Assistance_InformationIE_Extensions {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum WriteReplaceWarningRequestProtocolIEs_EntryValue {
     #[asn(key = 142)]
@@ -42402,7 +42376,7 @@ impl asn1_codecs::Asn1Choice for WriteReplaceWarningRequestProtocolIEs_EntryValu
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct WriteReplaceWarningRequestProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -42437,7 +42411,7 @@ impl entropic::Entropic for WriteReplaceWarningRequestProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -42451,7 +42425,7 @@ impl entropic::Entropic for WriteReplaceWarningRequestProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -42464,7 +42438,7 @@ impl entropic::Entropic for WriteReplaceWarningRequestProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -42473,7 +42447,7 @@ impl entropic::Entropic for WriteReplaceWarningRequestProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum WriteReplaceWarningResponseProtocolIEs_EntryValue {
     #[asn(key = 120)]
@@ -42499,7 +42473,7 @@ impl asn1_codecs::Asn1Choice for WriteReplaceWarningResponseProtocolIEs_EntryVal
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct WriteReplaceWarningResponseProtocolIEs_Entry {
     #[asn(key_field = true)]
@@ -42534,7 +42508,7 @@ impl entropic::Entropic for WriteReplaceWarningResponseProtocolIEs_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -42548,7 +42522,7 @@ impl entropic::Entropic for WriteReplaceWarningResponseProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(0..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -42561,7 +42535,7 @@ impl entropic::Entropic for WriteReplaceWarningResponseProtocolIEs {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(0..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
@@ -42570,7 +42544,7 @@ impl entropic::Entropic for WriteReplaceWarningResponseProtocolIEs {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, entropic :: Entropic, Debug, Clone)]
 #[asn(type = "OPEN")]
 pub enum X2TNLConfigurationInfoIE_Extensions_EntryExtensionValue {
     #[asn(key = 193)]
@@ -42590,7 +42564,7 @@ impl asn1_codecs::Asn1Choice for X2TNLConfigurationInfoIE_Extensions_EntryExtens
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(type = "SEQUENCE", extensible = false)]
 pub struct X2TNLConfigurationInfoIE_Extensions_Entry {
     #[asn(key_field = true)]
@@ -42627,7 +42601,7 @@ impl entropic::Entropic for X2TNLConfigurationInfoIE_Extensions_Entry {
     }
 }
 
-#[derive(asn1_codecs_derive :: AperCodec, Debug)]
+#[derive(asn1_codecs_derive :: AperCodec, Debug, Clone)]
 #[asn(
     type = "SEQUENCE-OF",
     sz_extensible = false,
@@ -42639,7 +42613,7 @@ impl entropic::Entropic for X2TNLConfigurationInfoIE_Extensions {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
     ) -> Result<Self, entropic::Error> {
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         let vec_len = source.get_bounded_len(1..=capped_max)?;
         let mut v = Vec::new();
         for _ in 0..vec_len {
@@ -42652,7 +42626,7 @@ impl entropic::Entropic for X2TNLConfigurationInfoIE_Extensions {
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
         let mut length = 0;
-        let capped_max = std::cmp::min(65535, 16383);
+        let capped_max = std::cmp::min(65535, 10);
         length += sink.put_bounded_len(1..=capped_max, self.0.len())?;
         for item in self.0.iter() {
             length += sink.put_entropic(item)?;
