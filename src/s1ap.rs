@@ -40126,6 +40126,104 @@ impl entropic::Entropic for X2TNLConfigurationInfoIE_Extensions {
     }
 }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 impl entropic::Entropic for HandoverRequiredProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
         source: &mut entropic::FiniteEntropySource<'a, S, I>,
@@ -40283,126 +40381,191 @@ impl entropic::Entropic for HandoverRequiredProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(HandoverRequiredProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequiredProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(HandoverRequiredProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(HandoverRequiredProtocolIEs_EntryValue::Id_HandoverType(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(HandoverRequiredProtocolIEs_EntryValue::Id_Cause(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(HandoverRequiredProtocolIEs_EntryValue::Id_TargetID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(HandoverRequiredProtocolIEs_EntryValue::Id_Direct_Forwarding_Path_Availability(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequiredProtocolIEs_EntryValue::Id_SRVCCHOIndication(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequiredProtocolIEs_EntryValue::Id_Source_ToTarget_TransparentContainer(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(HandoverRequiredProtocolIEs_EntryValue::Id_Source_ToTarget_TransparentContainer_Secondary(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequiredProtocolIEs_EntryValue::Id_MSClassmark2(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0011)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequiredProtocolIEs_EntryValue::Id_MSClassmark3(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0011)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequiredProtocolIEs_EntryValue::Id_CSG_Id(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequiredProtocolIEs_EntryValue::Id_CellAccessMode(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequiredProtocolIEs_EntryValue::Id_PS_ServiceNotAvailable(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequiredProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequiredProtocolIEs_EntryValue::Id_HandoverType(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequiredProtocolIEs_EntryValue::Id_Cause(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequiredProtocolIEs_EntryValue::Id_TargetID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequiredProtocolIEs_EntryValue::Id_Direct_Forwarding_Path_Availability(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequiredProtocolIEs_EntryValue::Id_SRVCCHOIndication(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequiredProtocolIEs_EntryValue::Id_Source_ToTarget_TransparentContainer(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequiredProtocolIEs_EntryValue::Id_Source_ToTarget_TransparentContainer_Secondary(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequiredProtocolIEs_EntryValue::Id_MSClassmark2(value) = &val.value {
+            length += sink.put_byte(0b_0000_0011)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequiredProtocolIEs_EntryValue::Id_MSClassmark3(value) = &val.value {
+            length += sink.put_byte(0b_0000_0011)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequiredProtocolIEs_EntryValue::Id_CSG_Id(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequiredProtocolIEs_EntryValue::Id_CellAccessMode(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequiredProtocolIEs_EntryValue::Id_PS_ServiceNotAvailable(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -40515,90 +40678,131 @@ impl entropic::Entropic for HandoverCommandProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(HandoverCommandProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverCommandProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(HandoverCommandProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverCommandProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(HandoverCommandProtocolIEs_EntryValue::Id_HandoverType(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverCommandProtocolIEs_EntryValue::Id_HandoverType(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(HandoverCommandProtocolIEs_EntryValue::Id_NASSecurityParametersfromE_UTRAN(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverCommandProtocolIEs_EntryValue::Id_NASSecurityParametersfromE_UTRAN(value) = &val.value {
             length += sink.put_byte(0b_0000_0011)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverCommandProtocolIEs_EntryValue::Id_E_RABSubjecttoDataForwardingList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverCommandProtocolIEs_EntryValue::Id_E_RABtoReleaseListHOCmd(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverCommandProtocolIEs_EntryValue::Id_Target_ToSource_TransparentContainer(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(HandoverCommandProtocolIEs_EntryValue::Id_Target_ToSource_TransparentContainer_Secondary(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverCommandProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverCommandProtocolIEs_EntryValue::Id_E_RABSubjecttoDataForwardingList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverCommandProtocolIEs_EntryValue::Id_E_RABtoReleaseListHOCmd(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverCommandProtocolIEs_EntryValue::Id_Target_ToSource_TransparentContainer(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverCommandProtocolIEs_EntryValue::Id_Target_ToSource_TransparentContainer_Secondary(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverCommandProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
 }
+    
     
 impl entropic::Entropic for HandoverPreparationFailureProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
@@ -40657,46 +40861,61 @@ impl entropic::Entropic for HandoverPreparationFailureProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(HandoverPreparationFailureProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverPreparationFailureProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(HandoverPreparationFailureProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverPreparationFailureProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(HandoverPreparationFailureProtocolIEs_EntryValue::Id_Cause(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverPreparationFailureProtocolIEs_EntryValue::Id_Cause(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(HandoverPreparationFailureProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverPreparationFailureProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -41089,315 +41308,494 @@ impl entropic::Entropic for HandoverRequestProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_HandoverType(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_HandoverType(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_Cause(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_Cause(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_uEaggregateMaximumBitrate(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_uEaggregateMaximumBitrate(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_E_RABToBeSetupListHOReq(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_E_RABToBeSetupListHOReq(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_Source_ToTarget_TransparentContainer(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_Source_ToTarget_TransparentContainer(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_UESecurityCapabilities(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_UESecurityCapabilities(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_HandoverRestrictionList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_HandoverRestrictionList(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_TraceActivation(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_TraceActivation(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_RequestType(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_RequestType(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_SRVCCOperationPossible(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_SRVCCOperationPossible(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_SecurityContext(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_SecurityContext(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_NASSecurityParameterstoE_UTRAN(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_NASSecurityParameterstoE_UTRAN(value) = &val.value {
             length += sink.put_byte(0b_0000_0011)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_CSG_Id(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_CSGMembershipStatus(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_GUMMEI_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID_2(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_ManagementBasedMDTAllowed(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_ManagementBasedMDTPLMNList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_Masked_IMEISV(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_ExpectedUEBehaviour(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_ProSeAuthorized(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_UEUserPlaneCIoTSupportIndicator(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_V2XServicesAuthorized(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_UESidelinkAggregateMaximumBitrate(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_EnhancedCoverageRestricted(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_NRUESecurityCapabilities(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_CE_ModeBRestricted(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_AerialUEsubscriptionInformation(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_PendingDataIndication(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_Subscription_Based_UE_DifferentiationInfo(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_AdditionalRRMPriorityIndex(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_IAB_Authorized(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_NRV2XServicesAuthorized(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_NRUESidelinkAggregateMaximumBitrate(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_PC5QoSParameters(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestProtocolIEs_EntryValue::Id_UERadioCapabilityID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_CSG_Id(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_CSGMembershipStatus(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_GUMMEI_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID_2(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_ManagementBasedMDTAllowed(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_ManagementBasedMDTPLMNList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_Masked_IMEISV(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_ExpectedUEBehaviour(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_ProSeAuthorized(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_UEUserPlaneCIoTSupportIndicator(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_V2XServicesAuthorized(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_UESidelinkAggregateMaximumBitrate(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_EnhancedCoverageRestricted(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_NRUESecurityCapabilities(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_CE_ModeBRestricted(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_AerialUEsubscriptionInformation(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_PendingDataIndication(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_Subscription_Based_UE_DifferentiationInfo(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_AdditionalRRMPriorityIndex(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_IAB_Authorized(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_NRV2XServicesAuthorized(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_NRUESidelinkAggregateMaximumBitrate(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_PC5QoSParameters(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestProtocolIEs_EntryValue::Id_UERadioCapabilityID(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
 }
-    
     
 impl entropic::Entropic for HandoverRequestAcknowledgeProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
@@ -41506,86 +41904,126 @@ impl entropic::Entropic for HandoverRequestAcknowledgeProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(HandoverRequestAcknowledgeProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestAcknowledgeProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(HandoverRequestAcknowledgeProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(HandoverRequestAcknowledgeProtocolIEs_EntryValue::Id_E_RABAdmittedList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(HandoverRequestAcknowledgeProtocolIEs_EntryValue::Id_E_RABFailedToSetupListHOReqAck(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestAcknowledgeProtocolIEs_EntryValue::Id_Target_ToSource_TransparentContainer(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(HandoverRequestAcknowledgeProtocolIEs_EntryValue::Id_CSG_Id(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestAcknowledgeProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestAcknowledgeProtocolIEs_EntryValue::Id_CellAccessMode(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverRequestAcknowledgeProtocolIEs_EntryValue::Id_CE_mode_B_SupportIndicator(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestAcknowledgeProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestAcknowledgeProtocolIEs_EntryValue::Id_E_RABAdmittedList(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestAcknowledgeProtocolIEs_EntryValue::Id_E_RABFailedToSetupListHOReqAck(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestAcknowledgeProtocolIEs_EntryValue::Id_Target_ToSource_TransparentContainer(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestAcknowledgeProtocolIEs_EntryValue::Id_CSG_Id(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestAcknowledgeProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestAcknowledgeProtocolIEs_EntryValue::Id_CellAccessMode(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverRequestAcknowledgeProtocolIEs_EntryValue::Id_CE_mode_B_SupportIndicator(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -41638,38 +42076,48 @@ impl entropic::Entropic for HandoverFailureProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(HandoverFailureProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverFailureProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(HandoverFailureProtocolIEs_EntryValue::Id_Cause(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverFailureProtocolIEs_EntryValue::Id_Cause(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(HandoverFailureProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverFailureProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -41772,78 +42220,113 @@ impl entropic::Entropic for HandoverNotifyProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(HandoverNotifyProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverNotifyProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(HandoverNotifyProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(HandoverNotifyProtocolIEs_EntryValue::Id_EUTRAN_CGI(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(HandoverNotifyProtocolIEs_EntryValue::Id_TAI(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(HandoverNotifyProtocolIEs_EntryValue::Id_Tunnel_Information_for_BBF(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverNotifyProtocolIEs_EntryValue::Id_LHN_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverNotifyProtocolIEs_EntryValue::Id_PSCellInformation(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(HandoverNotifyProtocolIEs_EntryValue::Id_NotifySourceeNB(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverNotifyProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverNotifyProtocolIEs_EntryValue::Id_EUTRAN_CGI(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverNotifyProtocolIEs_EntryValue::Id_TAI(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverNotifyProtocolIEs_EntryValue::Id_Tunnel_Information_for_BBF(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverNotifyProtocolIEs_EntryValue::Id_LHN_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverNotifyProtocolIEs_EntryValue::Id_PSCellInformation(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverNotifyProtocolIEs_EntryValue::Id_NotifySourceeNB(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -42016,134 +42499,204 @@ impl entropic::Entropic for PathSwitchRequestProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(PathSwitchRequestProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(PathSwitchRequestProtocolIEs_EntryValue::Id_E_RABToBeSwitchedDLList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(PathSwitchRequestProtocolIEs_EntryValue::Id_SourceMME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(PathSwitchRequestProtocolIEs_EntryValue::Id_EUTRAN_CGI(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(PathSwitchRequestProtocolIEs_EntryValue::Id_TAI(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(PathSwitchRequestProtocolIEs_EntryValue::Id_UESecurityCapabilities(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(PathSwitchRequestProtocolIEs_EntryValue::Id_CSG_Id(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestProtocolIEs_EntryValue::Id_CellAccessMode(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestProtocolIEs_EntryValue::Id_SourceMME_GUMMEI(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestProtocolIEs_EntryValue::Id_CSGMembershipStatus(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestProtocolIEs_EntryValue::Id_Tunnel_Information_for_BBF(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestProtocolIEs_EntryValue::Id_LHN_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestProtocolIEs_EntryValue::Id_RRC_Resume_Cause(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestProtocolIEs_EntryValue::Id_NRUESecurityCapabilities(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestProtocolIEs_EntryValue::Id_PSCellInformation(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestProtocolIEs_EntryValue::Id_E_RABToBeSwitchedDLList(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestProtocolIEs_EntryValue::Id_SourceMME_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestProtocolIEs_EntryValue::Id_EUTRAN_CGI(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestProtocolIEs_EntryValue::Id_TAI(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestProtocolIEs_EntryValue::Id_UESecurityCapabilities(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestProtocolIEs_EntryValue::Id_CSG_Id(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestProtocolIEs_EntryValue::Id_CellAccessMode(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestProtocolIEs_EntryValue::Id_SourceMME_GUMMEI(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestProtocolIEs_EntryValue::Id_CSGMembershipStatus(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestProtocolIEs_EntryValue::Id_Tunnel_Information_for_BBF(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestProtocolIEs_EntryValue::Id_LHN_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestProtocolIEs_EntryValue::Id_RRC_Resume_Cause(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestProtocolIEs_EntryValue::Id_NRUESecurityCapabilities(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestProtocolIEs_EntryValue::Id_PSCellInformation(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -42416,214 +42969,334 @@ impl entropic::Entropic for PathSwitchRequestAcknowledgeProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_uEaggregateMaximumBitrate(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_E_RABToBeSwitchedULList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_E_RABToBeReleasedList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_SecurityContext(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID_2(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_CSGMembershipStatus(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_ProSeAuthorized(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_UEUserPlaneCIoTSupportIndicator(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_V2XServicesAuthorized(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_UESidelinkAggregateMaximumBitrate(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_EnhancedCoverageRestricted(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_NRUESecurityCapabilities(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_CE_ModeBRestricted(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_AerialUEsubscriptionInformation(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_PendingDataIndication(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_Subscription_Based_UE_DifferentiationInfo(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_HandoverRestrictionList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_AdditionalRRMPriorityIndex(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_NRV2XServicesAuthorized(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_NRUESidelinkAggregateMaximumBitrate(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_PC5QoSParameters(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_UERadioCapabilityID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_uEaggregateMaximumBitrate(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_E_RABToBeSwitchedULList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_E_RABToBeReleasedList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_SecurityContext(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID_2(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_CSGMembershipStatus(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_ProSeAuthorized(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_UEUserPlaneCIoTSupportIndicator(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_V2XServicesAuthorized(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_UESidelinkAggregateMaximumBitrate(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_EnhancedCoverageRestricted(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_NRUESecurityCapabilities(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_CE_ModeBRestricted(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_AerialUEsubscriptionInformation(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_PendingDataIndication(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_Subscription_Based_UE_DifferentiationInfo(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_HandoverRestrictionList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_AdditionalRRMPriorityIndex(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_NRV2XServicesAuthorized(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_NRUESidelinkAggregateMaximumBitrate(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_PC5QoSParameters(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestAcknowledgeProtocolIEs_EntryValue::Id_UERadioCapabilityID(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -42686,46 +43359,61 @@ impl entropic::Entropic for PathSwitchRequestFailureProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(PathSwitchRequestFailureProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestFailureProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(PathSwitchRequestFailureProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestFailureProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(PathSwitchRequestFailureProtocolIEs_EntryValue::Id_Cause(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestFailureProtocolIEs_EntryValue::Id_Cause(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(PathSwitchRequestFailureProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PathSwitchRequestFailureProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -42778,38 +43466,48 @@ impl entropic::Entropic for HandoverCancelProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(HandoverCancelProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverCancelProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(HandoverCancelProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(HandoverCancelProtocolIEs_EntryValue::Id_Cause(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverCancelProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverCancelProtocolIEs_EntryValue::Id_Cause(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -42862,38 +43560,48 @@ impl entropic::Entropic for HandoverCancelAcknowledgeProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(HandoverCancelAcknowledgeProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverCancelAcknowledgeProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(HandoverCancelAcknowledgeProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverCancelAcknowledgeProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(HandoverCancelAcknowledgeProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverCancelAcknowledgeProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -42936,30 +43644,35 @@ impl entropic::Entropic for HandoverSuccessProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(HandoverSuccessProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverSuccessProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(HandoverSuccessProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let HandoverSuccessProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -43012,38 +43725,48 @@ impl entropic::Entropic for ENBEarlyStatusTransferProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(ENBEarlyStatusTransferProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBEarlyStatusTransferProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(ENBEarlyStatusTransferProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(ENBEarlyStatusTransferProtocolIEs_EntryValue::Id_eNB_EarlyStatusTransfer_TransparentContainer(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBEarlyStatusTransferProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBEarlyStatusTransferProtocolIEs_EntryValue::Id_eNB_EarlyStatusTransfer_TransparentContainer(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -43096,38 +43819,48 @@ impl entropic::Entropic for MMEEarlyStatusTransferProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(MMEEarlyStatusTransferProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let MMEEarlyStatusTransferProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(MMEEarlyStatusTransferProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(MMEEarlyStatusTransferProtocolIEs_EntryValue::Id_eNB_EarlyStatusTransfer_TransparentContainer(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let MMEEarlyStatusTransferProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let MMEEarlyStatusTransferProtocolIEs_EntryValue::Id_eNB_EarlyStatusTransfer_TransparentContainer(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -43190,46 +43923,61 @@ impl entropic::Entropic for E_RABSetupRequestProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(E_RABSetupRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABSetupRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(E_RABSetupRequestProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABSetupRequestProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(E_RABSetupRequestProtocolIEs_EntryValue::Id_uEaggregateMaximumBitrate(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABSetupRequestProtocolIEs_EntryValue::Id_uEaggregateMaximumBitrate(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(E_RABSetupRequestProtocolIEs_EntryValue::Id_E_RABToBeSetupListBearerSUReq(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABSetupRequestProtocolIEs_EntryValue::Id_E_RABToBeSetupListBearerSUReq(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -43302,54 +44050,74 @@ impl entropic::Entropic for E_RABSetupResponseProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(E_RABSetupResponseProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABSetupResponseProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(E_RABSetupResponseProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(E_RABSetupResponseProtocolIEs_EntryValue::Id_E_RABSetupListBearerSURes(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(E_RABSetupResponseProtocolIEs_EntryValue::Id_E_RABFailedToSetupListBearerSURes(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(E_RABSetupResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABSetupResponseProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABSetupResponseProtocolIEs_EntryValue::Id_E_RABSetupListBearerSURes(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABSetupResponseProtocolIEs_EntryValue::Id_E_RABFailedToSetupListBearerSURes(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABSetupResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -43422,54 +44190,74 @@ impl entropic::Entropic for E_RABModifyRequestProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(E_RABModifyRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModifyRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(E_RABModifyRequestProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(E_RABModifyRequestProtocolIEs_EntryValue::Id_uEaggregateMaximumBitrate(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(E_RABModifyRequestProtocolIEs_EntryValue::Id_E_RABToBeModifiedListBearerModReq(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(E_RABModifyRequestProtocolIEs_EntryValue::Id_SecondaryRATDataUsageRequest(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModifyRequestProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModifyRequestProtocolIEs_EntryValue::Id_uEaggregateMaximumBitrate(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModifyRequestProtocolIEs_EntryValue::Id_E_RABToBeModifiedListBearerModReq(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModifyRequestProtocolIEs_EntryValue::Id_SecondaryRATDataUsageRequest(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -43552,62 +44340,87 @@ impl entropic::Entropic for E_RABModifyResponseProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(E_RABModifyResponseProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModifyResponseProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(E_RABModifyResponseProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(E_RABModifyResponseProtocolIEs_EntryValue::Id_E_RABModifyListBearerModRes(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(E_RABModifyResponseProtocolIEs_EntryValue::Id_E_RABFailedToModifyList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(E_RABModifyResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(E_RABModifyResponseProtocolIEs_EntryValue::Id_SecondaryRATDataUsageReportList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModifyResponseProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModifyResponseProtocolIEs_EntryValue::Id_E_RABModifyListBearerModRes(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModifyResponseProtocolIEs_EntryValue::Id_E_RABFailedToModifyList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModifyResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModifyResponseProtocolIEs_EntryValue::Id_SecondaryRATDataUsageReportList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -43680,54 +44493,74 @@ impl entropic::Entropic for E_RABReleaseCommandProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(E_RABReleaseCommandProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABReleaseCommandProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(E_RABReleaseCommandProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(E_RABReleaseCommandProtocolIEs_EntryValue::Id_uEaggregateMaximumBitrate(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(E_RABReleaseCommandProtocolIEs_EntryValue::Id_E_RABToBeReleasedList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(E_RABReleaseCommandProtocolIEs_EntryValue::Id_NAS_PDU(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABReleaseCommandProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABReleaseCommandProtocolIEs_EntryValue::Id_uEaggregateMaximumBitrate(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABReleaseCommandProtocolIEs_EntryValue::Id_E_RABToBeReleasedList(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABReleaseCommandProtocolIEs_EntryValue::Id_NAS_PDU(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -43820,74 +44653,105 @@ impl entropic::Entropic for E_RABReleaseResponseProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(E_RABReleaseResponseProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABReleaseResponseProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(E_RABReleaseResponseProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(E_RABReleaseResponseProtocolIEs_EntryValue::Id_E_RABReleaseListBearerRelComp(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(E_RABReleaseResponseProtocolIEs_EntryValue::Id_E_RABFailedToReleaseList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(E_RABReleaseResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(E_RABReleaseResponseProtocolIEs_EntryValue::Id_UserLocationInformation(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(E_RABReleaseResponseProtocolIEs_EntryValue::Id_SecondaryRATDataUsageReportList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABReleaseResponseProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABReleaseResponseProtocolIEs_EntryValue::Id_E_RABReleaseListBearerRelComp(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABReleaseResponseProtocolIEs_EntryValue::Id_E_RABFailedToReleaseList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABReleaseResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABReleaseResponseProtocolIEs_EntryValue::Id_UserLocationInformation(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABReleaseResponseProtocolIEs_EntryValue::Id_SecondaryRATDataUsageReportList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
 }
+    
     
 impl entropic::Entropic for E_RABReleaseIndicationProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
@@ -43956,54 +44820,74 @@ impl entropic::Entropic for E_RABReleaseIndicationProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(E_RABReleaseIndicationProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABReleaseIndicationProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(E_RABReleaseIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(E_RABReleaseIndicationProtocolIEs_EntryValue::Id_E_RABReleasedList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(E_RABReleaseIndicationProtocolIEs_EntryValue::Id_UserLocationInformation(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(E_RABReleaseIndicationProtocolIEs_EntryValue::Id_SecondaryRATDataUsageReportList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABReleaseIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABReleaseIndicationProtocolIEs_EntryValue::Id_E_RABReleasedList(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABReleaseIndicationProtocolIEs_EntryValue::Id_UserLocationInformation(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABReleaseIndicationProtocolIEs_EntryValue::Id_SecondaryRATDataUsageReportList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -44396,310 +45280,490 @@ impl entropic::Entropic for InitialContextSetupRequestProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_uEaggregateMaximumBitrate(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_uEaggregateMaximumBitrate(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_E_RABToBeSetupListCtxtSUReq(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_E_RABToBeSetupListCtxtSUReq(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_UESecurityCapabilities(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_UESecurityCapabilities(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_SecurityKey(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_SecurityKey(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_TraceActivation(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_TraceActivation(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_HandoverRestrictionList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_HandoverRestrictionList(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_UERadioCapability(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_UERadioCapability(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_SubscriberProfileIDforRFP(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_SubscriberProfileIDforRFP(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_CSFallbackIndicator(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_CSFallbackIndicator(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_SRVCCOperationPossible(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_SRVCCOperationPossible(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_CSGMembershipStatus(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_CSGMembershipStatus(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_RegisteredLAI(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_RegisteredLAI(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_GUMMEI_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_GUMMEI_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID_2(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID_2(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_ManagementBasedMDTAllowed(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_ManagementBasedMDTAllowed(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_ManagementBasedMDTPLMNList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_ManagementBasedMDTPLMNList(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_AdditionalCSFallbackIndicator(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_AdditionalCSFallbackIndicator(value) = &val.value {
             length += sink.put_byte(0b_0000_0011)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_Masked_IMEISV(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_ExpectedUEBehaviour(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_ProSeAuthorized(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_UEUserPlaneCIoTSupportIndicator(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_V2XServicesAuthorized(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_UESidelinkAggregateMaximumBitrate(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_EnhancedCoverageRestricted(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_NRUESecurityCapabilities(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_CE_ModeBRestricted(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_AerialUEsubscriptionInformation(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_PendingDataIndication(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_Subscription_Based_UE_DifferentiationInfo(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_AdditionalRRMPriorityIndex(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_IAB_Authorized(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_NRV2XServicesAuthorized(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_NRUESidelinkAggregateMaximumBitrate(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_PC5QoSParameters(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialContextSetupRequestProtocolIEs_EntryValue::Id_UERadioCapabilityID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_Masked_IMEISV(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_ExpectedUEBehaviour(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_ProSeAuthorized(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_UEUserPlaneCIoTSupportIndicator(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_V2XServicesAuthorized(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_UESidelinkAggregateMaximumBitrate(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_EnhancedCoverageRestricted(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_NRUESecurityCapabilities(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_CE_ModeBRestricted(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_AerialUEsubscriptionInformation(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_PendingDataIndication(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_Subscription_Based_UE_DifferentiationInfo(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_AdditionalRRMPriorityIndex(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_IAB_Authorized(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_NRV2XServicesAuthorized(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_NRUESidelinkAggregateMaximumBitrate(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_PC5QoSParameters(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupRequestProtocolIEs_EntryValue::Id_UERadioCapabilityID(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -44772,54 +45836,74 @@ impl entropic::Entropic for InitialContextSetupResponseProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(InitialContextSetupResponseProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupResponseProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(InitialContextSetupResponseProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(InitialContextSetupResponseProtocolIEs_EntryValue::Id_E_RABSetupListCtxtSURes(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(InitialContextSetupResponseProtocolIEs_EntryValue::Id_E_RABFailedToSetupListCtxtSURes(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialContextSetupResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupResponseProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupResponseProtocolIEs_EntryValue::Id_E_RABSetupListCtxtSURes(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupResponseProtocolIEs_EntryValue::Id_E_RABFailedToSetupListCtxtSURes(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -44882,46 +45966,61 @@ impl entropic::Entropic for InitialContextSetupFailureProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(InitialContextSetupFailureProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupFailureProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(InitialContextSetupFailureProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupFailureProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(InitialContextSetupFailureProtocolIEs_EntryValue::Id_Cause(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupFailureProtocolIEs_EntryValue::Id_Cause(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(InitialContextSetupFailureProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialContextSetupFailureProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -45124,158 +46223,243 @@ impl entropic::Entropic for PagingProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(PagingProtocolIEs_EntryValue::Id_UEIdentityIndexValue(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PagingProtocolIEs_EntryValue::Id_UEIdentityIndexValue(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(PagingProtocolIEs_EntryValue::Id_UEPagingID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(PagingProtocolIEs_EntryValue::Id_pagingDRX(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PagingProtocolIEs_EntryValue::Id_CNDomain(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(PagingProtocolIEs_EntryValue::Id_TAIList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(PagingProtocolIEs_EntryValue::Id_CSG_IdList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PagingProtocolIEs_EntryValue::Id_PagingPriority(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PagingProtocolIEs_EntryValue::Id_UERadioCapabilityForPaging(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PagingProtocolIEs_EntryValue::Id_AssistanceDataForPaging(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PagingProtocolIEs_EntryValue::Id_Paging_eDRXInformation(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PagingProtocolIEs_EntryValue::Id_extended_UEIdentityIndexValue(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PagingProtocolIEs_EntryValue::Id_NB_IoT_Paging_eDRXInformation(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PagingProtocolIEs_EntryValue::Id_NB_IoT_UEIdentityIndexValue(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PagingProtocolIEs_EntryValue::Id_EnhancedCoverageRestricted(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PagingProtocolIEs_EntryValue::Id_CE_ModeBRestricted(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PagingProtocolIEs_EntryValue::Id_DataSize(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PagingProtocolIEs_EntryValue::Id_WUS_Assistance_Information(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(PagingProtocolIEs_EntryValue::Id_NB_IoT_PagingDRX(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PagingProtocolIEs_EntryValue::Id_UEPagingID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PagingProtocolIEs_EntryValue::Id_pagingDRX(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PagingProtocolIEs_EntryValue::Id_CNDomain(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PagingProtocolIEs_EntryValue::Id_TAIList(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PagingProtocolIEs_EntryValue::Id_CSG_IdList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PagingProtocolIEs_EntryValue::Id_PagingPriority(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PagingProtocolIEs_EntryValue::Id_UERadioCapabilityForPaging(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PagingProtocolIEs_EntryValue::Id_AssistanceDataForPaging(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PagingProtocolIEs_EntryValue::Id_Paging_eDRXInformation(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PagingProtocolIEs_EntryValue::Id_extended_UEIdentityIndexValue(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PagingProtocolIEs_EntryValue::Id_NB_IoT_Paging_eDRXInformation(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PagingProtocolIEs_EntryValue::Id_NB_IoT_UEIdentityIndexValue(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PagingProtocolIEs_EntryValue::Id_EnhancedCoverageRestricted(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PagingProtocolIEs_EntryValue::Id_CE_ModeBRestricted(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PagingProtocolIEs_EntryValue::Id_DataSize(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PagingProtocolIEs_EntryValue::Id_WUS_Assistance_Information(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PagingProtocolIEs_EntryValue::Id_NB_IoT_PagingDRX(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -45348,54 +46532,74 @@ impl entropic::Entropic for UEContextReleaseRequestProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(UEContextReleaseRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextReleaseRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UEContextReleaseRequestProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UEContextReleaseRequestProtocolIEs_EntryValue::Id_Cause(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UEContextReleaseRequestProtocolIEs_EntryValue::Id_GWContextReleaseIndication(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextReleaseRequestProtocolIEs_EntryValue::Id_SecondaryRATDataUsageReportList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextReleaseRequestProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextReleaseRequestProtocolIEs_EntryValue::Id_Cause(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextReleaseRequestProtocolIEs_EntryValue::Id_GWContextReleaseIndication(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextReleaseRequestProtocolIEs_EntryValue::Id_SecondaryRATDataUsageReportList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -45438,30 +46642,35 @@ impl entropic::Entropic for UEContextReleaseCommandProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(UEContextReleaseCommandProtocolIEs_EntryValue::Id_UE_S1AP_IDs(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextReleaseCommandProtocolIEs_EntryValue::Id_UE_S1AP_IDs(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UEContextReleaseCommandProtocolIEs_EntryValue::Id_Cause(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextReleaseCommandProtocolIEs_EntryValue::Id_Cause(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -45564,78 +46773,113 @@ impl entropic::Entropic for UEContextReleaseCompleteProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(UEContextReleaseCompleteProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextReleaseCompleteProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UEContextReleaseCompleteProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UEContextReleaseCompleteProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextReleaseCompleteProtocolIEs_EntryValue::Id_UserLocationInformation(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextReleaseCompleteProtocolIEs_EntryValue::Id_InformationOnRecommendedCellsAndENBsForPaging(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextReleaseCompleteProtocolIEs_EntryValue::Id_CellIdentifierAndCELevelForCECapableUEs(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextReleaseCompleteProtocolIEs_EntryValue::Id_SecondaryRATDataUsageReportList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextReleaseCompleteProtocolIEs_EntryValue::Id_TimeSinceSecondaryNodeRelease(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextReleaseCompleteProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextReleaseCompleteProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextReleaseCompleteProtocolIEs_EntryValue::Id_UserLocationInformation(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextReleaseCompleteProtocolIEs_EntryValue::Id_InformationOnRecommendedCellsAndENBsForPaging(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextReleaseCompleteProtocolIEs_EntryValue::Id_CellIdentifierAndCELevelForCECapableUEs(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextReleaseCompleteProtocolIEs_EntryValue::Id_SecondaryRATDataUsageReportList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextReleaseCompleteProtocolIEs_EntryValue::Id_TimeSinceSecondaryNodeRelease(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -45888,198 +47132,308 @@ impl entropic::Entropic for UEContextModificationRequestProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(UEContextModificationRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(UEContextModificationRequestProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationRequestProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(UEContextModificationRequestProtocolIEs_EntryValue::Id_SecurityKey(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationRequestProtocolIEs_EntryValue::Id_SecurityKey(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(UEContextModificationRequestProtocolIEs_EntryValue::Id_SubscriberProfileIDforRFP(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationRequestProtocolIEs_EntryValue::Id_SubscriberProfileIDforRFP(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(UEContextModificationRequestProtocolIEs_EntryValue::Id_uEaggregateMaximumBitrate(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationRequestProtocolIEs_EntryValue::Id_uEaggregateMaximumBitrate(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(UEContextModificationRequestProtocolIEs_EntryValue::Id_CSFallbackIndicator(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationRequestProtocolIEs_EntryValue::Id_CSFallbackIndicator(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(UEContextModificationRequestProtocolIEs_EntryValue::Id_UESecurityCapabilities(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationRequestProtocolIEs_EntryValue::Id_UESecurityCapabilities(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(UEContextModificationRequestProtocolIEs_EntryValue::Id_CSGMembershipStatus(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationRequestProtocolIEs_EntryValue::Id_CSGMembershipStatus(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(UEContextModificationRequestProtocolIEs_EntryValue::Id_RegisteredLAI(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationRequestProtocolIEs_EntryValue::Id_RegisteredLAI(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
                 
-        if let Some(UEContextModificationRequestProtocolIEs_EntryValue::Id_AdditionalCSFallbackIndicator(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationRequestProtocolIEs_EntryValue::Id_AdditionalCSFallbackIndicator(value) = &val.value {
             length += sink.put_byte(0b_0000_0011)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextModificationRequestProtocolIEs_EntryValue::Id_ProSeAuthorized(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextModificationRequestProtocolIEs_EntryValue::Id_SRVCCOperationPossible(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextModificationRequestProtocolIEs_EntryValue::Id_SRVCCOperationNotPossible(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextModificationRequestProtocolIEs_EntryValue::Id_V2XServicesAuthorized(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextModificationRequestProtocolIEs_EntryValue::Id_UESidelinkAggregateMaximumBitrate(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextModificationRequestProtocolIEs_EntryValue::Id_NRUESecurityCapabilities(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextModificationRequestProtocolIEs_EntryValue::Id_AerialUEsubscriptionInformation(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextModificationRequestProtocolIEs_EntryValue::Id_AdditionalRRMPriorityIndex(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextModificationRequestProtocolIEs_EntryValue::Id_IAB_Authorized(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextModificationRequestProtocolIEs_EntryValue::Id_NRV2XServicesAuthorized(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextModificationRequestProtocolIEs_EntryValue::Id_NRUESidelinkAggregateMaximumBitrate(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextModificationRequestProtocolIEs_EntryValue::Id_PC5QoSParameters(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextModificationRequestProtocolIEs_EntryValue::Id_UERadioCapabilityID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationRequestProtocolIEs_EntryValue::Id_ProSeAuthorized(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationRequestProtocolIEs_EntryValue::Id_SRVCCOperationPossible(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationRequestProtocolIEs_EntryValue::Id_SRVCCOperationNotPossible(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationRequestProtocolIEs_EntryValue::Id_V2XServicesAuthorized(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationRequestProtocolIEs_EntryValue::Id_UESidelinkAggregateMaximumBitrate(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationRequestProtocolIEs_EntryValue::Id_NRUESecurityCapabilities(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationRequestProtocolIEs_EntryValue::Id_AerialUEsubscriptionInformation(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationRequestProtocolIEs_EntryValue::Id_AdditionalRRMPriorityIndex(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationRequestProtocolIEs_EntryValue::Id_IAB_Authorized(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationRequestProtocolIEs_EntryValue::Id_NRV2XServicesAuthorized(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationRequestProtocolIEs_EntryValue::Id_NRUESidelinkAggregateMaximumBitrate(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationRequestProtocolIEs_EntryValue::Id_PC5QoSParameters(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationRequestProtocolIEs_EntryValue::Id_UERadioCapabilityID(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -46132,38 +47486,48 @@ impl entropic::Entropic for UEContextModificationResponseProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(UEContextModificationResponseProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationResponseProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(UEContextModificationResponseProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationResponseProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(UEContextModificationResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -46226,46 +47590,61 @@ impl entropic::Entropic for UEContextModificationFailureProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(UEContextModificationFailureProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationFailureProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(UEContextModificationFailureProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationFailureProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(UEContextModificationFailureProtocolIEs_EntryValue::Id_Cause(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationFailureProtocolIEs_EntryValue::Id_Cause(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(UEContextModificationFailureProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationFailureProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -46328,46 +47707,61 @@ impl entropic::Entropic for UERadioCapabilityMatchRequestProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(UERadioCapabilityMatchRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UERadioCapabilityMatchRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UERadioCapabilityMatchRequestProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UERadioCapabilityMatchRequestProtocolIEs_EntryValue::Id_UERadioCapability(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UERadioCapabilityMatchRequestProtocolIEs_EntryValue::Id_UERadioCapabilityID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UERadioCapabilityMatchRequestProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UERadioCapabilityMatchRequestProtocolIEs_EntryValue::Id_UERadioCapability(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UERadioCapabilityMatchRequestProtocolIEs_EntryValue::Id_UERadioCapabilityID(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -46430,46 +47824,61 @@ impl entropic::Entropic for UERadioCapabilityMatchResponseProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(UERadioCapabilityMatchResponseProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UERadioCapabilityMatchResponseProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(UERadioCapabilityMatchResponseProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UERadioCapabilityMatchResponseProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(UERadioCapabilityMatchResponseProtocolIEs_EntryValue::Id_VoiceSupportMatchIndicator(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UERadioCapabilityMatchResponseProtocolIEs_EntryValue::Id_VoiceSupportMatchIndicator(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(UERadioCapabilityMatchResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UERadioCapabilityMatchResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -46662,150 +48071,230 @@ impl entropic::Entropic for DownlinkNASTransportProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(DownlinkNASTransportProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkNASTransportProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(DownlinkNASTransportProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(DownlinkNASTransportProtocolIEs_EntryValue::Id_NAS_PDU(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(DownlinkNASTransportProtocolIEs_EntryValue::Id_HandoverRestrictionList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(DownlinkNASTransportProtocolIEs_EntryValue::Id_SubscriberProfileIDforRFP(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(DownlinkNASTransportProtocolIEs_EntryValue::Id_SRVCCOperationPossible(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(DownlinkNASTransportProtocolIEs_EntryValue::Id_UERadioCapability(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(DownlinkNASTransportProtocolIEs_EntryValue::Id_DLNASPDUDeliveryAckRequest(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(DownlinkNASTransportProtocolIEs_EntryValue::Id_EnhancedCoverageRestricted(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(DownlinkNASTransportProtocolIEs_EntryValue::Id_NRUESecurityCapabilities(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(DownlinkNASTransportProtocolIEs_EntryValue::Id_CE_ModeBRestricted(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(DownlinkNASTransportProtocolIEs_EntryValue::Id_UECapabilityInfoRequest(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(DownlinkNASTransportProtocolIEs_EntryValue::Id_EndIndication(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(DownlinkNASTransportProtocolIEs_EntryValue::Id_PendingDataIndication(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(DownlinkNASTransportProtocolIEs_EntryValue::Id_Subscription_Based_UE_DifferentiationInfo(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(DownlinkNASTransportProtocolIEs_EntryValue::Id_AdditionalRRMPriorityIndex(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(DownlinkNASTransportProtocolIEs_EntryValue::Id_UERadioCapabilityID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkNASTransportProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkNASTransportProtocolIEs_EntryValue::Id_NAS_PDU(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkNASTransportProtocolIEs_EntryValue::Id_HandoverRestrictionList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkNASTransportProtocolIEs_EntryValue::Id_SubscriberProfileIDforRFP(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkNASTransportProtocolIEs_EntryValue::Id_SRVCCOperationPossible(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkNASTransportProtocolIEs_EntryValue::Id_UERadioCapability(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkNASTransportProtocolIEs_EntryValue::Id_DLNASPDUDeliveryAckRequest(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkNASTransportProtocolIEs_EntryValue::Id_EnhancedCoverageRestricted(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkNASTransportProtocolIEs_EntryValue::Id_NRUESecurityCapabilities(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkNASTransportProtocolIEs_EntryValue::Id_CE_ModeBRestricted(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkNASTransportProtocolIEs_EntryValue::Id_UECapabilityInfoRequest(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkNASTransportProtocolIEs_EntryValue::Id_EndIndication(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkNASTransportProtocolIEs_EntryValue::Id_PendingDataIndication(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkNASTransportProtocolIEs_EntryValue::Id_Subscription_Based_UE_DifferentiationInfo(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkNASTransportProtocolIEs_EntryValue::Id_AdditionalRRMPriorityIndex(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkNASTransportProtocolIEs_EntryValue::Id_UERadioCapabilityID(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -47058,198 +48547,308 @@ impl entropic::Entropic for InitialUEMessageProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(InitialUEMessageProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialUEMessageProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(InitialUEMessageProtocolIEs_EntryValue::Id_NAS_PDU(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(InitialUEMessageProtocolIEs_EntryValue::Id_TAI(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(InitialUEMessageProtocolIEs_EntryValue::Id_EUTRAN_CGI(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(InitialUEMessageProtocolIEs_EntryValue::Id_RRC_Establishment_Cause(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(InitialUEMessageProtocolIEs_EntryValue::Id_S_TMSI(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialUEMessageProtocolIEs_EntryValue::Id_CSG_Id(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialUEMessageProtocolIEs_EntryValue::Id_GUMMEI_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialUEMessageProtocolIEs_EntryValue::Id_CellAccessMode(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialUEMessageProtocolIEs_EntryValue::Id_GW_TransportLayerAddress(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialUEMessageProtocolIEs_EntryValue::Id_RelayNode_Indicator(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialUEMessageProtocolIEs_EntryValue::Id_GUMMEIType(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialUEMessageProtocolIEs_EntryValue::Id_Tunnel_Information_for_BBF(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialUEMessageProtocolIEs_EntryValue::Id_SIPTO_L_GW_TransportLayerAddress(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialUEMessageProtocolIEs_EntryValue::Id_LHN_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialUEMessageProtocolIEs_EntryValue::Id_MME_Group_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialUEMessageProtocolIEs_EntryValue::Id_UE_Usage_Type(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialUEMessageProtocolIEs_EntryValue::Id_CE_mode_B_SupportIndicator(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialUEMessageProtocolIEs_EntryValue::Id_DCN_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialUEMessageProtocolIEs_EntryValue::Id_Coverage_Level(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialUEMessageProtocolIEs_EntryValue::Id_UE_Application_Layer_Measurement_Capability(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialUEMessageProtocolIEs_EntryValue::Id_EDT_Session(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(InitialUEMessageProtocolIEs_EntryValue::Id_IAB_Node_Indication(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialUEMessageProtocolIEs_EntryValue::Id_NAS_PDU(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialUEMessageProtocolIEs_EntryValue::Id_TAI(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialUEMessageProtocolIEs_EntryValue::Id_EUTRAN_CGI(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialUEMessageProtocolIEs_EntryValue::Id_RRC_Establishment_Cause(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialUEMessageProtocolIEs_EntryValue::Id_S_TMSI(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialUEMessageProtocolIEs_EntryValue::Id_CSG_Id(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialUEMessageProtocolIEs_EntryValue::Id_GUMMEI_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialUEMessageProtocolIEs_EntryValue::Id_CellAccessMode(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialUEMessageProtocolIEs_EntryValue::Id_GW_TransportLayerAddress(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialUEMessageProtocolIEs_EntryValue::Id_RelayNode_Indicator(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialUEMessageProtocolIEs_EntryValue::Id_GUMMEIType(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialUEMessageProtocolIEs_EntryValue::Id_Tunnel_Information_for_BBF(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialUEMessageProtocolIEs_EntryValue::Id_SIPTO_L_GW_TransportLayerAddress(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialUEMessageProtocolIEs_EntryValue::Id_LHN_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialUEMessageProtocolIEs_EntryValue::Id_MME_Group_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialUEMessageProtocolIEs_EntryValue::Id_UE_Usage_Type(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialUEMessageProtocolIEs_EntryValue::Id_CE_mode_B_SupportIndicator(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialUEMessageProtocolIEs_EntryValue::Id_DCN_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialUEMessageProtocolIEs_EntryValue::Id_Coverage_Level(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialUEMessageProtocolIEs_EntryValue::Id_UE_Application_Layer_Measurement_Capability(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialUEMessageProtocolIEs_EntryValue::Id_EDT_Session(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let InitialUEMessageProtocolIEs_EntryValue::Id_IAB_Node_Indication(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -47362,86 +48961,126 @@ impl entropic::Entropic for UplinkNASTransportProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(UplinkNASTransportProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkNASTransportProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UplinkNASTransportProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UplinkNASTransportProtocolIEs_EntryValue::Id_NAS_PDU(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UplinkNASTransportProtocolIEs_EntryValue::Id_EUTRAN_CGI(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UplinkNASTransportProtocolIEs_EntryValue::Id_TAI(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UplinkNASTransportProtocolIEs_EntryValue::Id_GW_TransportLayerAddress(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UplinkNASTransportProtocolIEs_EntryValue::Id_SIPTO_L_GW_TransportLayerAddress(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UplinkNASTransportProtocolIEs_EntryValue::Id_LHN_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UplinkNASTransportProtocolIEs_EntryValue::Id_PSCellInformation(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkNASTransportProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkNASTransportProtocolIEs_EntryValue::Id_NAS_PDU(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkNASTransportProtocolIEs_EntryValue::Id_EUTRAN_CGI(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkNASTransportProtocolIEs_EntryValue::Id_TAI(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkNASTransportProtocolIEs_EntryValue::Id_GW_TransportLayerAddress(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkNASTransportProtocolIEs_EntryValue::Id_SIPTO_L_GW_TransportLayerAddress(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkNASTransportProtocolIEs_EntryValue::Id_LHN_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkNASTransportProtocolIEs_EntryValue::Id_PSCellInformation(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -47504,46 +49143,61 @@ impl entropic::Entropic for NASNonDeliveryIndicationProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(NASNonDeliveryIndicationProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let NASNonDeliveryIndicationProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(NASNonDeliveryIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(NASNonDeliveryIndicationProtocolIEs_EntryValue::Id_NAS_PDU(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(NASNonDeliveryIndicationProtocolIEs_EntryValue::Id_Cause(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let NASNonDeliveryIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let NASNonDeliveryIndicationProtocolIEs_EntryValue::Id_NAS_PDU(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let NASNonDeliveryIndicationProtocolIEs_EntryValue::Id_Cause(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -47616,54 +49270,74 @@ impl entropic::Entropic for RerouteNASRequestProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(RerouteNASRequestProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let RerouteNASRequestProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(RerouteNASRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(RerouteNASRequestProtocolIEs_EntryValue::Id_MME_Group_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(RerouteNASRequestProtocolIEs_EntryValue::Id_Additional_GUTI(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(RerouteNASRequestProtocolIEs_EntryValue::Id_UE_Usage_Type(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let RerouteNASRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let RerouteNASRequestProtocolIEs_EntryValue::Id_MME_Group_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let RerouteNASRequestProtocolIEs_EntryValue::Id_Additional_GUTI(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let RerouteNASRequestProtocolIEs_EntryValue::Id_UE_Usage_Type(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -47706,30 +49380,35 @@ impl entropic::Entropic for NASDeliveryIndicationProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(NASDeliveryIndicationProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let NASDeliveryIndicationProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(NASDeliveryIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let NASDeliveryIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -47772,30 +49451,35 @@ impl entropic::Entropic for ResetProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(ResetProtocolIEs_EntryValue::Id_Cause(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ResetProtocolIEs_EntryValue::Id_Cause(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(ResetProtocolIEs_EntryValue::Id_ResetType(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ResetProtocolIEs_EntryValue::Id_ResetType(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -47838,30 +49522,35 @@ impl entropic::Entropic for ResetAcknowledgeProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(ResetAcknowledgeProtocolIEs_EntryValue::Id_UE_associatedLogicalS1_ConnectionListResAck(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ResetAcknowledgeProtocolIEs_EntryValue::Id_UE_associatedLogicalS1_ConnectionListResAck(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(ResetAcknowledgeProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ResetAcknowledgeProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -47934,54 +49623,74 @@ impl entropic::Entropic for ErrorIndicationProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(ErrorIndicationProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ErrorIndicationProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(ErrorIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(ErrorIndicationProtocolIEs_EntryValue::Id_Cause(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(ErrorIndicationProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(ErrorIndicationProtocolIEs_EntryValue::Id_S_TMSI(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ErrorIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ErrorIndicationProtocolIEs_EntryValue::Id_Cause(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ErrorIndicationProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ErrorIndicationProtocolIEs_EntryValue::Id_S_TMSI(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -48084,78 +49793,113 @@ impl entropic::Entropic for S1SetupRequestProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(S1SetupRequestProtocolIEs_EntryValue::Id_Global_ENB_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let S1SetupRequestProtocolIEs_EntryValue::Id_Global_ENB_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(S1SetupRequestProtocolIEs_EntryValue::Id_eNBname(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(S1SetupRequestProtocolIEs_EntryValue::Id_SupportedTAs(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(S1SetupRequestProtocolIEs_EntryValue::Id_DefaultPagingDRX(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(S1SetupRequestProtocolIEs_EntryValue::Id_CSG_IdList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(S1SetupRequestProtocolIEs_EntryValue::Id_UE_RetentionInformation(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(S1SetupRequestProtocolIEs_EntryValue::Id_NB_IoT_DefaultPagingDRX(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(S1SetupRequestProtocolIEs_EntryValue::Id_ConnectedengNBList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let S1SetupRequestProtocolIEs_EntryValue::Id_eNBname(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let S1SetupRequestProtocolIEs_EntryValue::Id_SupportedTAs(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let S1SetupRequestProtocolIEs_EntryValue::Id_DefaultPagingDRX(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let S1SetupRequestProtocolIEs_EntryValue::Id_CSG_IdList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let S1SetupRequestProtocolIEs_EntryValue::Id_UE_RetentionInformation(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let S1SetupRequestProtocolIEs_EntryValue::Id_NB_IoT_DefaultPagingDRX(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let S1SetupRequestProtocolIEs_EntryValue::Id_ConnectedengNBList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -48258,78 +50002,113 @@ impl entropic::Entropic for S1SetupResponseProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(S1SetupResponseProtocolIEs_EntryValue::Id_MMEname(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let S1SetupResponseProtocolIEs_EntryValue::Id_MMEname(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(S1SetupResponseProtocolIEs_EntryValue::Id_ServedGUMMEIs(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(S1SetupResponseProtocolIEs_EntryValue::Id_RelativeMMECapacity(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(S1SetupResponseProtocolIEs_EntryValue::Id_MMERelaySupportIndicator(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(S1SetupResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(S1SetupResponseProtocolIEs_EntryValue::Id_UE_RetentionInformation(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(S1SetupResponseProtocolIEs_EntryValue::Id_ServedDCNs(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(S1SetupResponseProtocolIEs_EntryValue::Id_IAB_Supported(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let S1SetupResponseProtocolIEs_EntryValue::Id_ServedGUMMEIs(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let S1SetupResponseProtocolIEs_EntryValue::Id_RelativeMMECapacity(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let S1SetupResponseProtocolIEs_EntryValue::Id_MMERelaySupportIndicator(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let S1SetupResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let S1SetupResponseProtocolIEs_EntryValue::Id_UE_RetentionInformation(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let S1SetupResponseProtocolIEs_EntryValue::Id_ServedDCNs(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let S1SetupResponseProtocolIEs_EntryValue::Id_IAB_Supported(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -48382,38 +50161,48 @@ impl entropic::Entropic for S1SetupFailureProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(S1SetupFailureProtocolIEs_EntryValue::Id_Cause(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let S1SetupFailureProtocolIEs_EntryValue::Id_Cause(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(S1SetupFailureProtocolIEs_EntryValue::Id_TimeToWait(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(S1SetupFailureProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let S1SetupFailureProtocolIEs_EntryValue::Id_TimeToWait(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let S1SetupFailureProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -48506,70 +50295,100 @@ impl entropic::Entropic for ENBConfigurationUpdateProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(ENBConfigurationUpdateProtocolIEs_EntryValue::Id_eNBname(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBConfigurationUpdateProtocolIEs_EntryValue::Id_eNBname(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(ENBConfigurationUpdateProtocolIEs_EntryValue::Id_SupportedTAs(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(ENBConfigurationUpdateProtocolIEs_EntryValue::Id_CSG_IdList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(ENBConfigurationUpdateProtocolIEs_EntryValue::Id_DefaultPagingDRX(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(ENBConfigurationUpdateProtocolIEs_EntryValue::Id_NB_IoT_DefaultPagingDRX(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(ENBConfigurationUpdateProtocolIEs_EntryValue::Id_ConnectedengNBToAddList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(ENBConfigurationUpdateProtocolIEs_EntryValue::Id_ConnectedengNBToRemoveList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBConfigurationUpdateProtocolIEs_EntryValue::Id_SupportedTAs(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBConfigurationUpdateProtocolIEs_EntryValue::Id_CSG_IdList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBConfigurationUpdateProtocolIEs_EntryValue::Id_DefaultPagingDRX(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBConfigurationUpdateProtocolIEs_EntryValue::Id_NB_IoT_DefaultPagingDRX(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBConfigurationUpdateProtocolIEs_EntryValue::Id_ConnectedengNBToAddList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBConfigurationUpdateProtocolIEs_EntryValue::Id_ConnectedengNBToRemoveList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -48602,22 +50421,22 @@ impl entropic::Entropic for ENBConfigurationUpdateAcknowledgeProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(ENBConfigurationUpdateAcknowledgeProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBConfigurationUpdateAcknowledgeProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -48670,38 +50489,48 @@ impl entropic::Entropic for ENBConfigurationUpdateFailureProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(ENBConfigurationUpdateFailureProtocolIEs_EntryValue::Id_Cause(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBConfigurationUpdateFailureProtocolIEs_EntryValue::Id_Cause(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(ENBConfigurationUpdateFailureProtocolIEs_EntryValue::Id_TimeToWait(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(ENBConfigurationUpdateFailureProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBConfigurationUpdateFailureProtocolIEs_EntryValue::Id_TimeToWait(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBConfigurationUpdateFailureProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -48764,46 +50593,61 @@ impl entropic::Entropic for MMEConfigurationUpdateProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(MMEConfigurationUpdateProtocolIEs_EntryValue::Id_MMEname(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let MMEConfigurationUpdateProtocolIEs_EntryValue::Id_MMEname(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(MMEConfigurationUpdateProtocolIEs_EntryValue::Id_ServedGUMMEIs(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(MMEConfigurationUpdateProtocolIEs_EntryValue::Id_RelativeMMECapacity(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(MMEConfigurationUpdateProtocolIEs_EntryValue::Id_ServedDCNs(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let MMEConfigurationUpdateProtocolIEs_EntryValue::Id_ServedGUMMEIs(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let MMEConfigurationUpdateProtocolIEs_EntryValue::Id_RelativeMMECapacity(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let MMEConfigurationUpdateProtocolIEs_EntryValue::Id_ServedDCNs(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -48836,22 +50680,22 @@ impl entropic::Entropic for MMEConfigurationUpdateAcknowledgeProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(MMEConfigurationUpdateAcknowledgeProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let MMEConfigurationUpdateAcknowledgeProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -48904,38 +50748,48 @@ impl entropic::Entropic for MMEConfigurationUpdateFailureProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(MMEConfigurationUpdateFailureProtocolIEs_EntryValue::Id_Cause(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let MMEConfigurationUpdateFailureProtocolIEs_EntryValue::Id_Cause(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(MMEConfigurationUpdateFailureProtocolIEs_EntryValue::Id_TimeToWait(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(MMEConfigurationUpdateFailureProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let MMEConfigurationUpdateFailureProtocolIEs_EntryValue::Id_TimeToWait(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let MMEConfigurationUpdateFailureProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -49018,62 +50872,87 @@ impl entropic::Entropic for DownlinkS1cdma2000tunnellingProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(DownlinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(DownlinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(DownlinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_E_RABSubjecttoDataForwardingList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(DownlinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_cdma2000HOStatus(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(DownlinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_cdma2000RATType(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(DownlinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_cdma2000PDU(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_E_RABSubjecttoDataForwardingList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_cdma2000HOStatus(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_cdma2000RATType(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_cdma2000PDU(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -49186,86 +51065,126 @@ impl entropic::Entropic for UplinkS1cdma2000tunnellingProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(UplinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UplinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UplinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_cdma2000RATType(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UplinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_cdma2000SectorID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UplinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_cdma2000HORequiredIndication(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UplinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_cdma2000OneXSRVCCInfo(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UplinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_cdma2000OneXRAND(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UplinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_cdma2000PDU(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UplinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_EUTRANRoundTripDelayEstimationInfo(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_cdma2000RATType(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_cdma2000SectorID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_cdma2000HORequiredIndication(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_cdma2000OneXSRVCCInfo(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_cdma2000OneXRAND(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_cdma2000PDU(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkS1cdma2000tunnellingProtocolIEs_EntryValue::Id_EUTRANRoundTripDelayEstimationInfo(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -49358,70 +51277,100 @@ impl entropic::Entropic for UECapabilityInfoIndicationProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(UECapabilityInfoIndicationProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UECapabilityInfoIndicationProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UECapabilityInfoIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UECapabilityInfoIndicationProtocolIEs_EntryValue::Id_UERadioCapability(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UECapabilityInfoIndicationProtocolIEs_EntryValue::Id_UERadioCapabilityForPaging(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UECapabilityInfoIndicationProtocolIEs_EntryValue::Id_UE_Application_Layer_Measurement_Capability(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UECapabilityInfoIndicationProtocolIEs_EntryValue::Id_LTE_M_Indication(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UECapabilityInfoIndicationProtocolIEs_EntryValue::Id_UERadioCapability_NR_Format(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UECapabilityInfoIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UECapabilityInfoIndicationProtocolIEs_EntryValue::Id_UERadioCapability(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UECapabilityInfoIndicationProtocolIEs_EntryValue::Id_UERadioCapabilityForPaging(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UECapabilityInfoIndicationProtocolIEs_EntryValue::Id_UE_Application_Layer_Measurement_Capability(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UECapabilityInfoIndicationProtocolIEs_EntryValue::Id_LTE_M_Indication(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UECapabilityInfoIndicationProtocolIEs_EntryValue::Id_UERadioCapability_NR_Format(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -49474,38 +51423,48 @@ impl entropic::Entropic for ENBStatusTransferProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(ENBStatusTransferProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBStatusTransferProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(ENBStatusTransferProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(ENBStatusTransferProtocolIEs_EntryValue::Id_eNB_StatusTransfer_TransparentContainer(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBStatusTransferProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBStatusTransferProtocolIEs_EntryValue::Id_eNB_StatusTransfer_TransparentContainer(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -49558,38 +51517,48 @@ impl entropic::Entropic for MMEStatusTransferProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(MMEStatusTransferProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let MMEStatusTransferProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(MMEStatusTransferProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(MMEStatusTransferProtocolIEs_EntryValue::Id_eNB_StatusTransfer_TransparentContainer(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let MMEStatusTransferProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let MMEStatusTransferProtocolIEs_EntryValue::Id_eNB_StatusTransfer_TransparentContainer(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -49642,38 +51611,48 @@ impl entropic::Entropic for TraceStartProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(TraceStartProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let TraceStartProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(TraceStartProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(TraceStartProtocolIEs_EntryValue::Id_TraceActivation(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let TraceStartProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let TraceStartProtocolIEs_EntryValue::Id_TraceActivation(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -49736,46 +51715,61 @@ impl entropic::Entropic for TraceFailureIndicationProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(TraceFailureIndicationProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let TraceFailureIndicationProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(TraceFailureIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(TraceFailureIndicationProtocolIEs_EntryValue::Id_E_UTRAN_Trace_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(TraceFailureIndicationProtocolIEs_EntryValue::Id_Cause(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let TraceFailureIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let TraceFailureIndicationProtocolIEs_EntryValue::Id_E_UTRAN_Trace_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let TraceFailureIndicationProtocolIEs_EntryValue::Id_Cause(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -49828,38 +51822,48 @@ impl entropic::Entropic for DeactivateTraceProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(DeactivateTraceProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DeactivateTraceProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(DeactivateTraceProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(DeactivateTraceProtocolIEs_EntryValue::Id_E_UTRAN_Trace_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DeactivateTraceProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DeactivateTraceProtocolIEs_EntryValue::Id_E_UTRAN_Trace_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -49942,62 +51946,87 @@ impl entropic::Entropic for CellTrafficTraceProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(CellTrafficTraceProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let CellTrafficTraceProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(CellTrafficTraceProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let CellTrafficTraceProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(CellTrafficTraceProtocolIEs_EntryValue::Id_E_UTRAN_Trace_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let CellTrafficTraceProtocolIEs_EntryValue::Id_E_UTRAN_Trace_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(CellTrafficTraceProtocolIEs_EntryValue::Id_EUTRAN_CGI(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let CellTrafficTraceProtocolIEs_EntryValue::Id_EUTRAN_CGI(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(CellTrafficTraceProtocolIEs_EntryValue::Id_TraceCollectionEntityIPAddress(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let CellTrafficTraceProtocolIEs_EntryValue::Id_TraceCollectionEntityIPAddress(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(CellTrafficTraceProtocolIEs_EntryValue::Id_PrivacyIndicator(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let CellTrafficTraceProtocolIEs_EntryValue::Id_PrivacyIndicator(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -50050,38 +52079,48 @@ impl entropic::Entropic for LocationReportingControlProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(LocationReportingControlProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let LocationReportingControlProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(LocationReportingControlProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(LocationReportingControlProtocolIEs_EntryValue::Id_RequestType(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let LocationReportingControlProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let LocationReportingControlProtocolIEs_EntryValue::Id_RequestType(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -50134,38 +52173,48 @@ impl entropic::Entropic for LocationReportingFailureIndicationProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(LocationReportingFailureIndicationProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let LocationReportingFailureIndicationProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(LocationReportingFailureIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(LocationReportingFailureIndicationProtocolIEs_EntryValue::Id_Cause(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let LocationReportingFailureIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let LocationReportingFailureIndicationProtocolIEs_EntryValue::Id_Cause(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -50248,62 +52297,87 @@ impl entropic::Entropic for LocationReportProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(LocationReportProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let LocationReportProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(LocationReportProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let LocationReportProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(LocationReportProtocolIEs_EntryValue::Id_EUTRAN_CGI(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let LocationReportProtocolIEs_EntryValue::Id_EUTRAN_CGI(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(LocationReportProtocolIEs_EntryValue::Id_TAI(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let LocationReportProtocolIEs_EntryValue::Id_TAI(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(LocationReportProtocolIEs_EntryValue::Id_RequestType(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let LocationReportProtocolIEs_EntryValue::Id_RequestType(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(LocationReportProtocolIEs_EntryValue::Id_PSCellInformation(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let LocationReportProtocolIEs_EntryValue::Id_PSCellInformation(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -50356,38 +52430,48 @@ impl entropic::Entropic for OverloadStartProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(OverloadStartProtocolIEs_EntryValue::Id_OverloadResponse(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let OverloadStartProtocolIEs_EntryValue::Id_OverloadResponse(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(OverloadStartProtocolIEs_EntryValue::Id_GUMMEIList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(OverloadStartProtocolIEs_EntryValue::Id_TrafficLoadReductionIndication(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let OverloadStartProtocolIEs_EntryValue::Id_GUMMEIList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let OverloadStartProtocolIEs_EntryValue::Id_TrafficLoadReductionIndication(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -50420,22 +52504,22 @@ impl entropic::Entropic for OverloadStopProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(OverloadStopProtocolIEs_EntryValue::Id_GUMMEIList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let OverloadStopProtocolIEs_EntryValue::Id_GUMMEIList(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -50578,110 +52662,165 @@ impl entropic::Entropic for WriteReplaceWarningRequestProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_MessageIdentifier(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_MessageIdentifier(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_SerialNumber(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_WarningAreaList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_RepetitionPeriod(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_ExtendedRepetitionPeriod(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_NumberofBroadcastRequest(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_WarningType(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_WarningSecurityInfo(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_DataCodingScheme(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_WarningMessageContents(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_ConcurrentWarningMessageIndicator(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_WarningAreaCoordinates(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_SerialNumber(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_WarningAreaList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_RepetitionPeriod(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_ExtendedRepetitionPeriod(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_NumberofBroadcastRequest(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_WarningType(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_WarningSecurityInfo(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_DataCodingScheme(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_WarningMessageContents(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_ConcurrentWarningMessageIndicator(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let WriteReplaceWarningRequestProtocolIEs_EntryValue::Id_WarningAreaCoordinates(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -50744,46 +52883,61 @@ impl entropic::Entropic for WriteReplaceWarningResponseProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(WriteReplaceWarningResponseProtocolIEs_EntryValue::Id_MessageIdentifier(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let WriteReplaceWarningResponseProtocolIEs_EntryValue::Id_MessageIdentifier(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(WriteReplaceWarningResponseProtocolIEs_EntryValue::Id_SerialNumber(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(WriteReplaceWarningResponseProtocolIEs_EntryValue::Id_BroadcastCompletedAreaList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(WriteReplaceWarningResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let WriteReplaceWarningResponseProtocolIEs_EntryValue::Id_SerialNumber(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let WriteReplaceWarningResponseProtocolIEs_EntryValue::Id_BroadcastCompletedAreaList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let WriteReplaceWarningResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -50816,22 +52970,22 @@ impl entropic::Entropic for ENBDirectInformationTransferProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(ENBDirectInformationTransferProtocolIEs_EntryValue::Id_Inter_SystemInformationTransferTypeEDT(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBDirectInformationTransferProtocolIEs_EntryValue::Id_Inter_SystemInformationTransferTypeEDT(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -50864,22 +53018,22 @@ impl entropic::Entropic for MMEDirectInformationTransferProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(MMEDirectInformationTransferProtocolIEs_EntryValue::Id_Inter_SystemInformationTransferTypeMDT(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let MMEDirectInformationTransferProtocolIEs_EntryValue::Id_Inter_SystemInformationTransferTypeMDT(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -50932,38 +53086,48 @@ impl entropic::Entropic for ENBConfigurationTransferProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(ENBConfigurationTransferProtocolIEs_EntryValue::Id_SONConfigurationTransferECT(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBConfigurationTransferProtocolIEs_EntryValue::Id_SONConfigurationTransferECT(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(ENBConfigurationTransferProtocolIEs_EntryValue::Id_EN_DCSONConfigurationTransfer_ECT(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(ENBConfigurationTransferProtocolIEs_EntryValue::Id_IntersystemSONConfigurationTransferECT(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBConfigurationTransferProtocolIEs_EntryValue::Id_EN_DCSONConfigurationTransfer_ECT(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBConfigurationTransferProtocolIEs_EntryValue::Id_IntersystemSONConfigurationTransferECT(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -51016,38 +53180,48 @@ impl entropic::Entropic for MMEConfigurationTransferProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(MMEConfigurationTransferProtocolIEs_EntryValue::Id_SONConfigurationTransferMCT(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let MMEConfigurationTransferProtocolIEs_EntryValue::Id_SONConfigurationTransferMCT(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(MMEConfigurationTransferProtocolIEs_EntryValue::Id_EN_DCSONConfigurationTransfer_MCT(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(MMEConfigurationTransferProtocolIEs_EntryValue::Id_IntersystemSONConfigurationTransferMCT(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let MMEConfigurationTransferProtocolIEs_EntryValue::Id_EN_DCSONConfigurationTransfer_MCT(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let MMEConfigurationTransferProtocolIEs_EntryValue::Id_IntersystemSONConfigurationTransferMCT(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -51110,46 +53284,61 @@ impl entropic::Entropic for KillRequestProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(KillRequestProtocolIEs_EntryValue::Id_MessageIdentifier(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let KillRequestProtocolIEs_EntryValue::Id_MessageIdentifier(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(KillRequestProtocolIEs_EntryValue::Id_SerialNumber(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(KillRequestProtocolIEs_EntryValue::Id_WarningAreaList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(KillRequestProtocolIEs_EntryValue::Id_KillAllWarningMessages(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let KillRequestProtocolIEs_EntryValue::Id_SerialNumber(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let KillRequestProtocolIEs_EntryValue::Id_WarningAreaList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let KillRequestProtocolIEs_EntryValue::Id_KillAllWarningMessages(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -51212,46 +53401,61 @@ impl entropic::Entropic for KillResponseProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(KillResponseProtocolIEs_EntryValue::Id_MessageIdentifier(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let KillResponseProtocolIEs_EntryValue::Id_MessageIdentifier(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(KillResponseProtocolIEs_EntryValue::Id_SerialNumber(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(KillResponseProtocolIEs_EntryValue::Id_BroadcastCancelledAreaList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(KillResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let KillResponseProtocolIEs_EntryValue::Id_SerialNumber(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let KillResponseProtocolIEs_EntryValue::Id_BroadcastCancelledAreaList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let KillResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -51314,46 +53518,61 @@ impl entropic::Entropic for PWSRestartIndicationProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(PWSRestartIndicationProtocolIEs_EntryValue::Id_ECGIListForRestart(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PWSRestartIndicationProtocolIEs_EntryValue::Id_ECGIListForRestart(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(PWSRestartIndicationProtocolIEs_EntryValue::Id_Global_ENB_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PWSRestartIndicationProtocolIEs_EntryValue::Id_Global_ENB_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(PWSRestartIndicationProtocolIEs_EntryValue::Id_TAIListForRestart(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PWSRestartIndicationProtocolIEs_EntryValue::Id_TAIListForRestart(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(PWSRestartIndicationProtocolIEs_EntryValue::Id_EmergencyAreaIDListForRestart(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PWSRestartIndicationProtocolIEs_EntryValue::Id_EmergencyAreaIDListForRestart(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -51396,30 +53615,35 @@ impl entropic::Entropic for PWSFailureIndicationProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(PWSFailureIndicationProtocolIEs_EntryValue::Id_PWSfailedECGIList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PWSFailureIndicationProtocolIEs_EntryValue::Id_PWSfailedECGIList(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(PWSFailureIndicationProtocolIEs_EntryValue::Id_Global_ENB_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let PWSFailureIndicationProtocolIEs_EntryValue::Id_Global_ENB_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -51482,46 +53706,61 @@ impl entropic::Entropic for DownlinkUEAssociatedLPPaTransportProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(DownlinkUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(DownlinkUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(DownlinkUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_Routing_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(DownlinkUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_LPPa_PDU(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_Routing_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_LPPa_PDU(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -51584,46 +53823,61 @@ impl entropic::Entropic for UplinkUEAssociatedLPPaTransportProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(UplinkUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UplinkUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UplinkUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_Routing_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UplinkUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_LPPa_PDU(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_Routing_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_LPPa_PDU(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -51666,30 +53920,35 @@ impl entropic::Entropic for DownlinkNonUEAssociatedLPPaTransportProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(DownlinkNonUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_Routing_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkNonUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_Routing_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(DownlinkNonUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_LPPa_PDU(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let DownlinkNonUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_LPPa_PDU(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -51732,30 +53991,35 @@ impl entropic::Entropic for UplinkNonUEAssociatedLPPaTransportProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(UplinkNonUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_Routing_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkNonUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_Routing_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UplinkNonUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_LPPa_PDU(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UplinkNonUEAssociatedLPPaTransportProtocolIEs_EntryValue::Id_LPPa_PDU(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -51858,78 +54122,113 @@ impl entropic::Entropic for E_RABModificationIndicationProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(E_RABModificationIndicationProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModificationIndicationProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(E_RABModificationIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(E_RABModificationIndicationProtocolIEs_EntryValue::Id_E_RABToBeModifiedListBearerModInd(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(E_RABModificationIndicationProtocolIEs_EntryValue::Id_E_RABNotToBeModifiedListBearerModInd(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(E_RABModificationIndicationProtocolIEs_EntryValue::Id_CSGMembershipInfo(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(E_RABModificationIndicationProtocolIEs_EntryValue::Id_Tunnel_Information_for_BBF(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(E_RABModificationIndicationProtocolIEs_EntryValue::Id_SecondaryRATDataUsageReportList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(E_RABModificationIndicationProtocolIEs_EntryValue::Id_UserLocationInformation(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModificationIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModificationIndicationProtocolIEs_EntryValue::Id_E_RABToBeModifiedListBearerModInd(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModificationIndicationProtocolIEs_EntryValue::Id_E_RABNotToBeModifiedListBearerModInd(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModificationIndicationProtocolIEs_EntryValue::Id_CSGMembershipInfo(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModificationIndicationProtocolIEs_EntryValue::Id_Tunnel_Information_for_BBF(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModificationIndicationProtocolIEs_EntryValue::Id_SecondaryRATDataUsageReportList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModificationIndicationProtocolIEs_EntryValue::Id_UserLocationInformation(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -52022,70 +54321,100 @@ impl entropic::Entropic for E_RABModificationConfirmProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(E_RABModificationConfirmProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModificationConfirmProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(E_RABModificationConfirmProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(E_RABModificationConfirmProtocolIEs_EntryValue::Id_E_RABModifyListBearerModConf(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(E_RABModificationConfirmProtocolIEs_EntryValue::Id_E_RABFailedToModifyListBearerModConf(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(E_RABModificationConfirmProtocolIEs_EntryValue::Id_E_RABToBeReleasedListBearerModConf(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(E_RABModificationConfirmProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(E_RABModificationConfirmProtocolIEs_EntryValue::Id_CSGMembershipStatus(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModificationConfirmProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModificationConfirmProtocolIEs_EntryValue::Id_E_RABModifyListBearerModConf(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModificationConfirmProtocolIEs_EntryValue::Id_E_RABFailedToModifyListBearerModConf(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModificationConfirmProtocolIEs_EntryValue::Id_E_RABToBeReleasedListBearerModConf(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModificationConfirmProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let E_RABModificationConfirmProtocolIEs_EntryValue::Id_CSGMembershipStatus(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -52138,38 +54467,48 @@ impl entropic::Entropic for UEContextModificationIndicationProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(UEContextModificationIndicationProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationIndicationProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(UEContextModificationIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(UEContextModificationIndicationProtocolIEs_EntryValue::Id_CSGMembershipInfo(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationIndicationProtocolIEs_EntryValue::Id_CSGMembershipInfo(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -52232,46 +54571,61 @@ impl entropic::Entropic for UEContextModificationConfirmProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(UEContextModificationConfirmProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationConfirmProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UEContextModificationConfirmProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UEContextModificationConfirmProtocolIEs_EntryValue::Id_CSGMembershipStatus(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextModificationConfirmProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationConfirmProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationConfirmProtocolIEs_EntryValue::Id_CSGMembershipStatus(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextModificationConfirmProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -52364,70 +54718,100 @@ impl entropic::Entropic for UEContextSuspendRequestProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(UEContextSuspendRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextSuspendRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UEContextSuspendRequestProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UEContextSuspendRequestProtocolIEs_EntryValue::Id_InformationOnRecommendedCellsAndENBsForPaging(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextSuspendRequestProtocolIEs_EntryValue::Id_CellIdentifierAndCELevelForCECapableUEs(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextSuspendRequestProtocolIEs_EntryValue::Id_SecondaryRATDataUsageReportList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextSuspendRequestProtocolIEs_EntryValue::Id_UserLocationInformation(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextSuspendRequestProtocolIEs_EntryValue::Id_TimeSinceSecondaryNodeRelease(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextSuspendRequestProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextSuspendRequestProtocolIEs_EntryValue::Id_InformationOnRecommendedCellsAndENBsForPaging(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextSuspendRequestProtocolIEs_EntryValue::Id_CellIdentifierAndCELevelForCECapableUEs(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextSuspendRequestProtocolIEs_EntryValue::Id_SecondaryRATDataUsageReportList(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextSuspendRequestProtocolIEs_EntryValue::Id_UserLocationInformation(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextSuspendRequestProtocolIEs_EntryValue::Id_TimeSinceSecondaryNodeRelease(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -52490,46 +54874,61 @@ impl entropic::Entropic for UEContextSuspendResponseProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(UEContextSuspendResponseProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextSuspendResponseProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UEContextSuspendResponseProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UEContextSuspendResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextSuspendResponseProtocolIEs_EntryValue::Id_SecurityContext(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextSuspendResponseProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextSuspendResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextSuspendResponseProtocolIEs_EntryValue::Id_SecurityContext(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -52592,46 +54991,61 @@ impl entropic::Entropic for UEContextResumeRequestProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(UEContextResumeRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextResumeRequestProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UEContextResumeRequestProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UEContextResumeRequestProtocolIEs_EntryValue::Id_E_RABFailedToResumeListResumeReq(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextResumeRequestProtocolIEs_EntryValue::Id_RRC_Resume_Cause(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextResumeRequestProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextResumeRequestProtocolIEs_EntryValue::Id_E_RABFailedToResumeListResumeReq(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextResumeRequestProtocolIEs_EntryValue::Id_RRC_Resume_Cause(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -52714,66 +55128,92 @@ impl entropic::Entropic for UEContextResumeResponseProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(UEContextResumeResponseProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextResumeResponseProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UEContextResumeResponseProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UEContextResumeResponseProtocolIEs_EntryValue::Id_E_RABFailedToResumeListResumeRes(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextResumeResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextResumeResponseProtocolIEs_EntryValue::Id_SecurityContext(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEContextResumeResponseProtocolIEs_EntryValue::Id_PendingDataIndication(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextResumeResponseProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextResumeResponseProtocolIEs_EntryValue::Id_E_RABFailedToResumeListResumeRes(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextResumeResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextResumeResponseProtocolIEs_EntryValue::Id_SecurityContext(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextResumeResponseProtocolIEs_EntryValue::Id_PendingDataIndication(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
 }
+    
     
 impl entropic::Entropic for UEContextResumeFailureProtocolIEs {
     fn from_finite_entropy<'a, S: EntropyScheme, I: Iterator<Item = &'a u8>>(
@@ -52832,46 +55272,61 @@ impl entropic::Entropic for UEContextResumeFailureProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(UEContextResumeFailureProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextResumeFailureProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(UEContextResumeFailureProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextResumeFailureProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(UEContextResumeFailureProtocolIEs_EntryValue::Id_Cause(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextResumeFailureProtocolIEs_EntryValue::Id_Cause(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(UEContextResumeFailureProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEContextResumeFailureProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -52994,94 +55449,139 @@ impl entropic::Entropic for ConnectionEstablishmentIndicationProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(ConnectionEstablishmentIndicationProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ConnectionEstablishmentIndicationProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(ConnectionEstablishmentIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(ConnectionEstablishmentIndicationProtocolIEs_EntryValue::Id_UERadioCapability(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(ConnectionEstablishmentIndicationProtocolIEs_EntryValue::Id_EnhancedCoverageRestricted(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(ConnectionEstablishmentIndicationProtocolIEs_EntryValue::Id_DL_CP_SecurityInformation(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(ConnectionEstablishmentIndicationProtocolIEs_EntryValue::Id_CE_ModeBRestricted(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(ConnectionEstablishmentIndicationProtocolIEs_EntryValue::Id_EndIndication(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(ConnectionEstablishmentIndicationProtocolIEs_EntryValue::Id_Subscription_Based_UE_DifferentiationInfo(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(ConnectionEstablishmentIndicationProtocolIEs_EntryValue::Id_UE_Level_QoS_Parameters(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(ConnectionEstablishmentIndicationProtocolIEs_EntryValue::Id_UERadioCapabilityID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ConnectionEstablishmentIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ConnectionEstablishmentIndicationProtocolIEs_EntryValue::Id_UERadioCapability(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ConnectionEstablishmentIndicationProtocolIEs_EntryValue::Id_EnhancedCoverageRestricted(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ConnectionEstablishmentIndicationProtocolIEs_EntryValue::Id_DL_CP_SecurityInformation(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ConnectionEstablishmentIndicationProtocolIEs_EntryValue::Id_CE_ModeBRestricted(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ConnectionEstablishmentIndicationProtocolIEs_EntryValue::Id_EndIndication(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ConnectionEstablishmentIndicationProtocolIEs_EntryValue::Id_Subscription_Based_UE_DifferentiationInfo(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ConnectionEstablishmentIndicationProtocolIEs_EntryValue::Id_UE_Level_QoS_Parameters(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ConnectionEstablishmentIndicationProtocolIEs_EntryValue::Id_UERadioCapabilityID(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -53114,22 +55614,22 @@ impl entropic::Entropic for RetrieveUEInformationProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(RetrieveUEInformationProtocolIEs_EntryValue::Id_S_TMSI(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let RetrieveUEInformationProtocolIEs_EntryValue::Id_S_TMSI(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -53202,54 +55702,74 @@ impl entropic::Entropic for UEInformationTransferProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(UEInformationTransferProtocolIEs_EntryValue::Id_S_TMSI(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEInformationTransferProtocolIEs_EntryValue::Id_S_TMSI(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(UEInformationTransferProtocolIEs_EntryValue::Id_UE_Level_QoS_Parameters(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEInformationTransferProtocolIEs_EntryValue::Id_UERadioCapability(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEInformationTransferProtocolIEs_EntryValue::Id_Subscription_Based_UE_DifferentiationInfo(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(UEInformationTransferProtocolIEs_EntryValue::Id_PendingDataIndication(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEInformationTransferProtocolIEs_EntryValue::Id_UE_Level_QoS_Parameters(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEInformationTransferProtocolIEs_EntryValue::Id_UERadioCapability(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEInformationTransferProtocolIEs_EntryValue::Id_Subscription_Based_UE_DifferentiationInfo(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UEInformationTransferProtocolIEs_EntryValue::Id_PendingDataIndication(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -53322,54 +55842,74 @@ impl entropic::Entropic for ENBCPRelocationIndicationProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(ENBCPRelocationIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBCPRelocationIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(ENBCPRelocationIndicationProtocolIEs_EntryValue::Id_S_TMSI(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(ENBCPRelocationIndicationProtocolIEs_EntryValue::Id_EUTRAN_CGI(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(ENBCPRelocationIndicationProtocolIEs_EntryValue::Id_TAI(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(ENBCPRelocationIndicationProtocolIEs_EntryValue::Id_UL_CP_SecurityInformation(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBCPRelocationIndicationProtocolIEs_EntryValue::Id_S_TMSI(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBCPRelocationIndicationProtocolIEs_EntryValue::Id_EUTRAN_CGI(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBCPRelocationIndicationProtocolIEs_EntryValue::Id_TAI(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let ENBCPRelocationIndicationProtocolIEs_EntryValue::Id_UL_CP_SecurityInformation(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -53412,30 +55952,35 @@ impl entropic::Entropic for MMECPRelocationIndicationProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(MMECPRelocationIndicationProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let MMECPRelocationIndicationProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(MMECPRelocationIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let MMECPRelocationIndicationProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -53518,62 +56063,87 @@ impl entropic::Entropic for SecondaryRATDataUsageReportProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(SecondaryRATDataUsageReportProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let SecondaryRATDataUsageReportProtocolIEs_EntryValue::Id_MME_UE_S1AP_ID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(SecondaryRATDataUsageReportProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(SecondaryRATDataUsageReportProtocolIEs_EntryValue::Id_SecondaryRATDataUsageReportList(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_0000)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-        if let Some(SecondaryRATDataUsageReportProtocolIEs_EntryValue::Id_HandoverFlag(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(SecondaryRATDataUsageReportProtocolIEs_EntryValue::Id_UserLocationInformation(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-        if let Some(SecondaryRATDataUsageReportProtocolIEs_EntryValue::Id_TimeSinceSecondaryNodeRelease(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
-            length += sink.put_byte(0b_0000_1111)?;
-            sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let SecondaryRATDataUsageReportProtocolIEs_EntryValue::Id_eNB_UE_S1AP_ID(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let SecondaryRATDataUsageReportProtocolIEs_EntryValue::Id_SecondaryRATDataUsageReportList(value) = &val.value {
+            length += sink.put_byte(0b_0000_0000)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let SecondaryRATDataUsageReportProtocolIEs_EntryValue::Id_HandoverFlag(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let SecondaryRATDataUsageReportProtocolIEs_EntryValue::Id_UserLocationInformation(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
+    let mut found = false;
+    for val in self.0.iter() {
+        if let SecondaryRATDataUsageReportProtocolIEs_EntryValue::Id_TimeSinceSecondaryNodeRelease(value) = &val.value {
+            length += sink.put_byte(0b_0000_1111)?;
+            sink.put_entropic(value)?;
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
@@ -53606,22 +56176,22 @@ impl entropic::Entropic for UERadioCapabilityIDMappingRequestProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(UERadioCapabilityIDMappingRequestProtocolIEs_EntryValue::Id_UERadioCapabilityID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UERadioCapabilityIDMappingRequestProtocolIEs_EntryValue::Id_UERadioCapabilityID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
+                
 
         Ok(length)
     }
@@ -53674,38 +56244,48 @@ impl entropic::Entropic for UERadioCapabilityIDMappingResponseProtocolIEs {
         &self,
         sink: &mut FiniteEntropySink<'a, S, I>,
     ) -> Result<usize, Error> {
-        let mut ie_idx = 0;
         let mut length = 0;
 
         
-        if let Some(UERadioCapabilityIDMappingResponseProtocolIEs_EntryValue::Id_UERadioCapabilityID(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UERadioCapabilityIDMappingResponseProtocolIEs_EntryValue::Id_UERadioCapabilityID(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(UERadioCapabilityIDMappingResponseProtocolIEs_EntryValue::Id_UERadioCapability(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UERadioCapabilityIDMappingResponseProtocolIEs_EntryValue::Id_UERadioCapability(value) = &val.value {
             length += sink.put_byte(0b_0000_0000)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0001_1111)?;
-        };
+            found = true;
+            break;
+        }
+    }
+    if !found {
+        length += sink.put_byte(0b_0001_1111)?;
+    }
                 
-        if let Some(UERadioCapabilityIDMappingResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value)) = self.0.get(ie_idx).map(|ie| &ie.value) {
-            ie_idx += 1;
+    let mut found = false;
+    for val in self.0.iter() {
+        if let UERadioCapabilityIDMappingResponseProtocolIEs_EntryValue::Id_CriticalityDiagnostics(value) = &val.value {
             length += sink.put_byte(0b_0000_1111)?;
             sink.put_entropic(value)?;
-        } else {
-            length += sink.put_byte(0b_0000_0000)?;
-        };
-                
-
-        if ie_idx != self.0.len() {
-            return Err(entropic::Error::Internal)
+            found = true;
+            break;
         }
+    }
+    if !found {
+        length += sink.put_byte(0b_0000_0000)?;
+    }
+                
 
         Ok(length)
     }
